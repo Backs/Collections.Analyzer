@@ -4,7 +4,7 @@
 		<LangVersion>9</LangVersion>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageVersion>0.1</PackageVersion>
+		<PackageVersion>0.1.1</PackageVersion>
 		<Title>Collections Diagnostic</Title>
 		<Authors>Rogatnev Sergey</Authors>
 	</PropertyGroup>
