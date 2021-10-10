@@ -32,7 +32,7 @@
 }";
 
             await ForeachStringToArrayVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("STRING_TOARRAY0001").WithSpan(12, 31, 12, 44))
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 31, 12, 44))
             .ConfigureAwait(false);
         }
         
@@ -50,7 +50,7 @@
         {
             var str = ""string"";
 
-            foreach (var c in {|STRING_TOARRAY0001:str.ToArray()|})
+            foreach (var c in {|CI0001:str.ToArray()|})
             {
                 Console.WriteLine(c);
             }

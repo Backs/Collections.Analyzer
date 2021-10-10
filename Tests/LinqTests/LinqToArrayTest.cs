@@ -28,7 +28,7 @@
 }";
 
             await LinqToArrayVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("STRING_TOARRAY0001").WithSpan(11, 26, 11, 39))
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(11, 26, 11, 39))
             .ConfigureAwait(false);
         }
     }

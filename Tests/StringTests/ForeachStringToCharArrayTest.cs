@@ -30,7 +30,7 @@ namespace Examples
 }";
 
             await ForeachStringToArrayVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("STRING_TOCHARARRAY0001").WithSpan(10, 31, 10, 48))
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(10, 31, 10, 48))
             .ConfigureAwait(false);
         }
 
@@ -46,7 +46,7 @@ namespace Examples
         {
             var value = ""string"";
 
-            foreach (var c in {|STRING_TOCHARARRAY0001:value.ToCharArray()|})
+            foreach (var c in {|CI0002:value.ToCharArray()|})
             {
                 Console.WriteLine(c);
             }
