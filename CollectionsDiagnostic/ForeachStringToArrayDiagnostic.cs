@@ -17,22 +17,20 @@
     {
         internal static readonly DiagnosticDescriptor ToArrayErrorRule = new(
             "CI0001",
-            "Избыточный вызов ToArray",
-            "",
-            "",
+            Resources.CI0001_Title,
+            Resources.CI0001_Title,
+            Categories.Performance,
             DiagnosticSeverity.Warning,
-            true,
-            ""
+            true
         );
 
         internal static readonly DiagnosticDescriptor ToCharArrayErrorRule = new(
             "CI0002",
-            "Избыточный вызов ToCharArray",
-            "",
-            "",
+            Resources.CI0002_Title,
+            Resources.CI0002_Title,
+            Categories.Performance,
             DiagnosticSeverity.Warning,
-            true,
-            ""
+            true
         );
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

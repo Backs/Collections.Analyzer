@@ -30,7 +30,7 @@
 
             var name = (invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
             
-            var title = $"Удалить вызов метода {name}";
+            var title = string.Format(Resources.RemoveRedundantCall, name);
 
             context.RegisterCodeFix(
                 CodeAction.Create(

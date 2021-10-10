@@ -15,20 +15,20 @@
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class LinqToArrayDiagnostic : DiagnosticAnalyzer
     {
-        internal static readonly DiagnosticDescriptor ToArrayErrorRule = new DiagnosticDescriptor(
+        internal static readonly DiagnosticDescriptor ToArrayErrorRule = new(
             "CI0003",
-            "Избыточный вызов ToArray",
-            "",
-            "",
+            Resources.CI0003_Title,
+            Resources.CI0003_Title,
+            Categories.Performance,
             DiagnosticSeverity.Warning,
             true
         );
 
-        internal static readonly DiagnosticDescriptor ToCharArrayErrorRule = new DiagnosticDescriptor(
+        internal static readonly DiagnosticDescriptor ToCharArrayErrorRule = new(
             "CI0004",
-            "Избыточный вызов ToCharArray",
-            "",
-            "",
+            Resources.CI0004_Title,
+            Resources.CI0004_Title,
+            Categories.Performance,
             DiagnosticSeverity.Warning,
             true
         );
