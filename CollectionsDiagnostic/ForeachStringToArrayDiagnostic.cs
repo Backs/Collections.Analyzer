@@ -16,7 +16,7 @@
     public class ForeachStringToArrayDiagnostic : DiagnosticAnalyzer
     {
         internal static readonly DiagnosticDescriptor ToArrayErrorRule = new(
-            "STRING_TOARRAY0001",
+            "CI0001",
             "Избыточный вызов ToArray",
             "",
             "",
@@ -26,7 +26,7 @@
         );
 
         internal static readonly DiagnosticDescriptor ToCharArrayErrorRule = new(
-            "STRING_TOCHARARRAY0001",
+            "CI0002",
             "Избыточный вызов ToCharArray",
             "",
             "",
