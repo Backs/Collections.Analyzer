@@ -1,8 +1,10 @@
-![GitHub](https://img.shields.io/github/license/Backs/CollectionsInspection)
+[![MIT](https://img.shields.io/github/license/Backs/CollectionsInspection)](LICENSE)
 
-![AppVeyor](https://img.shields.io/appveyor/build/Backs/collectionsinspection)
+[![AppVeyor](https://img.shields.io/appveyor/build/Backs/collectionsinspection)](https://ci.appveyor.com/project/Backs/collectionsinspection)
 
-![Nuget](https://img.shields.io/nuget/v/CollectionsDiagnostic)
+
+[![Nuget](https://img.shields.io/nuget/v/CollectionsDiagnostic)](https://www.nuget.org/packages/CollectionsDiagnostic/)
+
 
 # About the project
 
