@@ -61,38 +61,11 @@ namespace CollectionsDiagnostic {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Избыточный вызов ToArray.
+        ///   Looks up a localized string similar to Избыточное преобразование строки.
         /// </summary>
         internal static string CI0001_Title {
             get {
                 return ResourceManager.GetString("CI0001_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Избыточный вызов ToCharArray.
-        /// </summary>
-        internal static string CI0002_Title {
-            get {
-                return ResourceManager.GetString("CI0002_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Избыточный вызов ToArray.
-        /// </summary>
-        internal static string CI0003_Title {
-            get {
-                return ResourceManager.GetString("CI0003_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Избыточный вызов ToCharArray.
-        /// </summary>
-        internal static string CI0004_Title {
-            get {
-                return ResourceManager.GetString("CI0004_Title", resourceCulture);
             }
         }
         

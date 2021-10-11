@@ -4,7 +4,7 @@
     using Microsoft.CodeAnalysis.Testing;
     using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-    internal class ForeachStringToArrayVerifier : CodeFixVerifier<ForeachStringToArrayDiagnostic, RemoveToArrayCodeFix,
+    internal class ForeachStringToArrayVerifier : CodeFixVerifier<RedundantStringToArrayConversionDiagnostic, RemoveRedundantStringConversionCodeFix,
         ForeachStringToArrayTest,
         NUnitVerifier>
     {

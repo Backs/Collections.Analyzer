@@ -13,9 +13,11 @@
     using SyntaxKind = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ForeachStringToArrayDiagnostic : DiagnosticAnalyzer
+    public class RedundantStringToArrayConversionDiagnostic : DiagnosticAnalyzer
     {
-        internal static readonly DiagnosticDescriptor ToArrayErrorRule = new(
+        private static readonly IReadOnlyCollection<string> Methods = new HashSet<string>(new[] { "ToArray", "ToList" });
+
+        internal static readonly DiagnosticDescriptor RedundantStringToArrayRule = new(
             "CI0001",
             Resources.CI0001_Title,
             Resources.CI0001_Title,
@@ -24,17 +26,8 @@
             true
         );
 
-        internal static readonly DiagnosticDescriptor ToCharArrayErrorRule = new(
-            "CI0002",
-            Resources.CI0002_Title,
-            Resources.CI0002_Title,
-            Categories.Performance,
-            DiagnosticSeverity.Warning,
-            true
-        );
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(ToArrayErrorRule, ToCharArrayErrorRule);
+        ImmutableArray.Create(RedundantStringToArrayRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -43,8 +36,6 @@
 
             context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.InvocationExpression);
         }
-
-        private static readonly IReadOnlyCollection<string> methods = new HashSet<string>(new[] { "ToArray", "ToList" });
 
         private static void Analyze(SyntaxNodeAnalysisContext context)
         {
@@ -56,12 +47,27 @@
             {
                 if (StringExtensions.IsTypeMethodCalled(methodSymbol))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ToCharArrayErrorRule, invocationExpression.GetLocation(),
+                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
                         methodSymbol.ToString()));
                 }
-                else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, "String", methods))
+                else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, "String", Methods))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ToArrayErrorRule, invocationExpression.GetLocation(),
+                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
+                        methodSymbol.ToString()));
+                }
+            }
+            else if (invocationExpression.Parent is MemberAccessExpressionSyntax parentExpression
+                     && methodSymbol != null
+                     && context.SemanticModel.GetSymbolInfo(parentExpression).Symbol?.ContainingType.Name == "Enumerable")
+            {
+                if (StringExtensions.IsTypeMethodCalled(methodSymbol))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
+                        methodSymbol.ToString()));
+                }
+                else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, "String", Methods))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
                         methodSymbol.ToString()));
                 }
             }

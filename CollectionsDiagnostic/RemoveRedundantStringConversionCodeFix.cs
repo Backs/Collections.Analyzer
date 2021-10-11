@@ -10,15 +10,12 @@
     using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-    
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveToArrayCodeFix)), Shared]
-    public class RemoveToArrayCodeFix : CodeFixProvider
+
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantStringConversionCodeFix)), Shared]
+    public class RemoveRedundantStringConversionCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            ForeachStringToArrayDiagnostic.ToCharArrayErrorRule.Id, 
-            ForeachStringToArrayDiagnostic.ToArrayErrorRule.Id,
-            LinqToArrayDiagnostic.ToArrayErrorRule.Id,
-            LinqToArrayDiagnostic.ToCharArrayErrorRule.Id);
+            RedundantStringToArrayConversionDiagnostic.RedundantStringToArrayRule.Id);
 
         public override FixAllProvider GetFixAllProvider() => null;
 
@@ -29,7 +26,7 @@
             var invocationExpressionSyntax = (InvocationExpressionSyntax)root.FindNode(context.Span);
 
             var name = (invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
-            
+
             var title = string.Format(Resources.RemoveRedundantCall, name);
 
             context.RegisterCodeFix(
@@ -45,7 +42,9 @@
         private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax originalInvocationExpression,
             CancellationToken cancellationToken)
         {
-            var name = ((originalInvocationExpression.Expression as MemberAccessExpressionSyntax)?.Expression as IdentifierNameSyntax)?.Identifier.Text;
+            var name =
+            ((originalInvocationExpression.Expression as MemberAccessExpressionSyntax)?.Expression as IdentifierNameSyntax)
+            ?.Identifier.Text;
 
             if (name == null)
             {

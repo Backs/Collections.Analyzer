@@ -7,7 +7,7 @@
     using Microsoft.CodeAnalysis.Testing.Verifiers;
     using NUnit.Framework;
 
-    public class ForeachStringToArrayTest: CSharpCodeFixTest<ForeachStringToArrayDiagnostic, RemoveToArrayCodeFix, NUnitVerifier>
+    public class ForeachStringToArrayTest: CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic, RemoveRedundantStringConversionCodeFix, NUnitVerifier>
     {
         [Test]
         public async Task IncorrectUsageTest()

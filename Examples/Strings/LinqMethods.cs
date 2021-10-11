@@ -22,7 +22,7 @@
         {
             var str = "string";
 
-            var result = str.ToList().Select(o => o);
+            var result = str.ToList().Any();
         }
     }
 }

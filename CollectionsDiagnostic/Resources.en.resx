@@ -12,16 +12,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="CI0001_Title" xml:space="preserve">
-        <value>Redundant ToArray call</value>
-    </data>
-    <data name="CI0002_Title" xml:space="preserve">
-        <value>Redundant ToCharArray call</value>
-    </data>
-    <data name="CI0003_Title" xml:space="preserve">
-        <value>Redundant ToArray call</value>
-    </data>
-    <data name="CI0004_Title" xml:space="preserve">
-        <value>Redundant ToCharArray call</value>
+        <value>Redundant string conversion</value>
     </data>
     <data name="RemoveRedundantCall" xml:space="preserve">
         <value>Remove method call {0}</value>

@@ -4,7 +4,7 @@
 		<LangVersion>9</LangVersion>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageVersion>0.1.4</PackageVersion>
+		<PackageVersion>0.1.5</PackageVersion>
 		<Title>Collections Diagnostic</Title>
 		<Authors>Rogatnev Sergey</Authors>
 		<Description>Set of diagnostics for .net collections.</Description>

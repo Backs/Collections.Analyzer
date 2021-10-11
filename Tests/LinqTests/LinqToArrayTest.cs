@@ -7,7 +7,7 @@
     using Microsoft.CodeAnalysis.Testing.Verifiers;
     using NUnit.Framework;
 
-    public class LinqToArrayTest : CSharpCodeFixTest<LinqToArrayDiagnostic, RemoveToArrayCodeFix, NUnitVerifier>
+    public class LinqToArrayTest : CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic, RemoveRedundantStringConversionCodeFix, NUnitVerifier>
     {
         [Test]
         public async Task SelectIncorrectUsageTest()
@@ -28,7 +28,7 @@
 }";
 
             await LinqToArrayVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(11, 26, 11, 39))
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39))
             .ConfigureAwait(false);
         }
     }
