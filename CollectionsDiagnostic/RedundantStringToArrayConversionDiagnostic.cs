@@ -1,7 +1,9 @@
 ﻿namespace CollectionsDiagnostic
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
+    using System.Linq;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Diagnostics;
@@ -15,7 +17,8 @@
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RedundantStringToArrayConversionDiagnostic : DiagnosticAnalyzer
     {
-        private static readonly IReadOnlyCollection<string> Methods = new HashSet<string>(new[] { "ToArray", "ToList" });
+        private static readonly IReadOnlyCollection<string> Methods =
+        new HashSet<string>(new[] { nameof(Enumerable.ToArray), nameof(Enumerable.ToList) });
 
         internal static readonly DiagnosticDescriptor RedundantStringToArrayRule = new(
             "CI0001",
@@ -45,31 +48,37 @@
 
             if (invocationExpression.Parent is ForEachStatementSyntax && methodSymbol != null)
             {
-                if (StringExtensions.IsTypeMethodCalled(methodSymbol))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
-                        methodSymbol.ToString()));
-                }
-                else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, "String", Methods))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
-                        methodSymbol.ToString()));
-                }
+                CheckRedundantStringConversion(context, methodSymbol, invocationExpression);
             }
             else if (invocationExpression.Parent is MemberAccessExpressionSyntax parentExpression
                      && methodSymbol != null
-                     && context.SemanticModel.GetSymbolInfo(parentExpression).Symbol?.ContainingType.Name == "Enumerable")
+                     && context.SemanticModel.GetSymbolInfo(parentExpression).Symbol?.ContainingType.Name ==  nameof(Enumerable))
             {
-                if (StringExtensions.IsTypeMethodCalled(methodSymbol))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
-                        methodSymbol.ToString()));
-                }
-                else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, "String", Methods))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
-                        methodSymbol.ToString()));
-                }
+                CheckRedundantStringConversion(context, methodSymbol, invocationExpression);
+            }
+            else if (invocationExpression.Parent is ArgumentSyntax argumentSyntax
+                     && argumentSyntax.Parent is ArgumentListSyntax argumentListSyntax
+                     && argumentListSyntax.Parent is ObjectCreationExpressionSyntax objectCreationExpression
+                     && objectCreationExpression.Type is GenericNameSyntax genericName
+                     && genericName.Identifier.ToString() == "List"
+                     && genericName.TypeArgumentList.Arguments.FirstOrDefault()?.ToString() == "char")
+            {
+                CheckRedundantStringConversion(context, methodSymbol, invocationExpression);
+            }
+        }
+
+        private static void CheckRedundantStringConversion(SyntaxNodeAnalysisContext context, IMethodSymbol methodSymbol,
+            InvocationExpressionSyntax invocationExpression)
+        {
+            if (StringExtensions.IsTypeMethodCalled(methodSymbol))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
+                    methodSymbol.ToString()));
+            }
+            else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, nameof(String), Methods))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
+                    methodSymbol.ToString()));
             }
         }
     }

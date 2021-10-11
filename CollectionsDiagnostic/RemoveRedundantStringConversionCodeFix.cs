@@ -23,7 +23,12 @@
         {
             var root = await context.Document.GetSyntaxRootAsync();
             var diagnostic = context.Diagnostics.First();
-            var invocationExpressionSyntax = (InvocationExpressionSyntax)root.FindNode(context.Span);
+            var invocationExpressionSyntax = root.FindNode(context.Span) as InvocationExpressionSyntax;
+            if (invocationExpressionSyntax == null)
+            {
+                var arg = root.FindNode(context.Span) as ArgumentSyntax;
+                invocationExpressionSyntax = arg.Expression as InvocationExpressionSyntax;
+            }
 
             var name = (invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
 
