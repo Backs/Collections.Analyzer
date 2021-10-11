@@ -8,7 +8,7 @@
 
 # About the project
 
-Collections Inspection is a set of roslyn-based diacnostics for C#-projects that detects potential problems with operating different collections.
+Collections Inspection is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.
 
 # Diagnostics
 
