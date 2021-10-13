@@ -61,7 +61,7 @@ namespace CollectionsDiagnostic {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Избыточное преобразование строки.
+        ///   Looks up a localized string similar to Redundant string conversion.
         /// </summary>
         internal static string CI0001_Title {
             get {
@@ -70,7 +70,7 @@ namespace CollectionsDiagnostic {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удалить вызов метода {0}.
+        ///   Looks up a localized string similar to Remove method call {0}.
         /// </summary>
         internal static string RemoveRedundantCall {
             get {
