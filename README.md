@@ -7,7 +7,7 @@ Collections Inspection is a set of roslyn-based diagnostics for C#-projects that
 # Features
 Compiler warnings and code fixes
 
-![Code fix](https://blog.rogatnev.net/img/collections/string-example-1.gif)
+![Code fix](Documentation/img/string-example-1.gif)
 
 
 # Diagnostics
