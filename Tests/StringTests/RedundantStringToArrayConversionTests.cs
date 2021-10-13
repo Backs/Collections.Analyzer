@@ -226,5 +226,72 @@ namespace Examples
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39))
             .ConfigureAwait(false);
         }
+        
+        [Test]
+        public async Task GetStringToCharArraySelectCodeFixTest()
+        {
+            const string code = @"namespace Examples.Strings
+{
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class Constructor
+    {
+        public static void List()
+        {
+            var result = {|CI0001:GetString().ToCharArray()|}.Select(o => o);
+        }
+        private static string GetString()
+        {
+            return ""str"";
+        }
+    }
+}";
+
+            const string fixedCode = @"namespace Examples.Strings
+{
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class Constructor
+    {
+        public static void List()
+        {
+            var result = GetString().Select(o => o);
+        }
+        private static string GetString()
+        {
+            return ""str"";
+        }
+    }
+}";
+            await RedundantStringToArrayConversionVerifier.VerifyCodeFixAsync(code, fixedCode).ConfigureAwait(false);
+        }
+        
+        [Test]
+        public async Task GetStringSelectToArrayTest()
+        {
+            const string code = @"namespace Examples.Strings
+{
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class Constructor
+    {
+        public static void List()
+        {
+            var result = GetString().ToArray().Select(o => o);
+        }
+        private static string GetString()
+        {
+            return ""str"";
+        }
+    }
+}";
+
+            await RedundantStringToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 26, 10, 47))
+            .ConfigureAwait(false);
+        }
     }
 }

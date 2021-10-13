@@ -47,19 +47,15 @@
         private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax originalInvocationExpression,
             CancellationToken cancellationToken)
         {
-            var name =
-            ((originalInvocationExpression.Expression as MemberAccessExpressionSyntax)?.Expression as IdentifierNameSyntax)
-            ?.Identifier.Text;
-
-            if (name == null)
+            var expression = (originalInvocationExpression.Expression as MemberAccessExpressionSyntax)?.Expression;
+            
+            if (expression == null)
             {
                 return document;
             }
 
-            var modifiedInvocationExpression = IdentifierName(name);
-
             var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = oldRoot.ReplaceNode(originalInvocationExpression, modifiedInvocationExpression);
+            var newRoot = oldRoot.ReplaceNode(originalInvocationExpression, expression);
 
             return document.WithSyntaxRoot(newRoot);
         }

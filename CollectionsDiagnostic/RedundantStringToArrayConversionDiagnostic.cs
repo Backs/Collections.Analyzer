@@ -1,6 +1,5 @@
 ﻿namespace CollectionsDiagnostic
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
@@ -75,7 +74,12 @@
                 context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
                     methodSymbol.ToString()));
             }
-            else if (LinqExtensions.IsLinqMethodCalled(context, invocationExpression, methodSymbol, nameof(String), Methods))
+            else if (StringExtensions.IsLinqMethodCalledOnString(context, invocationExpression, methodSymbol, Methods))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
+                    methodSymbol.ToString()));
+            }
+            else if (StringExtensions.IsLinqMethodCalledOnMethod(context, invocationExpression, methodSymbol, Methods))
             {
                 context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule, invocationExpression.GetLocation(),
                     methodSymbol.ToString()));

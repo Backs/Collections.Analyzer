@@ -34,5 +34,18 @@
                 Console.WriteLine(c);
             }
         }
+
+        public static void ForeachToArrayGetString()
+        {
+            foreach (var c in GetString().ToArray())
+            {
+                Console.WriteLine(c);
+            }
+        }
+
+        private static string GetString()
+        {
+            return "str";
+        }
     }
 }
