@@ -7,18 +7,7 @@
 		<PackageVersion>0.1.7</PackageVersion>
 		<Title>Collections Diagnostic</Title>
 		<Authors>Rogatnev Sergey</Authors>
-		<Description>Collections Inspection is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.
-
-# Features
-Compiler warnings and code fixes
-
-![Code fix](https://github.com/Backs/CollectionsInspection/blob/master/Documentation/img/string-example-1.gif)
-
-
-# Diagnostics
-
-
-[Full set of diagnostics](https://github.com/Backs/CollectionsInspection/blob/master/Documentation/Diagnostics.md)</Description>
+		<Description>Collections Inspection is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.</Description>
 		<PackageProjectUrl>https://github.com/Backs/CollectionsInspection</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/Backs/CollectionsInspection/blob/master/LICENSE</PackageLicenseUrl>
 		<RepositoryUrl>https://github.com/Backs/CollectionsInspection</RepositoryUrl>
