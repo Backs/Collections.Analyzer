@@ -1,0 +1,15 @@
+﻿namespace Examples
+{
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class Constructor
+    {
+        public static void List()
+        {
+            var str = "string";
+
+            var result = new List<char>({|CI0001:str.ToArray()|});
+        }
+    }
+}

@@ -7,291 +7,65 @@
     using Microsoft.CodeAnalysis.Testing.Verifiers;
     using NUnit.Framework;
 
-    public class RedundantStringToArrayConversionTests: CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic, RemoveRedundantStringConversionCodeFix, NUnitVerifier>
+    public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic,
+        RemoveRedundantStringConversionCodeFix, NUnitVerifier>
     {
         [Test]
-        public async Task ForeachToArrayTest()
+        public Task ForeachToArrayTest()
         {
-            const string code = @"namespace Examples
-{
-    using System;
-    using System.Linq;
+            var code = ResourceReader.ReadFromFile("ForeachStringToArray.txt");
 
-    public class ForeachToArray
-    {
-        public static void RunForeach()
-        {
-            var str = ""string"";
-
-            foreach (var c in str.ToArray())
-            {
-                Console.WriteLine(c);
-            }
-        }
-    }
-}";
-
-            await RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 31, 12, 44))
-            .ConfigureAwait(false);
-        }
-        
-        [Test]
-        public async Task ForeachToArrayCodeFixTest()
-        {
-            const string code = @"namespace Examples
-{
-    using System;
-    using System.Linq;
-
-    public class ForeachToArray
-    {
-        public static void RunForeach()
-        {
-            var str = ""string"";
-
-            foreach (var c in {|CI0001:str.ToArray()|})
-            {
-                Console.WriteLine(c);
-            }
-        }
-    }
-}";
-
-            const string fixedCode = @"namespace Examples
-{
-    using System;
-    using System.Linq;
-
-    public class ForeachToArray
-    {
-        public static void RunForeach()
-        {
-            var str = ""string"";
-
-            foreach (var c in str)
-            {
-                Console.WriteLine(c);
-            }
-        }
-    }
-}";
-            await RedundantStringToArrayConversionVerifier.VerifyCodeFixAsync(code, fixedCode).ConfigureAwait(false);
-        }
-        
-        [Test]
-        public async Task ForeachToCharArrayTest()
-        {
-            const string code = @"using System;
-namespace Examples
-{
-    public class Foreach
-    {
-        public static void RunForeach()
-        {
-            var str = ""string"";
-
-            foreach (var c in str.ToCharArray())
-            {
-                Console.WriteLine(c);
-            }
-        }
-    }
-}";
-
-            await RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 31, 10, 48))
-            .ConfigureAwait(false);
+            return RedundantStringToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 31, 12, 44));
         }
 
         [Test]
-        public async Task ForeachToCharArrayCodeFixTest()
+        public Task ForeachToCharArrayTest()
         {
-            const string code = @"using System;
-namespace Examples
-{
-    public class Foreach
-    {
-        public static void RunForeach()
-        {
-            var value = ""string"";
+            var code = ResourceReader.ReadFromFile("ForeachStringToCharArray.txt");
 
-            foreach (var c in {|CI0001:value.ToCharArray()|})
-            {
-                Console.WriteLine(c);
-            }
+            return RedundantStringToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 31, 10, 48));
         }
-    }
-}";
 
-            const string fixedCode = @"using System;
-namespace Examples
-{
-    public class Foreach
-    {
-        public static void RunForeach()
-        {
-            var value = ""string"";
-
-            foreach (var c in value)
-            {
-                Console.WriteLine(c);
-            }
-        }
-    }
-}";
-            await RedundantStringToArrayConversionVerifier.VerifyCodeFixAsync(code, fixedCode).ConfigureAwait(false);
-        }
-        
         [Test]
-        public async Task ListConstructorTest()
+        public Task ListConstructorTest()
         {
-            const string code = @"namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
+            var code = ResourceReader.ReadFromFile("StringListConstructor.txt");
 
-    public class Constructor
-    {
-        public static void List()
-        {
-            var str = ""string"";
-
-            var result = new List<char>(str.ToArray());
+            return RedundantStringToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 41, 12, 54));
         }
-    }
-}";
 
-            await RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 41, 12, 54))
-            .ConfigureAwait(false);
-        }
-        
         [Test]
-        public async Task ListConstructorCodeFixTest()
+        public Task SelectToArrayTest()
         {
-            const string code = @"namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
+            var code = ResourceReader.ReadFromFile("SelectStringToArray.txt");
 
-    public class Constructor
-    {
-        public static void List()
-        {
-            var str = ""string"";
-
-            var result = new List<char>({|CI0001:str.ToArray()|});
+            return RedundantStringToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39));
         }
-    }
-}";
 
-            const string fixedCode = @"namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public class Constructor
-    {
-        public static void List()
-        {
-            var str = ""string"";
-
-            var result = new List<char>(str);
-        }
-    }
-}";
-            await RedundantStringToArrayConversionVerifier.VerifyCodeFixAsync(code, fixedCode).ConfigureAwait(false);
-        }
-        
         [Test]
-        public async Task SelectToArrayTest()
+        public Task GetStringSelectToArrayTest()
         {
-            const string code = @"namespace Examples.Strings
-{
-    using System.Linq;
+            var code = ResourceReader.ReadFromFile("GetStringSelectToArray.txt");
 
-    public class LinqMethods
-    {
-        public void ToArraySelect()
-        {
-            var str = ""string"";
+            return RedundantStringToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 26, 10, 47));
+        }
 
-            var result = str.ToArray().Select(o => o);
-        }
-    }
-}";
+        [TestCase("ForeachStringToArrayBefore.txt", "ForeachStringToArrayAfter.txt")]
+        [TestCase("ForeachStringToListBefore.txt", "ForeachStringToListAfter.txt")]
+        [TestCase("ForeachStringToCharArrayBefore.txt", "ForeachStringToCharArrayAfter.txt")]
+        [TestCase("StringListConstructorBefore.txt", "StringListConstructorAfter.txt")]
+        [TestCase("GetStringToCharArraySelectBefore.txt", "GetStringToCharArraySelectAfter.txt")]
+        public Task CodeFixesTest(string before, string after)
+        {
+            var code = ResourceReader.ReadFromFile(before);
+            var fixedCode = ResourceReader.ReadFromFile(after);
 
-            await RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39))
-            .ConfigureAwait(false);
-        }
-        
-        [Test]
-        public async Task GetStringToCharArraySelectCodeFixTest()
-        {
-            const string code = @"namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public class Constructor
-    {
-        public static void List()
-        {
-            var result = {|CI0001:GetString().ToCharArray()|}.Select(o => o);
-        }
-        private static string GetString()
-        {
-            return ""str"";
-        }
-    }
-}";
-
-            const string fixedCode = @"namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public class Constructor
-    {
-        public static void List()
-        {
-            var result = GetString().Select(o => o);
-        }
-        private static string GetString()
-        {
-            return ""str"";
-        }
-    }
-}";
-            await RedundantStringToArrayConversionVerifier.VerifyCodeFixAsync(code, fixedCode).ConfigureAwait(false);
-        }
-        
-        [Test]
-        public async Task GetStringSelectToArrayTest()
-        {
-            const string code = @"namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public class Constructor
-    {
-        public static void List()
-        {
-            var result = GetString().ToArray().Select(o => o);
-        }
-        private static string GetString()
-        {
-            return ""str"";
-        }
-    }
-}";
-
-            await RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 26, 10, 47))
-            .ConfigureAwait(false);
+            return RedundantStringToArrayConversionVerifier.VerifyCodeFixAsync(code, fixedCode);
         }
     }
 }

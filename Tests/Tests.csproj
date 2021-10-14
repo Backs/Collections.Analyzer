@@ -14,5 +14,22 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
 	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\ForeachStringToArray.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToArrayAfter.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToArrayBefore.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToCharArray.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToCharArrayAfter.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToCharArrayBefore.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToListAfter.txt" />
+	  <EmbeddedResource Include="Resources\ForeachStringToListBefore.txt" />
+	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructor.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructorAfter.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructorBefore.txt" />
+	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectBefore.txt" />
+	  <EmbeddedResource Include="Resources\SelectStringToArray.txt" />
+	  <EmbeddedResource Include="Resources\GetStringSelectToArray.txt" />
+	</ItemGroup>
 
 </Project>
