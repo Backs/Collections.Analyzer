@@ -9,13 +9,13 @@
     using Microsoft.CodeAnalysis.CodeActions;
     using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantStringConversionCodeFix)), Shared]
-    public class RemoveRedundantStringConversionCodeFix : CodeFixProvider
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantMethodCallCodeFix)), Shared]
+    public class RemoveRedundantMethodCallCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            RedundantStringToArrayConversionDiagnostic.RedundantStringToArrayRule.Id);
+            RedundantStringToArrayConversionDiagnostic.RedundantStringToArrayRule.Id,
+            RedundantArrayToArrayConversionDiagnostic.RedundantArrayToArrayRule.Id);
 
         public override FixAllProvider GetFixAllProvider() => null;
 

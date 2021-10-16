@@ -14,7 +14,7 @@
     using SyntaxKind = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RedundantStringToArrayConversionDiagnostic : DiagnosticAnalyzer
+    public sealed class RedundantStringToArrayConversionDiagnostic : DiagnosticAnalyzer
     {
         private static readonly IReadOnlyCollection<string> Methods =
         new HashSet<string>(new[] { nameof(Enumerable.ToArray), nameof(Enumerable.ToList) });

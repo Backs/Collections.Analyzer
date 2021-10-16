@@ -8,7 +8,7 @@
     using NUnit.Framework;
 
     public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic,
-        RemoveRedundantStringConversionCodeFix, NUnitVerifier>
+        RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
         public Task ForeachToArrayTest()
