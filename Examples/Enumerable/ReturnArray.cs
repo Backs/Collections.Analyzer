@@ -17,23 +17,21 @@
         
         public static IEnumerable<int> Method2()
         {
-            List<int> list = new List<int>();
+            var list = new List<int>();
 
             return list.ToArray();
         }
         
         public static IEnumerable<int> Method3()
         {
-            var list = new List<int>();
+            var list = new HashSet<int>();
 
             return list.ToArray();
         }
         
-        public static int[] Method_t()
+        public static int[] Method()
         {
-            IEnumerable<int> list = new List<int>();
-
-            list = list.Select(o => o);
+            var list = new List<int>();
 
             return list.ToArray();
         }

@@ -32,7 +32,7 @@
 }";
 
             return RedundantEnumerableToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(11, 26, 11, 41));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(14, 20, 14, 34));
         }
     }
 }
