@@ -15,7 +15,8 @@
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
             RedundantStringToArrayConversionDiagnostic.RedundantStringToArrayRule.Id,
-            RedundantArrayToArrayConversionDiagnostic.RedundantArrayToArrayRule.Id);
+            RedundantArrayToArrayConversionDiagnostic.RedundantArrayToArrayRule.Id,
+            RedundantEnumerableToArrayConversionDiagnostic.RedundantEnumerableToArrayRule.Id);
 
         public override FixAllProvider GetFixAllProvider() => null;
 
