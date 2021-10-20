@@ -79,6 +79,15 @@ namespace CollectionsDiagnostic {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redundant enumerable conversion.
+        /// </summary>
+        internal static string CI0003_Title {
+            get {
+                return ResourceManager.GetString("CI0003_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove method call {0}.
         /// </summary>
         internal static string RemoveRedundantCall {

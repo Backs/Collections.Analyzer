@@ -22,8 +22,8 @@
 
         internal static readonly DiagnosticDescriptor RedundantEnumerableToArrayRule = new(
             "CI0003",
-            "Redundant enumerable conversion",
-            "Redundant enumerable conversion",
+            Resources.CI0003_Title,
+            Resources.CI0003_Title,
             Categories.Performance,
             DiagnosticSeverity.Warning,
             true

@@ -13,26 +13,10 @@
         [Test]
         public Task EnumerableToArrayTest()
         {
-            var code = @"namespace Examples
-{
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public class ReturnArray
-    {
-        public static IEnumerable<int> Method1()
-        {
-            IEnumerable<int> list = new List<int>();
-
-            list = list.Select(o => o);
-
-            return list.ToArray();
-        }
-    }
-}";
+            var code = ResourceReader.ReadFromFile("EnumerableToArray.txt");
 
             return RedundantEnumerableToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(14, 20, 14, 34));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 20, 12, 34));
         }
     }
 }
