@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Diagnostics;
@@ -44,22 +45,52 @@
         {
             var invocationExpression = (InvocationExpressionSyntax)context.Node;
 
-            var methodSymbol = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
+            var redundantMethod = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
 
-            if (invocationExpression.Parent is ReturnStatementSyntax returnStatementSyntax
-                && methodSymbol != null && invocationExpression.Expression is MemberAccessExpressionSyntax
+            if (redundantMethod == null || !Methods.Contains(redundantMethod.Name))
+            {
+                return;
+            }
+
+            if (invocationExpression.Parent is not ReturnStatementSyntax)
+            {
+                return;
+            }
+
+            if (invocationExpression.Expression is MemberAccessExpressionSyntax
                 {
                     Expression: IdentifierNameSyntax identifier
                 }
-                && Methods.Contains(methodSymbol.Name)
                 && context.SemanticModel.GetTypeInfo(identifier).Type.AllInterfaces.Any(o => o.Name == nameof(IEnumerable))
-                && returnStatementSyntax.Parent?.Parent is MethodDeclarationSyntax methodDeclarationSyntax
+                && FindMethodDeclarationSyntax(invocationExpression) is { } methodDeclarationSyntax
                 && context.SemanticModel.GetTypeInfo(methodDeclarationSyntax.ReturnType).Type?.Name == nameof(IEnumerable)
             )
             {
                 context.ReportDiagnostic(Diagnostic.Create(RedundantEnumerableToArrayRule, invocationExpression.GetLocation(),
-                    methodSymbol.ToString()));
+                    redundantMethod.ToString()));
             }
+            else if (invocationExpression.Expression is MemberAccessExpressionSyntax
+                     {
+                         Expression: InvocationExpressionSyntax invocationExpressionSyntax
+                     }
+                     && FindMethodDeclarationSyntax(invocationExpressionSyntax) is { } methodDeclaration
+                     && context.SemanticModel.GetTypeInfo(methodDeclaration.ReturnType).Type?.Name == nameof(IEnumerable)
+                     && context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
+                     && ms.ReturnType.AllInterfaces.Any(o => o.Name == nameof(IEnumerable)))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(RedundantEnumerableToArrayRule, invocationExpression.GetLocation(),
+                    redundantMethod.ToString()));
+            }
+        }
+
+        private static MethodDeclarationSyntax? FindMethodDeclarationSyntax(SyntaxNode? node)
+        {
+            while (node is not null and not MethodDeclarationSyntax)
+            {
+                node = node.Parent;
+            }
+
+            return node as MethodDeclarationSyntax;
         }
     }
 }

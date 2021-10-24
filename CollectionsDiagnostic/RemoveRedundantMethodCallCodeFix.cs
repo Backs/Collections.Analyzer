@@ -18,7 +18,7 @@
             RedundantArrayToArrayConversionDiagnostic.RedundantArrayToArrayRule.Id,
             RedundantEnumerableToArrayConversionDiagnostic.RedundantEnumerableToArrayRule.Id);
 
-        public override FixAllProvider GetFixAllProvider() => null;
+        public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

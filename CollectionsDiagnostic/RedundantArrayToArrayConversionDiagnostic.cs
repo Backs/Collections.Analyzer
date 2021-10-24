@@ -40,30 +40,31 @@
         {
             var invocationExpression = (InvocationExpressionSyntax)context.Node;
 
-            var methodSymbol = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
+            var redundantMethod = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
+            if (redundantMethod is not { Name: nameof(Enumerable.ToArray) }
+                || redundantMethod.ContainingType.Name != nameof(Enumerable))
+            {
+                return;
+            }
 
             if (invocationExpression.Expression is MemberAccessExpressionSyntax
                 {
                     Expression: IdentifierNameSyntax identifier
                 }
-                && methodSymbol?.ContainingType.Name == nameof(Enumerable)
-                && methodSymbol.Name == nameof(Enumerable.ToArray)
                 && context.SemanticModel.GetTypeInfo(identifier).Type?.TypeKind == TypeKind.Array)
             {
                 context.ReportDiagnostic(Diagnostic.Create(RedundantArrayToArrayRule, invocationExpression.GetLocation(),
-                    methodSymbol.ToString()));
+                    redundantMethod.ToString()));
             }
             else if (invocationExpression.Expression is MemberAccessExpressionSyntax
                      {
                          Expression: InvocationExpressionSyntax invocationExpressionSyntax
                      }
                      && context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
-                     && ms.ReturnType.TypeKind == TypeKind.Array
-                     && methodSymbol?.ContainingType.Name == nameof(Enumerable)
-                     && methodSymbol.Name == nameof(Enumerable.ToArray))
+                     && ms.ReturnType.TypeKind == TypeKind.Array)
             {
                 context.ReportDiagnostic(Diagnostic.Create(RedundantArrayToArrayRule, invocationExpression.GetLocation(),
-                    methodSymbol.ToString()));
+                    redundantMethod.ToString()));
             }
         }
     }

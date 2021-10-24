@@ -18,5 +18,14 @@
             return RedundantEnumerableToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 20, 12, 34));
         }
+        
+        [Test]
+        public Task GetSetToArrayTest()
+        {
+            var code = ResourceReader.ReadFromFile("GetSetToArray.txt");
+
+            return RedundantEnumerableToArrayConversionVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(10, 20, 10, 38));
+        }
     }
 }

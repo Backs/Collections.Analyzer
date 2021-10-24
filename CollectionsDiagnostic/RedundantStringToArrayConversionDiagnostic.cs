@@ -43,17 +43,21 @@
         {
             var invocationExpression = (InvocationExpressionSyntax)context.Node;
 
-            var methodSymbol = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
+            var redundantMethod = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
 
-            if (invocationExpression.Parent is ForEachStatementSyntax && methodSymbol != null)
+            if (redundantMethod == null)
             {
-                CheckRedundantStringConversion(context, methodSymbol, invocationExpression);
+                return;
+            }
+
+            if (invocationExpression.Parent is ForEachStatementSyntax)
+            {
+                CheckRedundantStringConversion(context, redundantMethod, invocationExpression);
             }
             else if (invocationExpression.Parent is MemberAccessExpressionSyntax parentExpression
-                     && methodSymbol != null
                      && context.SemanticModel.GetSymbolInfo(parentExpression).Symbol?.ContainingType.Name ==  nameof(Enumerable))
             {
-                CheckRedundantStringConversion(context, methodSymbol, invocationExpression);
+                CheckRedundantStringConversion(context, redundantMethod, invocationExpression);
             }
             else if (invocationExpression.Parent is ArgumentSyntax argumentSyntax
                      && argumentSyntax.Parent is ArgumentListSyntax argumentListSyntax
@@ -62,7 +66,7 @@
                      && genericName.Identifier.ToString() == "List"
                      && genericName.TypeArgumentList.Arguments.FirstOrDefault()?.ToString() == "char")
             {
-                CheckRedundantStringConversion(context, methodSymbol, invocationExpression);
+                CheckRedundantStringConversion(context, redundantMethod, invocationExpression);
             }
         }
 

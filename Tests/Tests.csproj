@@ -37,6 +37,8 @@
 	  <EmbeddedResource Include="Resources\GetStringSelectToArray.txt" />
 	  <EmbeddedResource Include="Resources\ArrayToArray.txt" />
 	  <EmbeddedResource Include="Resources\EnumerableToArray.txt" />
+	  <None Remove="Resources\GetSetToArray.txt" />
+	  <EmbeddedResource Include="Resources\GetSetToArray.txt" />
 	</ItemGroup>
 
 </Project>

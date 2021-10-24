@@ -12,7 +12,6 @@
             list = list.Select(o => o);
 
             return list.ToArray();
-
         }
         
         public static IEnumerable<int> Method2()
@@ -26,9 +25,19 @@
         {
             var list = new HashSet<int>();
 
-            return list.ToArray();
+            return list.ToList();
         }
-        
+
+        public static IEnumerable<int> Method4()
+        {
+            return GetSet();
+        }
+
+        public static HashSet<int> GetSet()
+        {
+            return new HashSet<int>();
+        }
+
         public static int[] Method()
         {
             var list = new List<int>();
