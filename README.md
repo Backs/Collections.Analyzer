@@ -13,13 +13,13 @@ Detailed information is indicated in the following articles:
 ### Compiler warnings
 Analyze your C#-code and warn about redundant method calls.
 
-![Code fix string](Documentation/img/string-example-2.png)
+![Code fix string](https://raw.githubusercontent.com/Backs/CollectionsInspection/master/Documentation/img/string-example-2.png)
 
 ### Code fixes
 Automatically fixes found problems.
-![Code fix enumerable](Documentation/img/enumerable-example-1.gif)
+![Code fix enumerable](https://raw.githubusercontent.com/Backs/CollectionsInspection/master/Documentation/img/enumerable-example-1.gif)
 
 # Diagnostics
 
 
-[Full set of diagnostics](Documentation/Diagnostics.md)
+[Full set of diagnostics](https://github.com/Backs/CollectionsInspection/blob/master/Documentation/Diagnostics.md)
