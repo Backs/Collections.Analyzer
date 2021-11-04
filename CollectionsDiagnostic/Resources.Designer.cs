@@ -61,6 +61,15 @@ namespace CollectionsDiagnostic {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add ToCharArray call.
+        /// </summary>
+        internal static string AddToCharArray {
+            get {
+                return ResourceManager.GetString("AddToCharArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Redundant string conversion.
         /// </summary>
         internal static string CI0001_Title {
@@ -88,11 +97,29 @@ namespace CollectionsDiagnostic {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not optimal List&lt;char&gt; constructor usage.
+        /// </summary>
+        internal static string CI0004_Title {
+            get {
+                return ResourceManager.GetString("CI0004_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove method call {0}.
         /// </summary>
         internal static string RemoveRedundantCall {
             get {
                 return ResourceManager.GetString("RemoveRedundantCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace with ToCharArray call.
+        /// </summary>
+        internal static string ReplaceWithToCharArray {
+            get {
+                return ResourceManager.GetString("ReplaceWithToCharArray", resourceCulture);
             }
         }
     }

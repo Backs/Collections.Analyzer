@@ -29,15 +29,6 @@
         }
 
         [Test]
-        public Task ListConstructorTest()
-        {
-            var code = ResourceReader.ReadFromFile("StringListConstructor.txt");
-
-            return RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 41, 12, 54));
-        }
-
-        [Test]
         public Task SelectToArrayTest()
         {
             var code = ResourceReader.ReadFromFile("SelectStringToArray.txt");
@@ -58,7 +49,6 @@
         [TestCase("ForeachStringToArrayBefore.txt", "ForeachStringToArrayAfter.txt")]
         [TestCase("ForeachStringToListBefore.txt", "ForeachStringToListAfter.txt")]
         [TestCase("ForeachStringToCharArrayBefore.txt", "ForeachStringToCharArrayAfter.txt")]
-        [TestCase("StringListConstructorBefore.txt", "StringListConstructorAfter.txt")]
         [TestCase("GetStringToCharArraySelectBefore.txt", "GetStringToCharArraySelectAfter.txt")]
         public Task CodeFixesTest(string before, string after)
         {

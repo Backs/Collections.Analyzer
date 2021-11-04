@@ -44,5 +44,12 @@
 
             return list.ToArray();
         }
+        
+        public static IReadOnlyCollection<int> Method5()
+        {
+            var list = new HashSet<int>();
+
+            return list.ToList();
+        }
     }
 }

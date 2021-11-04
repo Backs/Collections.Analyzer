@@ -30,4 +30,13 @@
     <data name="CI0003_Title" xml:space="preserve">
         <value>Redundant enumerable conversion</value>
     </data>
+    <data name="CI0004_Title" xml:space="preserve">
+        <value>Not optimal List&lt;char&gt; constructor usage</value>
+    </data>
+    <data name="AddToCharArray" xml:space="preserve">
+        <value>Add ToCharArray call</value>
+    </data>
+    <data name="ReplaceWithToCharArray" xml:space="preserve">
+        <value>Replace with ToCharArray call</value>
+    </data>
 </root>

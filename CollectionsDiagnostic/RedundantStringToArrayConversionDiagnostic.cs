@@ -59,15 +59,6 @@
             {
                 CheckRedundantStringConversion(context, redundantMethod, invocationExpression);
             }
-            else if (invocationExpression.Parent is ArgumentSyntax argumentSyntax
-                     && argumentSyntax.Parent is ArgumentListSyntax argumentListSyntax
-                     && argumentListSyntax.Parent is ObjectCreationExpressionSyntax objectCreationExpression
-                     && objectCreationExpression.Type is GenericNameSyntax genericName
-                     && genericName.Identifier.ToString() == "List"
-                     && genericName.TypeArgumentList.Arguments.FirstOrDefault()?.ToString() == "char")
-            {
-                CheckRedundantStringConversion(context, redundantMethod, invocationExpression);
-            }
         }
 
         private static void CheckRedundantStringConversion(SyntaxNodeAnalysisContext context, IMethodSymbol methodSymbol,

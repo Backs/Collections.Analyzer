@@ -24,14 +24,14 @@
         {
             var root = await context.Document.GetSyntaxRootAsync();
             var diagnostic = context.Diagnostics.First();
-            var invocationExpressionSyntax = root.FindNode(context.Span) as InvocationExpressionSyntax;
+            var invocationExpressionSyntax = root!.FindNode(context.Span) as InvocationExpressionSyntax;
             if (invocationExpressionSyntax == null)
             {
                 var arg = root.FindNode(context.Span) as ArgumentSyntax;
-                invocationExpressionSyntax = arg.Expression as InvocationExpressionSyntax;
+                invocationExpressionSyntax = arg?.Expression as InvocationExpressionSyntax;
             }
 
-            var name = (invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
+            var name = (invocationExpressionSyntax?.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
 
             var title = string.Format(Resources.RemoveRedundantCall, name);
 
@@ -45,10 +45,10 @@
             );
         }
 
-        private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax originalInvocationExpression,
+        private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax? originalInvocationExpression,
             CancellationToken cancellationToken)
         {
-            var expression = (originalInvocationExpression.Expression as MemberAccessExpressionSyntax)?.Expression;
+            var expression = (originalInvocationExpression?.Expression as MemberAccessExpressionSyntax)?.Expression;
             
             if (expression == null)
             {
@@ -56,7 +56,7 @@
             }
 
             var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = oldRoot.ReplaceNode(originalInvocationExpression, expression);
+            var newRoot = oldRoot!.ReplaceNode(originalInvocationExpression!, expression);
 
             return document.WithSyntaxRoot(newRoot);
         }

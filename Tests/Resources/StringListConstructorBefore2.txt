@@ -9,7 +9,7 @@
         {
             var str = "string";
 
-            var result = new List<char>({|CI0001:str.ToArray()|});
+            var result = new List<char>({|CI0004:str|});
         }
     }
 }

@@ -29,14 +29,16 @@
 	  <EmbeddedResource Include="Resources\GetArrayToArrayAfter.txt" />
 	  <EmbeddedResource Include="Resources\GetArrayToArrayBefore.txt" />
 	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructor.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructor1.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructor2.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructorAfter.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructorBefore.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructorBefore1.txt" />
 	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectBefore.txt" />
 	  <EmbeddedResource Include="Resources\SelectStringToArray.txt" />
 	  <EmbeddedResource Include="Resources\GetStringSelectToArray.txt" />
 	  <EmbeddedResource Include="Resources\ArrayToArray.txt" />
 	  <EmbeddedResource Include="Resources\EnumerableToArray.txt" />
+	  <EmbeddedResource Include="Resources\StringListConstructorBefore2.txt" />
 	  <None Remove="Resources\GetSetToArray.txt" />
 	  <EmbeddedResource Include="Resources\GetSetToArray.txt" />
 	</ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace Examples
+﻿namespace Examples.Strings
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,7 +9,7 @@
         {
             var str = "string";
 
-            var result = new List<char>(str.ToCharArray());
+            var result = new List<char>(str);
         }
     }
 }
