@@ -17,6 +17,7 @@ Analyze your C#-code and warn about redundant method calls.
 
 ### Code fixes
 Automatically fixes found problems.
+
 ![Code fix enumerable](https://raw.githubusercontent.com/Backs/Collections.Analyzer/master/Documentation/img/enumerable-example-1.gif)
 
 # Diagnostics
