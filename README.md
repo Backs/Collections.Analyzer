@@ -1,8 +1,8 @@
 [![MIT](https://img.shields.io/github/license/Backs/Collections.Analyzer)](LICENSE)
 [![AppVeyor](https://img.shields.io/appveyor/build/Backs/Collections.Analyzer)](https://ci.appveyor.com/project/Backs/Collections.Analyzer)
-[![Nuget](https://img.shields.io/nuget/v/CollectionsDiagnostic)](https://www.nuget.org/packages/CollectionsDiagnostic/)
+[![Nuget](https://img.shields.io/nuget/v/Collections.Analyzer)](https://www.nuget.org/packages/Collections.Analyzer/)
 
-Collections Inspection is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.
+Collections.Analyzer is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.
 
 # Motivation
 Detailed information is indicated in the following articles:
