@@ -1,5 +1,5 @@
-[![MIT](https://img.shields.io/github/license/Backs/CollectionsInspection)](LICENSE)
-[![AppVeyor](https://img.shields.io/appveyor/build/Backs/collectionsinspection)](https://ci.appveyor.com/project/Backs/collectionsinspection)
+[![MIT](https://img.shields.io/github/license/Backs/Collections.Analyzer)](LICENSE)
+[![AppVeyor](https://img.shields.io/appveyor/build/Backs/Collections.Analyzer)](https://ci.appveyor.com/project/Backs/Collections.Analyzer)
 [![Nuget](https://img.shields.io/nuget/v/CollectionsDiagnostic)](https://www.nuget.org/packages/CollectionsDiagnostic/)
 
 Collections Inspection is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.
@@ -13,13 +13,13 @@ Detailed information is indicated in the following articles:
 ### Compiler warnings
 Analyze your C#-code and warn about redundant method calls.
 
-![Code fix string](https://raw.githubusercontent.com/Backs/CollectionsInspection/master/Documentation/img/string-example-2.png)
+![Code fix string](https://raw.githubusercontent.com/Backs/Collections.Analyzer/master/Documentation/img/string-example-2.png)
 
 ### Code fixes
 Automatically fixes found problems.
-![Code fix enumerable](https://raw.githubusercontent.com/Backs/CollectionsInspection/master/Documentation/img/enumerable-example-1.gif)
+![Code fix enumerable](https://raw.githubusercontent.com/Backs/Collections.Analyzer/master/Documentation/img/enumerable-example-1.gif)
 
 # Diagnostics
 
 
-[Full set of diagnostics](https://github.com/Backs/CollectionsInspection/blob/master/Documentation/Diagnostics.md)
+[Full set of diagnostics](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/Diagnostics.md)
