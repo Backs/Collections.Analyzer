@@ -4,13 +4,13 @@
 		<LangVersion>9</LangVersion>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageVersion>0.1.9</PackageVersion>
+		<PackageVersion>0.2.0</PackageVersion>
 		<Title>Collections.Analyzer</Title>
 		<Authors>Rogatnev Sergey</Authors>
 		<Description>Collections.Analyzer is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.</Description>
-		<PackageProjectUrl>https://github.com/Backs/CollectionsInspection</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/Backs/CollectionsInspection/blob/master/LICENSE</PackageLicenseUrl>
-		<RepositoryUrl>https://github.com/Backs/CollectionsInspection</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Backs/Collections.Analyzer</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/Backs/Collections.Analyzer/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryUrl>https://github.com/Backs/Collections.Analyzer</RepositoryUrl>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
