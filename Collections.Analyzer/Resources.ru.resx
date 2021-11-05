@@ -21,7 +21,7 @@
         <value>Избыточное преобразование массива</value>
     </data>
     <data name="CI0003_Title" xml:space="preserve">
-        <value>Избыточное преобразование тип-перечисления</value>
+        <value>Избыточное преобразование типа</value>
     </data>
     <data name="CI0004_Title" xml:space="preserve">
         <value>Не оптимальное использование конструктора List&lt;char&gt;</value>

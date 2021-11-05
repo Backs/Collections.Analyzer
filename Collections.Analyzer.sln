@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{E16581B0-8179-464E-B74E-539460260F44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionsDiagnostic", "CollectionsDiagnostic\CollectionsDiagnostic.csproj", "{717B3028-5A42-4AE2-87E8-5476EDF74FED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.Analyzer", "Collections.Analyzer\Collections.Analyzer.csproj", "{717B3028-5A42-4AE2-87E8-5476EDF74FED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AF0BC354-7942-47C1-AD4F-FC10D1B52962}"
 EndProject

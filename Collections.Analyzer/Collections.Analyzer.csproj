@@ -5,9 +5,9 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageVersion>0.1.9</PackageVersion>
-		<Title>Collections Diagnostic</Title>
+		<Title>Collections.Analyzer</Title>
 		<Authors>Rogatnev Sergey</Authors>
-		<Description>Collections Inspection is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.</Description>
+		<Description>Collections.Analyzer is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.</Description>
 		<PackageProjectUrl>https://github.com/Backs/CollectionsInspection</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/Backs/CollectionsInspection/blob/master/LICENSE</PackageLicenseUrl>
 		<RepositoryUrl>https://github.com/Backs/CollectionsInspection</RepositoryUrl>
