@@ -1,5 +1,5 @@
 [![MIT](https://img.shields.io/github/license/Backs/Collections.Analyzer)](LICENSE)
-[![AppVeyor](https://img.shields.io/appveyor/build/Backs/Collections.Analyzer)](https://ci.appveyor.com/project/Backs/Collections.Analyzer)
+[![AppVeyor](https://img.shields.io/appveyor/build/Backs/CollectionsAnalyzer)](https://ci.appveyor.com/project/Backs/CollectionsAnalyzer)
 [![Nuget](https://img.shields.io/nuget/v/Collections.Analyzer)](https://www.nuget.org/packages/Collections.Analyzer/)
 
 Collections.Analyzer is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.
