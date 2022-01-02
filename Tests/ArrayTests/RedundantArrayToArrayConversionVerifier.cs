@@ -1,6 +1,6 @@
 ﻿namespace Tests.ArrayTests
 {
-    using CollectionsDiagnostic;
+    using Collections.Analyzer;
     using Microsoft.CodeAnalysis.Testing;
     using Microsoft.CodeAnalysis.Testing.Verifiers;
 

@@ -1,7 +1,7 @@
 ﻿namespace Tests.EnumerableTests
 {
     using System.Threading.Tasks;
-    using CollectionsDiagnostic;
+    using Collections.Analyzer;
     using Microsoft.CodeAnalysis.CSharp.Testing;
     using Microsoft.CodeAnalysis.Testing;
     using Microsoft.CodeAnalysis.Testing.Verifiers;

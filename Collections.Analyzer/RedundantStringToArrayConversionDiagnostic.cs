@@ -1,4 +1,4 @@
-﻿namespace CollectionsDiagnostic
+﻿namespace Collections.Analyzer
 {
     using System.Collections.Generic;
     using System.Collections.Immutable;

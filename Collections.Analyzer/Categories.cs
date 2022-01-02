@@ -1,4 +1,4 @@
-﻿namespace CollectionsDiagnostic
+﻿namespace Collections.Analyzer
 {
     internal  static class Categories
     {
