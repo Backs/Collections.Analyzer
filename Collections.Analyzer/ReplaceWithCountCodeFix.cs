@@ -50,11 +50,10 @@
             {
                 return document;
             }
-
             var newExpression = InvocationExpression(
                 MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
                     internalExpression,
-                    IdentifierName(nameof(Enumerable.Count))));
+                    IdentifierName(nameof(Enumerable.Count))), originalExpression.ArgumentList).NormalizeWhitespace();
 
             var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
             var newRoot = oldRoot!.ReplaceNode(originalExpression.Parent, newExpression);
