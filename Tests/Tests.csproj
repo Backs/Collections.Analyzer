@@ -29,6 +29,8 @@
 	  <EmbeddedResource Include="Resources\GetArrayToArrayAfter.txt" />
 	  <EmbeddedResource Include="Resources\GetArrayToArrayBefore.txt" />
 	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
+	  <EmbeddedResource Include="Resources\ListCountAfter.txt" />
+	  <EmbeddedResource Include="Resources\ListCountBefore.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructor1.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructor2.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructorAfter.txt" />
@@ -41,6 +43,10 @@
 	  <EmbeddedResource Include="Resources\StringListConstructorBefore2.txt" />
 	  <None Remove="Resources\GetSetToArray.txt" />
 	  <EmbeddedResource Include="Resources\GetSetToArray.txt" />
+	  <None Remove="Resources\ArrayCountAfter.txt" />
+	  <EmbeddedResource Include="Resources\ArrayCountAfter.txt" />
+	  <None Remove="Resources\ArrayCountBefore.txt" />
+	  <EmbeddedResource Include="Resources\ArrayCountBefore.txt" />
 	</ItemGroup>
 
 </Project>

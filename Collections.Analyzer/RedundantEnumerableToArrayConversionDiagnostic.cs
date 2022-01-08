@@ -61,7 +61,7 @@
                 {
                     Expression: IdentifierNameSyntax identifier
                 }
-                && context.SemanticModel.GetTypeInfo(identifier).Type.AllInterfaces.Any(o => o.Name == nameof(IEnumerable))
+                && context.SemanticModel.GetTypeInfo(identifier).Type!.AllInterfaces.Any(o => o.Name == nameof(IEnumerable))
                 && FindMethodDeclarationSyntax(invocationExpression) is { } methodDeclarationSyntax
                 && context.SemanticModel.GetTypeInfo(methodDeclarationSyntax.ReturnType).Type?.Name == nameof(IEnumerable)
             )

@@ -12,55 +12,52 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddToCharArrayCodeFix)), Shared]
-    public class AddToCharArrayCodeFix : CodeFixProvider
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceWithCountCodeFix)), Shared]
+    public class ReplaceWithCountCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            ListFromStringDiagnostic.ListFromStringRule.Id);
+            RedundantToArrayLengthDiagnostic.RedundantToArrayLengthRule.Id);
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync();
             var diagnostic = context.Diagnostics.First();
 
-            var arg = root!.FindNode(context.Span) as ArgumentSyntax;
+            var syntaxNode = root!.FindNode(context.Span) as MemberAccessExpressionSyntax;
+            if (syntaxNode?.Expression is not InvocationExpressionSyntax invocationExpressionSyntax)
+            {
+                return;
+            }
 
-            var title = arg?.Expression is IdentifierNameSyntax ? Resources.AddToCharArray : Resources.ReplaceWithToCharArray;
+            var title = Resources.ReplaceWithCountCall;
 
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title,
-                    token => FixAsync(context.Document, arg?.Expression, token),
+                    token => FixAsync(context.Document, invocationExpressionSyntax, token),
                     title
                 ),
                 diagnostic
             );
         }
 
-        private static async Task<Document> FixAsync(Document document, ExpressionSyntax? originalExpression,
+        private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax originalExpression,
             CancellationToken cancellationToken)
         {
-            var identifier = originalExpression as IdentifierNameSyntax;
+            var internalExpression = (originalExpression.Expression as MemberAccessExpressionSyntax)?.Expression;
 
-            if (identifier == null)
-            {
-                identifier = ((originalExpression as InvocationExpressionSyntax)?.Expression as MemberAccessExpressionSyntax)
-                ?.Expression as IdentifierNameSyntax;
-            }
-
-            if (identifier == null)
+            if (internalExpression == null || originalExpression.Parent == null)
             {
                 return document;
             }
 
             var newExpression = InvocationExpression(
-                MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(identifier.Identifier),
-                    IdentifierName(nameof(string.ToCharArray))));
+                MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                    internalExpression,
+                    IdentifierName(nameof(Enumerable.Count))));
 
             var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = oldRoot!.ReplaceNode(originalExpression!, newExpression);
+            var newRoot = oldRoot!.ReplaceNode(originalExpression.Parent, newExpression);
 
             return document.WithSyntaxRoot(newRoot);
         }

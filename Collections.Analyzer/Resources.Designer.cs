@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace Collections.Analyzer {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -103,11 +106,29 @@ namespace Collections.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not optimal count of collection items.
+        /// </summary>
+        internal static string CI0005_Title {
+            get {
+                return ResourceManager.GetString("CI0005_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove method call {0}.
         /// </summary>
         internal static string RemoveRedundantCall {
             get {
                 return ResourceManager.GetString("RemoveRedundantCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace with Count call.
+        /// </summary>
+        internal static string ReplaceWithCountCall {
+            get {
+                return ResourceManager.GetString("ReplaceWithCountCall", resourceCulture);
             }
         }
         

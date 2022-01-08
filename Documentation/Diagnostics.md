@@ -1,6 +1,7 @@
-| Id | Title | Severity | Description |
-|----|-------|----------|-------------|
-| [CI0001](CI0001.md) | Redundant string conversion | Warning | Redundant string conversion to `char[]` or `List<char>` |
-| [CI0002](CI0002.md) | Redundant array conversion | Warning | Redundant `ToArray` method call on array |
-| [CI0003](CI0003.md) | Redundant enumerable conversion | Warning | Redundant `ToArray` or `ToList` method call on types that implements `IEnumerable` interface |
-| [CI0004](CI0004.md) | Not optimal `List<char>` constructor usage | Warning | String parameter for `List<char>` constructor is better to use with `ToCharArray` call |
+| Id                  | Title | Severity | Description                                                                                         |
+|---------------------|-------|----------|-----------------------------------------------------------------------------------------------------|
+| [CI0001](CI0001.md) | Redundant string conversion | Warning | Redundant string conversion to `char[]` or `List<char>`                                             |
+| [CI0002](CI0002.md) | Redundant array conversion | Warning | Redundant `ToArray` method call on array                                                            |
+| [CI0003](CI0003.md) | Redundant enumerable conversion | Warning | Redundant `ToArray` or `ToList` method call on types that implements `IEnumerable` interface        |
+| [CI0004](CI0004.md) | Not optimal `List<char>` constructor usage | Warning | String parameter for `List<char>` constructor is better to use with `ToCharArray` call              |
+| [CI0005](CI0005.md) | Not optimal count of collection items | Warning | It's better to use LINQ method `Count()` instead of calling `ToArray()` and using property `Length` |

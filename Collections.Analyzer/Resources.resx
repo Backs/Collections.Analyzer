@@ -39,4 +39,10 @@
     <data name="ReplaceWithToCharArray" xml:space="preserve">
         <value>Replace with ToCharArray call</value>
     </data>
+    <data name="ReplaceWithCountCall" xml:space="preserve">
+        <value>Replace with Count call</value>
+    </data>
+    <data name="CI0005_Title" xml:space="preserve">
+        <value>Not optimal count of collection items</value>
+    </data>
 </root>
