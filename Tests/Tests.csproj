@@ -31,6 +31,9 @@
 	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
 	  <EmbeddedResource Include="Resources\ListCountAfter.txt" />
 	  <EmbeddedResource Include="Resources\ListCountBefore.txt" />
+	  <EmbeddedResource Include="Resources\StringJoin1.txt" />
+	  <EmbeddedResource Include="Resources\StringJoinAfter.txt" />
+	  <EmbeddedResource Include="Resources\StringJoinBefore.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructor1.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructor2.txt" />
 	  <EmbeddedResource Include="Resources\StringListConstructorAfter.txt" />
