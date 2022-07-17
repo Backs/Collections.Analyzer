@@ -15,6 +15,9 @@
 		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\AddRangeAfter.txt" />
+	  <EmbeddedResource Include="Resources\AddRangeBefore.txt" />
+	  <EmbeddedResource Include="Resources\AddRange2.txt" />
 	  <EmbeddedResource Include="Resources\ArrayToArrayAfter.txt" />
 	  <EmbeddedResource Include="Resources\ArrayToArrayBefore.txt" />
 	  <EmbeddedResource Include="Resources\ForeachStringToArray.txt" />
@@ -50,6 +53,8 @@
 	  <EmbeddedResource Include="Resources\ArrayCountAfter.txt" />
 	  <None Remove="Resources\ArrayCountBefore.txt" />
 	  <EmbeddedResource Include="Resources\ArrayCountBefore.txt" />
+	  <None Remove="Resources\AddRange.txt" />
+	  <EmbeddedResource Include="Resources\AddRange1.txt" />
 	</ItemGroup>
 
 </Project>
