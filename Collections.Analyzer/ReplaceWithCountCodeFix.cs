@@ -1,18 +1,19 @@
-﻿namespace Collections.Analyzer
-{
-    using System.Collections.Immutable;
-    using System.Composition;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CodeActions;
-    using Microsoft.CodeAnalysis.CodeFixes;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+﻿using System.Collections.Immutable;
+using System.Composition;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceWithCountCodeFix)), Shared]
+namespace Collections.Analyzer
+{
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceWithCountCodeFix))]
+    [Shared]
     public class ReplaceWithCountCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
@@ -24,10 +25,7 @@
             var diagnostic = context.Diagnostics.First();
 
             var syntaxNode = root!.FindNode(context.Span) as MemberAccessExpressionSyntax;
-            if (syntaxNode?.Expression is not InvocationExpressionSyntax invocationExpressionSyntax)
-            {
-                return;
-            }
+            if (syntaxNode?.Expression is not InvocationExpressionSyntax invocationExpressionSyntax) return;
 
             var title = Resources.ReplaceWithCountCall;
 
@@ -46,10 +44,8 @@
         {
             var internalExpression = (originalExpression.Expression as MemberAccessExpressionSyntax)?.Expression;
 
-            if (internalExpression == null || originalExpression.Parent == null)
-            {
-                return document;
-            }
+            if (internalExpression == null || originalExpression.Parent == null) return document;
+
             var newExpression = InvocationExpression(
                 MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
                     internalExpression,
@@ -61,6 +57,9 @@
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+        public override FixAllProvider GetFixAllProvider()
+        {
+            return WellKnownFixAllProviders.BatchFixer;
+        }
     }
 }

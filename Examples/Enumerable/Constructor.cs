@@ -9,7 +9,7 @@ namespace Examples.Enumerable
         {
             var list = System.Linq.Enumerable.Empty<int>();
 
-            var obj = new MyClass<int>(list.ToArray());
+            var obj = new MyClass<int>(list.ToList());
         }
 
         public void ManyArgumentsConstructor()
@@ -32,14 +32,11 @@ namespace Examples.Enumerable
             {
                 source = source;
             }
-            
+
             public MyClass(IEnumerable<T> source, bool value, IEnumerable<T> test)
             {
                 source = source;
-                if (value)
-                {
-                    source = test;
-                }
+                if (value) source = test;
             }
         }
     }

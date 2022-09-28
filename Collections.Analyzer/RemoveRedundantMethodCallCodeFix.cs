@@ -1,16 +1,17 @@
-﻿namespace Collections.Analyzer
-{
-    using System.Collections.Immutable;
-    using System.Composition;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CodeActions;
-    using Microsoft.CodeAnalysis.CodeFixes;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using System.Collections.Immutable;
+using System.Composition;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantMethodCallCodeFix)), Shared]
+namespace Collections.Analyzer
+{
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantMethodCallCodeFix))]
+    [Shared]
     public class RemoveRedundantMethodCallCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
@@ -18,7 +19,10 @@
             RedundantArrayToArrayConversionDiagnostic.RedundantArrayToArrayRule.Id,
             RedundantEnumerableToArrayConversionDiagnostic.RedundantEnumerableToArrayRule.Id);
 
-        public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+        public override FixAllProvider GetFixAllProvider()
+        {
+            return WellKnownFixAllProviders.BatchFixer;
+        }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -45,15 +49,13 @@
             );
         }
 
-        private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax? originalInvocationExpression,
+        private static async Task<Document> FixAsync(Document document,
+            InvocationExpressionSyntax? originalInvocationExpression,
             CancellationToken cancellationToken)
         {
             var expression = (originalInvocationExpression?.Expression as MemberAccessExpressionSyntax)?.Expression;
-            
-            if (expression == null)
-            {
-                return document;
-            }
+
+            if (expression == null) return document;
 
             var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
             var newRoot = oldRoot!.ReplaceNode(originalInvocationExpression!, expression);

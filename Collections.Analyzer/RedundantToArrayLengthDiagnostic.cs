@@ -1,14 +1,14 @@
-﻿namespace Collections.Analyzer
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Linq;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Microsoft.CodeAnalysis.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
+namespace Collections.Analyzer
+{
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class RedundantToArrayLengthDiagnostic : DiagnosticAnalyzer
     {
@@ -20,10 +20,10 @@
             DiagnosticSeverity.Warning,
             true
         );
-        
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(RedundantToArrayLengthRule);
-        
+            ImmutableArray.Create(RedundantToArrayLengthRule);
+
         public override void Initialize(AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -34,23 +34,19 @@
 
         private static void Analyze(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
 
             if (context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol is not IMethodSymbol redundantMethod)
-            {
                 return;
-            }
 
-            if (invocationExpression.Parent is not MemberAccessExpressionSyntax parent)
-            {
-                return;
-            }
+            if (invocationExpression.Parent is not MemberAccessExpressionSyntax parent) return;
 
             switch (redundantMethod.Name)
             {
                 case nameof(Enumerable.ToArray) when parent.Name.Identifier.ToString() == nameof(Array.Length):
                 case nameof(Enumerable.ToList) when parent.Name.Identifier.ToString() == nameof(List<object>.Count):
-                    context.ReportDiagnostic(Diagnostic.Create(RedundantToArrayLengthRule, invocationExpression.Parent.GetLocation(),
+                    context.ReportDiagnostic(Diagnostic.Create(RedundantToArrayLengthRule,
+                        invocationExpression.Parent.GetLocation(),
                         redundantMethod.ToString()));
                     break;
             }

@@ -1,10 +1,11 @@
-﻿namespace Tests.StringTests
-{
-    using Collections.Analyzer;
-    using Microsoft.CodeAnalysis.Testing;
-    using Microsoft.CodeAnalysis.Testing.Verifiers;
+﻿using Collections.Analyzer;
+using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-    internal sealed class StringJoinToArrayConversionVerifier : CodeFixVerifier<StringJoinToArrayDiagnostic, RemoveRedundantMethodCallCodeFix,
+namespace Tests.StringTests
+{
+    internal sealed class StringJoinToArrayConversionVerifier : CodeFixVerifier<StringJoinToArrayDiagnostic,
+        RemoveRedundantMethodCallCodeFix,
         StringJoinToArrayConversionTests,
         NUnitVerifier>
     {

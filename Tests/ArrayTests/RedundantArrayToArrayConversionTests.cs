@@ -1,13 +1,13 @@
-﻿namespace Tests.ArrayTests
-{
-    using System.Threading.Tasks;
-    using Collections.Analyzer;
-    using Microsoft.CodeAnalysis.CSharp.Testing;
-    using Microsoft.CodeAnalysis.Testing;
-    using Microsoft.CodeAnalysis.Testing.Verifiers;
-    using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using Collections.Analyzer;
+using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
+using NUnit.Framework;
 
-    public class RedundantArrayToArrayConversionTests: CSharpCodeFixTest<RedundantArrayToArrayConversionDiagnostic,
+namespace Tests.ArrayTests
+{
+    public class RedundantArrayToArrayConversionTests : CSharpCodeFixTest<RedundantArrayToArrayConversionDiagnostic,
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
@@ -16,18 +16,18 @@
             var code = ResourceReader.ReadFromFile("ArrayToArray.txt");
 
             return RedundantArrayToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(11, 26, 11, 41));
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(11, 26, 11, 41));
         }
-        
+
         [Test]
         public Task GetArrayToArrayTest()
         {
             var code = ResourceReader.ReadFromFile("GetArrayToArray.txt");
 
             return RedundantArrayToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(10, 26, 10, 46));
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(10, 26, 10, 46));
         }
-        
+
         [Test]
         [TestCase("ArrayToArrayBefore.txt", "ArrayToArrayAfter.txt")]
         [TestCase("GetArrayToArrayBefore.txt", "GetArrayToArrayAfter.txt")]

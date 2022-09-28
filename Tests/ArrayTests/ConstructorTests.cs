@@ -29,7 +29,7 @@ namespace Tests.ArrayTests
                     DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 48, 12, 62),
                     DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 71, 12, 90));
         }
-        
+
         [Test]
         [TestCase("ConstructorBefore.txt", "ConstructorAfter.txt")]
         public Task CodeFixesTest(string before, string after)

@@ -1,12 +1,12 @@
-﻿namespace Tests.StringTests
-{
-    using System.Threading.Tasks;
-    using Collections.Analyzer;
-    using Microsoft.CodeAnalysis.CSharp.Testing;
-    using Microsoft.CodeAnalysis.Testing;
-    using Microsoft.CodeAnalysis.Testing.Verifiers;
-    using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using Collections.Analyzer;
+using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
+using NUnit.Framework;
 
+namespace Tests.StringTests
+{
     public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic,
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
@@ -16,7 +16,7 @@
             var code = ResourceReader.ReadFromFile("ForeachStringToArray.txt");
 
             return RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 31, 12, 44));
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 31, 12, 44));
         }
 
         [Test]
@@ -25,7 +25,7 @@
             var code = ResourceReader.ReadFromFile("ForeachStringToCharArray.txt");
 
             return RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 31, 10, 48));
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 31, 10, 48));
         }
 
         [Test]
@@ -34,7 +34,7 @@
             var code = ResourceReader.ReadFromFile("SelectStringToArray.txt");
 
             return RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39));
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39));
         }
 
         [Test]
@@ -43,7 +43,7 @@
             var code = ResourceReader.ReadFromFile("GetStringSelectToArray.txt");
 
             return RedundantStringToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 26, 10, 47));
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 26, 10, 47));
         }
 
         [TestCase("ForeachStringToArrayBefore.txt", "ForeachStringToArrayAfter.txt")]

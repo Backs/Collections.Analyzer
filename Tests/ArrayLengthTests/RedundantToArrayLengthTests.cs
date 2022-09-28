@@ -1,12 +1,12 @@
-﻿namespace Tests.ArrayLengthTests
-{
-    using System.Threading.Tasks;
-    using Collections.Analyzer;
-    using Microsoft.CodeAnalysis.CSharp.Testing;
-    using Microsoft.CodeAnalysis.Testing.Verifiers;
-    using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using Collections.Analyzer;
+using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
+using NUnit.Framework;
 
-    public class RedundantToArrayLengthTests: CSharpCodeFixTest<RedundantToArrayLengthDiagnostic,
+namespace Tests.ArrayLengthTests
+{
+    public class RedundantToArrayLengthTests : CSharpCodeFixTest<RedundantToArrayLengthDiagnostic,
         ReplaceWithCountCodeFix, NUnitVerifier>
     {
         [Test]

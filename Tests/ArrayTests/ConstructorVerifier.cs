@@ -4,10 +4,9 @@ using Microsoft.CodeAnalysis.Testing.Verifiers;
 
 namespace Tests.ArrayTests
 {
-    public class ConstructorVerifier: CodeFixVerifier<ConstructorDiagnostic, RemoveRedundantMethodCallCodeFix,
+    public class ConstructorVerifier : CodeFixVerifier<ConstructorDiagnostic, RemoveRedundantMethodCallCodeFix,
         ConstructorTests,
         NUnitVerifier>
     {
-        
     }
 }

@@ -1,12 +1,12 @@
-﻿namespace Collections.Analyzer
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Microsoft.CodeAnalysis.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
+namespace Collections.Analyzer
+{
     internal static class StringExtensions
     {
         public static bool IsTypeMethodCalled(IMethodSymbol methodSymbol)
@@ -26,12 +26,8 @@
                     Expression: IdentifierNameSyntax identifier
                 }
                 && methods.Contains(methodSymbol.Name))
-            {
                 if (context.SemanticModel.GetTypeInfo(identifier).Type?.Name == nameof(String))
-                {
                     return true;
-                }
-            }
 
             return false;
         }
@@ -47,13 +43,9 @@
                     Expression: InvocationExpressionSyntax invocationExpressionSyntax
                 }
                 && methods.Contains(methodSymbol.Name))
-            {
                 if (context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
                     && ms.ReturnType.Name == nameof(String))
-                {
                     return true;
-                }
-            }
 
             return false;
         }

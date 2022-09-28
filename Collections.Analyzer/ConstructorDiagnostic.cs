@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -12,12 +11,6 @@ namespace Collections.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ConstructorDiagnostic : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(ConstructorRule);
-
-        private static readonly IReadOnlyCollection<string> Methods =
-            new HashSet<string>(new[] {nameof(Enumerable.ToArray), nameof(Enumerable.ToList)});
-
         internal static readonly DiagnosticDescriptor ConstructorRule = new(
             "CI0003",
             Resources.CI0003_Title,
@@ -26,6 +19,9 @@ namespace Collections.Analyzer
             DiagnosticSeverity.Warning,
             true
         );
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(ConstructorRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -39,47 +35,43 @@ namespace Collections.Analyzer
         {
             var objectCreationExpression = (ObjectCreationExpressionSyntax) context.Node;
 
-            if (objectCreationExpression.ArgumentList?.Arguments == null)
-            {
-                return;
-            }
+            if (objectCreationExpression.ArgumentList?.Arguments == null) return;
 
             foreach (var argument in objectCreationExpression.ArgumentList.Arguments)
             {
-                if (argument.Expression is not InvocationExpressionSyntax invocationExpression)
-                {
-                    continue;
-                }
+                if (argument.Expression is not InvocationExpressionSyntax invocationExpression) continue;
 
-                var redundantMethod = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol as IMethodSymbol;
+                if (!ExpressionExtensions.IsRedundantMethod(context, invocationExpression)) continue;
 
-                if (redundantMethod == null || !Methods.Contains(redundantMethod.Name))
-                {
-                    continue;
-                }
-
-                if (invocationExpression.Expression is MemberAccessExpressionSyntax
-                    {
-                        Expression: IdentifierNameSyntax identifier
-                    }
-                    && context.SemanticModel.GetTypeInfo(identifier).Type!.AllInterfaces.Any(o =>
-                        o.Name == nameof(IEnumerable))
-                   )
-                {
+                if (ExpressionIsIEnumerable(context, invocationExpression))
                     context.ReportDiagnostic(Diagnostic.Create(ConstructorRule, invocationExpression.GetLocation(),
-                        redundantMethod.ToString()));
-                }
-                else if (invocationExpression.Expression is MemberAccessExpressionSyntax
-                         {
-                             Expression: InvocationExpressionSyntax invocationExpressionSyntax
-                         }
-                         && context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
-                         && ms.ReturnType.AllInterfaces.Any(o => o.Name == nameof(IEnumerable)))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(ConstructorRule, invocationExpression.GetLocation(),
-                        redundantMethod.ToString()));
-                }
+                        invocationExpression.ToString()));
             }
+        }
+
+        private static bool ExpressionIsIEnumerable(SyntaxNodeAnalysisContext context,
+            InvocationExpressionSyntax invocationExpression)
+        {
+            // list.ToArray()
+            var isVariable = invocationExpression.Expression is MemberAccessExpressionSyntax
+                             {
+                                 Expression: IdentifierNameSyntax identifier
+                             }
+                             && context.SemanticModel.GetTypeInfo(identifier).Type!.AllInterfaces.Any(o =>
+                                 o.Name == nameof(IEnumerable));
+
+            if (isVariable)
+                return true;
+
+            // GetList().ToArray()
+            var isMethod = invocationExpression.Expression is MemberAccessExpressionSyntax
+                           {
+                               Expression: InvocationExpressionSyntax invocationExpressionSyntax
+                           }
+                           && context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
+                           && ms.ReturnType.AllInterfaces.Any(o => o.Name == nameof(IEnumerable));
+
+            return isMethod;
         }
     }
 }

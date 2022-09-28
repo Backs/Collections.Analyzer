@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Tests.ArrayTests
 {
-    public class AddRangeTests: CSharpCodeFixTest<AddRangeDiagnostic,
+    public class AddRangeTests : CSharpCodeFixTest<AddRangeDiagnostic,
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
@@ -18,7 +18,7 @@ namespace Tests.ArrayTests
             return AddRangeVerifier
                 .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(13, 27, 13, 42));
         }
-        
+
         [Test]
         public Task AddRange2Test()
         {
@@ -27,7 +27,7 @@ namespace Tests.ArrayTests
             return AddRangeVerifier
                 .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 27, 12, 47));
         }
-        
+
         [Test]
         [TestCase("AddRangeBefore.txt", "AddRangeAfter.txt")]
         public Task CodeFixesTest(string before, string after)

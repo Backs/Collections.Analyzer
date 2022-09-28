@@ -4,10 +4,9 @@ using Microsoft.CodeAnalysis.Testing.Verifiers;
 
 namespace Tests.ArrayTests
 {
-    public class AddRangeVerifier: CodeFixVerifier<AddRangeDiagnostic, RemoveRedundantMethodCallCodeFix,
+    public class AddRangeVerifier : CodeFixVerifier<AddRangeDiagnostic, RemoveRedundantMethodCallCodeFix,
         AddRangeTests,
         NUnitVerifier>
     {
-        
     }
 }
