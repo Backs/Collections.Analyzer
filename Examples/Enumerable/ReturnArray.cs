@@ -1,8 +1,8 @@
-﻿namespace Examples.Enumerable
-{
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+namespace Examples.Enumerable
+{
     public class ReturnArray
     {
         public static IEnumerable<int> Method1()
@@ -13,14 +13,14 @@
 
             return list.ToArray();
         }
-        
+
         public static IEnumerable<int> Method2()
         {
             var list = new List<int>();
 
             return list.ToArray();
         }
-        
+
         public static IEnumerable<int> Method3()
         {
             var list = new HashSet<int>();
@@ -44,7 +44,7 @@
 
             return list.ToArray();
         }
-        
+
         public static IReadOnlyCollection<int> Method5()
         {
             var list = new HashSet<int>();

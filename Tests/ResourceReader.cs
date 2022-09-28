@@ -1,8 +1,8 @@
-﻿namespace Tests
-{
-    using System.IO;
-    using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 
+namespace Tests
+{
     internal static class ResourceReader
     {
         public static string ReadFromFile(string resourceName)

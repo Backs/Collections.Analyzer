@@ -24,6 +24,9 @@ namespace Collections.Analyzer
             true
         );
 
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(StringJoinToArrayRule);
+
         public override void Initialize(AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -34,7 +37,7 @@ namespace Collections.Analyzer
 
         private static void Analyze(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
 
             if (invocationExpression.Expression is MemberAccessExpressionSyntax
                 {
@@ -42,17 +45,10 @@ namespace Collections.Analyzer
                 } memberAccessExpression && memberAccessExpression.Name.ToString() == nameof(string.Join) &&
                 invocationExpression.ArgumentList.Arguments.ElementAtOrDefault(1)?.Expression is
                     InvocationExpressionSyntax identifier)
-            {
                 if (context.SemanticModel.GetSymbolInfo(identifier).Symbol is IMethodSymbol redundantMethod &&
                     Methods.Contains(redundantMethod.Name))
-                {
                     context.ReportDiagnostic(Diagnostic.Create(StringJoinToArrayRule, identifier.GetLocation(),
                         identifier.ToString()));
-                }
-            }
         }
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(StringJoinToArrayRule);
     }
 }

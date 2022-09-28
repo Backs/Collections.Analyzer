@@ -12,7 +12,7 @@ namespace Examples.Enumerable
 
             list.AddRange(array.ToArray());
         }
-        
+
         public void Method2()
         {
             var list = new List<int>();

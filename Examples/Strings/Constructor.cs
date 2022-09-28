@@ -1,8 +1,8 @@
-﻿namespace Examples.Strings
-{
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+namespace Examples.Strings
+{
     public class Constructor
     {
         public static void List()

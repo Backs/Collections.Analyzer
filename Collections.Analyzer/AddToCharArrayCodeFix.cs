@@ -1,18 +1,20 @@
-﻿namespace Collections.Analyzer
-{
-    using System.Collections.Immutable;
-    using System.Composition;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CodeActions;
-    using Microsoft.CodeAnalysis.CodeFixes;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+﻿using System.Collections.Immutable;
+using System.Composition;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddToCharArrayCodeFix)), Shared]
+namespace Collections.Analyzer
+{
+    using static SyntaxFactory;
+
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddToCharArrayCodeFix))]
+    [Shared]
     public class AddToCharArrayCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
@@ -25,7 +27,9 @@
 
             var arg = root!.FindNode(context.Span) as ArgumentSyntax;
 
-            var title = arg?.Expression is IdentifierNameSyntax ? Resources.AddToCharArray : Resources.ReplaceWithToCharArray;
+            var title = arg?.Expression is IdentifierNameSyntax
+                ? Resources.AddToCharArray
+                : Resources.ReplaceWithToCharArray;
 
             context.RegisterCodeFix(
                 CodeAction.Create(
@@ -43,15 +47,11 @@
             var identifier = originalExpression as IdentifierNameSyntax;
 
             if (identifier == null)
-            {
-                identifier = ((originalExpression as InvocationExpressionSyntax)?.Expression as MemberAccessExpressionSyntax)
-                ?.Expression as IdentifierNameSyntax;
-            }
+                identifier =
+                    ((originalExpression as InvocationExpressionSyntax)?.Expression as MemberAccessExpressionSyntax)
+                    ?.Expression as IdentifierNameSyntax;
 
-            if (identifier == null)
-            {
-                return document;
-            }
+            if (identifier == null) return document;
 
             var newExpression = InvocationExpression(
                 MemberAccessExpression(
@@ -65,6 +65,9 @@
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+        public override FixAllProvider GetFixAllProvider()
+        {
+            return WellKnownFixAllProviders.BatchFixer;
+        }
     }
 }

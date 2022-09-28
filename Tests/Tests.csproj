@@ -5,56 +5,64 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Collections.Analyzer\Collections.Analyzer.csproj" />
+        <ProjectReference Include="..\Collections.Analyzer\Collections.Analyzer.csproj"/>
     </ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.NUnit" Version="1.1.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis" Version="3.8.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="Resources\AddRangeAfter.txt" />
-	  <EmbeddedResource Include="Resources\AddRangeBefore.txt" />
-	  <EmbeddedResource Include="Resources\AddRange2.txt" />
-	  <EmbeddedResource Include="Resources\ArrayToArrayAfter.txt" />
-	  <EmbeddedResource Include="Resources\ArrayToArrayBefore.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToArray.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToArrayAfter.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToArrayBefore.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToCharArray.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToCharArrayAfter.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToCharArrayBefore.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToListAfter.txt" />
-	  <EmbeddedResource Include="Resources\ForeachStringToListBefore.txt" />
-	  <EmbeddedResource Include="Resources\GetArrayToArray.txt" />
-	  <EmbeddedResource Include="Resources\GetArrayToArrayAfter.txt" />
-	  <EmbeddedResource Include="Resources\GetArrayToArrayBefore.txt" />
-	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
-	  <EmbeddedResource Include="Resources\ListCountAfter.txt" />
-	  <EmbeddedResource Include="Resources\ListCountBefore.txt" />
-	  <EmbeddedResource Include="Resources\StringJoin1.txt" />
-	  <EmbeddedResource Include="Resources\StringJoinAfter.txt" />
-	  <EmbeddedResource Include="Resources\StringJoinBefore.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructor1.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructor2.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructorAfter.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructorBefore1.txt" />
-	  <EmbeddedResource Include="Resources\GetStringToCharArraySelectBefore.txt" />
-	  <EmbeddedResource Include="Resources\SelectStringToArray.txt" />
-	  <EmbeddedResource Include="Resources\GetStringSelectToArray.txt" />
-	  <EmbeddedResource Include="Resources\ArrayToArray.txt" />
-	  <EmbeddedResource Include="Resources\EnumerableToArray.txt" />
-	  <EmbeddedResource Include="Resources\StringListConstructorBefore2.txt" />
-	  <None Remove="Resources\GetSetToArray.txt" />
-	  <EmbeddedResource Include="Resources\GetSetToArray.txt" />
-	  <None Remove="Resources\ArrayCountAfter.txt" />
-	  <EmbeddedResource Include="Resources\ArrayCountAfter.txt" />
-	  <None Remove="Resources\ArrayCountBefore.txt" />
-	  <EmbeddedResource Include="Resources\ArrayCountBefore.txt" />
-	  <None Remove="Resources\AddRange.txt" />
-	  <EmbeddedResource Include="Resources\AddRange1.txt" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.NUnit" Version="1.1.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis" Version="3.8.0" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\AddRangeAfter.txt"/>
+        <EmbeddedResource Include="Resources\AddRangeBefore.txt"/>
+        <EmbeddedResource Include="Resources\AddRange2.txt"/>
+        <EmbeddedResource Include="Resources\ArrayToArrayAfter.txt"/>
+        <EmbeddedResource Include="Resources\ArrayToArrayBefore.txt"/>
+        <EmbeddedResource Include="Resources\Constructor2.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToArray.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToArrayAfter.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToArrayBefore.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToCharArray.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToCharArrayAfter.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToCharArrayBefore.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToListAfter.txt"/>
+        <EmbeddedResource Include="Resources\ForeachStringToListBefore.txt"/>
+        <EmbeddedResource Include="Resources\GetArrayToArray.txt"/>
+        <EmbeddedResource Include="Resources\GetArrayToArrayAfter.txt"/>
+        <EmbeddedResource Include="Resources\GetArrayToArrayBefore.txt"/>
+        <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt"/>
+        <EmbeddedResource Include="Resources\ListCountAfter.txt"/>
+        <EmbeddedResource Include="Resources\ListCountBefore.txt"/>
+        <EmbeddedResource Include="Resources\StringJoin1.txt"/>
+        <EmbeddedResource Include="Resources\StringJoinAfter.txt"/>
+        <EmbeddedResource Include="Resources\StringJoinBefore.txt"/>
+        <EmbeddedResource Include="Resources\StringListConstructor1.txt"/>
+        <EmbeddedResource Include="Resources\StringListConstructor2.txt"/>
+        <EmbeddedResource Include="Resources\StringListConstructorAfter.txt"/>
+        <EmbeddedResource Include="Resources\StringListConstructorBefore1.txt"/>
+        <EmbeddedResource Include="Resources\GetStringToCharArraySelectBefore.txt"/>
+        <EmbeddedResource Include="Resources\SelectStringToArray.txt"/>
+        <EmbeddedResource Include="Resources\GetStringSelectToArray.txt"/>
+        <EmbeddedResource Include="Resources\ArrayToArray.txt"/>
+        <EmbeddedResource Include="Resources\EnumerableToArray.txt"/>
+        <EmbeddedResource Include="Resources\StringListConstructorBefore2.txt"/>
+        <None Remove="Resources\GetSetToArray.txt"/>
+        <EmbeddedResource Include="Resources\GetSetToArray.txt"/>
+        <None Remove="Resources\ArrayCountAfter.txt"/>
+        <EmbeddedResource Include="Resources\ArrayCountAfter.txt"/>
+        <None Remove="Resources\ArrayCountBefore.txt"/>
+        <EmbeddedResource Include="Resources\ArrayCountBefore.txt"/>
+        <None Remove="Resources\AddRange.txt"/>
+        <EmbeddedResource Include="Resources\AddRange1.txt"/>
+        <None Remove="Resources\Constructor.txt"/>
+        <None Remove="Resources\Constructor1.txt"/>
+        <EmbeddedResource Include="Resources\Constructor1.txt"/>
+        <None Remove="Resources\ConstructorAfter.txt"/>
+        <EmbeddedResource Include="Resources\ConstructorAfter.txt"/>
+        <None Remove="Resources\ConstructorBefore.txt"/>
+        <EmbeddedResource Include="Resources\ConstructorBefore.txt"/>
+    </ItemGroup>
 
 </Project>
