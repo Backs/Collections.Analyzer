@@ -37,11 +37,19 @@ namespace Collections.Analyzer
 
             if (objectCreationExpression.ArgumentList?.Arguments == null) return;
 
-            foreach (var argument in objectCreationExpression.ArgumentList.Arguments)
+            var parameters = (context.SemanticModel.GetSymbolInfo(objectCreationExpression).Symbol as IMethodSymbol)
+                .Parameters;
+
+            for (var i = 0; i < objectCreationExpression.ArgumentList.Arguments.Count; i++)
             {
+                var argument = objectCreationExpression.ArgumentList.Arguments[i];
                 if (argument.Expression is not InvocationExpressionSyntax invocationExpression) continue;
 
                 if (!ExpressionExtensions.IsRedundantMethod(context, invocationExpression)) continue;
+
+                var parameter = parameters[i];
+                
+                if (parameter.Type.Name != nameof(IEnumerable)) continue;
 
                 if (ExpressionIsIEnumerable(context, invocationExpression))
                     context.ReportDiagnostic(Diagnostic.Create(ConstructorRule, invocationExpression.GetLocation(),
