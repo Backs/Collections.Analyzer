@@ -37,7 +37,11 @@ namespace Collections.Analyzer
 
             if (objectCreationExpression.ArgumentList?.Arguments == null) return;
 
-            var parameters = (context.SemanticModel.GetSymbolInfo(objectCreationExpression).Symbol as IMethodSymbol)
+            var constructor = context.SemanticModel.GetSymbolInfo(objectCreationExpression).Symbol as IMethodSymbol;
+            
+            if (constructor == null) return;
+
+            var parameters = constructor
                 .Parameters;
 
             for (var i = 0; i < objectCreationExpression.ArgumentList.Arguments.Count; i++)
