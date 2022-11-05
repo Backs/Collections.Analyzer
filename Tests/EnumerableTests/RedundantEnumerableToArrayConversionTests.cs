@@ -12,12 +12,21 @@ namespace Tests.EnumerableTests
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
-        public Task EnumerableToArrayTest()
+        public Task EnumerableMethodToArrayTest()
         {
-            var code = ResourceReader.ReadFromFile("EnumerableToArray.txt");
+            var code = ResourceReader.ReadFromFile("EnumerableMethodToArray.txt");
 
             return RedundantEnumerableToArrayConversionVerifier
                 .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 20, 12, 34));
+        }
+        
+        [Test]
+        public Task EnumerablePropertyToArrayTest()
+        {
+            var code = ResourceReader.ReadFromFile("EnumerablePropertyToArray.txt");
+
+            return RedundantEnumerableToArrayConversionVerifier
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(11, 20, 11, 33));
         }
 
         [Test]

@@ -16,9 +16,16 @@ namespace Examples.Arrays
             var result = GetArray().ToArray();
         }
 
+        public static void ConvertFromProperty()
+        {
+            var result = ArrayProperty.ToArray();
+        }
+
         private static int[] GetArray()
         {
             return Array.Empty<int>();
         }
+
+        private static int[] ArrayProperty => Array.Empty<int>();
     }
 }
