@@ -45,32 +45,44 @@ namespace Collections.Analyzer
                 }
                 && context.SemanticModel.GetTypeInfo(identifier).Type!.AllInterfaces.Any(o =>
                     o.Name == nameof(IEnumerable))
-                && FindMethodDeclarationSyntax(invocationExpression) is { } methodDeclarationSyntax
-                && context.SemanticModel.GetTypeInfo(methodDeclarationSyntax.ReturnType).Type?.Name ==
-                nameof(IEnumerable)
+                && GetReturnType(invocationExpression, context)?.Name == nameof(IEnumerable)
                )
+            {
                 context.ReportDiagnostic(Diagnostic.Create(RedundantEnumerableToArrayRule,
                     invocationExpression.GetLocation(),
                     invocationExpression.ToString()));
+            }
             else if (invocationExpression.Expression is MemberAccessExpressionSyntax
                      {
                          Expression: InvocationExpressionSyntax invocationExpressionSyntax
                      }
-                     && FindMethodDeclarationSyntax(invocationExpressionSyntax) is { } methodDeclaration
-                     && context.SemanticModel.GetTypeInfo(methodDeclaration.ReturnType).Type?.Name ==
-                     nameof(IEnumerable)
+                     && GetReturnType(invocationExpressionSyntax, context)?.Name == nameof(IEnumerable)
                      && context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
                      && ms.ReturnType.AllInterfaces.Any(o => o.Name == nameof(IEnumerable)))
+            {
                 context.ReportDiagnostic(Diagnostic.Create(RedundantEnumerableToArrayRule,
                     invocationExpression.GetLocation(),
                     invocationExpression.ToString()));
+            }
         }
 
-        private static MethodDeclarationSyntax? FindMethodDeclarationSyntax(SyntaxNode? node)
+        private static ITypeSymbol? GetReturnType(SyntaxNode? node, SyntaxNodeAnalysisContext context)
         {
-            while (node is not null and not MethodDeclarationSyntax) node = node.Parent;
+            while (node != null)
+            {
+                switch (node)
+                {
+                    case MethodDeclarationSyntax method:
+                        return context.SemanticModel.GetTypeInfo(method.ReturnType).Type;
+                    case PropertyDeclarationSyntax property:
+                        return context.SemanticModel.GetTypeInfo(property.Type).Type;
+                    default:
+                        node = node.Parent;
+                        break;
+                }
+            }
 
-            return node as MethodDeclarationSyntax;
+            return null;
         }
     }
 }

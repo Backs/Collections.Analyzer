@@ -51,5 +51,25 @@ namespace Examples.Enumerable
 
             return list.ToList();
         }
+
+        public static IEnumerable<int> Property1
+        {
+            get
+            {
+                var list = new HashSet<int>();
+
+                return list.ToList();
+            }
+        }
+        
+        public static IEnumerable<int> Property2
+        {
+            get
+            {
+                var list = GetSet();
+
+                return list.ToList();
+            }
+        }
     }
 }
