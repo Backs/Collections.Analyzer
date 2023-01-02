@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,10 +10,6 @@ namespace Collections.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class StringJoinToArrayDiagnostic : DiagnosticAnalyzer
     {
-        private static readonly IReadOnlyCollection<string> Methods =
-            new HashSet<string>(new[] {nameof(Enumerable.ToArray), nameof(Enumerable.ToList)});
-
-
         internal static readonly DiagnosticDescriptor StringJoinToArrayRule = new(
             "CI0003",
             Resources.CI0003_Title,
@@ -45,8 +40,7 @@ namespace Collections.Analyzer
                 } memberAccessExpression && memberAccessExpression.Name.ToString() == nameof(string.Join) &&
                 invocationExpression.ArgumentList.Arguments.ElementAtOrDefault(1)?.Expression is
                     InvocationExpressionSyntax identifier)
-                if (context.SemanticModel.GetSymbolInfo(identifier).Symbol is IMethodSymbol redundantMethod &&
-                    Methods.Contains(redundantMethod.Name))
+                if (ExpressionExtensions.IsRedundantMethod(context, identifier))
                     context.ReportDiagnostic(Diagnostic.Create(StringJoinToArrayRule, identifier.GetLocation(),
                         identifier.ToString()));
         }

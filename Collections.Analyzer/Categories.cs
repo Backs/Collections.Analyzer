@@ -2,6 +2,6 @@
 {
     internal static class Categories
     {
-        public static string Performance = "Performance";
+        public static readonly string Performance = "Performance";
     }
 }
