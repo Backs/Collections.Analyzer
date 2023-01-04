@@ -39,6 +39,7 @@
         <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
         <EmbeddedResource Include="Resources\ListCountAfter.txt" />
         <EmbeddedResource Include="Resources\ListCountBefore.txt" />
+        <EmbeddedResource Include="Resources\ObjectInitializerAfter.txt" />
         <EmbeddedResource Include="Resources\StringJoin1.txt" />
         <EmbeddedResource Include="Resources\StringJoinAfter.txt" />
         <EmbeddedResource Include="Resources\StringJoinBefore.txt" />
@@ -59,6 +60,8 @@
         <EmbeddedResource Include="Resources\Constructor1.txt" />
         <EmbeddedResource Include="Resources\ConstructorAfter.txt" />
         <EmbeddedResource Include="Resources\ConstructorBefore.txt" />
+        <EmbeddedResource Include="Resources\ObjectInitializer.txt" />
+        <EmbeddedResource Include="Resources\ObjectInitializerBefore.txt" />
     </ItemGroup>
 
 </Project>
