@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -37,18 +36,26 @@ namespace Collections.Analyzer
 
             foreach (var expression in initializerExpressionSyntax.Expressions.OfType<AssignmentExpressionSyntax>())
             {
-                if (expression.Right is InvocationExpressionSyntax invocationExpression &&
-                    ExpressionExtensions.IsRedundantMethod(context, invocationExpression)
-                    && expression.Left is IdentifierNameSyntax identifier)
+                if (expression.Left is IdentifierNameSyntax &&
+                    expression.Right is InvocationExpressionSyntax rightInvocationExpression &&
+                    IsArrayProperty(context, rightInvocationExpression) &&
+                    ExpressionExtensions.IsRedundantMethod(context, rightInvocationExpression)
+                   )
                 {
-                    if (context.SemanticModel.GetTypeInfo(identifier).Type!.AllInterfaces.Any(o =>
-                            o.Name == nameof(IEnumerable)))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(RedundantArrayToArrayRule, invocationExpression.GetLocation(),
-                            invocationExpression.ToString()));
-                    }
+                    context.ReportDiagnostic(Diagnostic.Create(RedundantArrayToArrayRule,
+                        rightInvocationExpression.GetLocation(),
+                        rightInvocationExpression.ToString()));
                 }
             }
+        }
+
+        private static bool IsArrayProperty(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocationExpression)
+        {
+            return invocationExpression.Expression is MemberAccessExpressionSyntax
+                   {
+                       Expression: MemberAccessExpressionSyntax memberAccessExpression
+                   } &&
+                   context.SemanticModel.GetTypeInfo(memberAccessExpression).Type?.Kind == SymbolKind.ArrayType;
         }
     }
 }
