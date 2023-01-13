@@ -1,3 +1,6 @@
+## 0.2.8.1
+Fix variable initializer.
+
 ## 0.2.8
 Added variable initializer diagnostic to [CI0003](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0003.md)
 

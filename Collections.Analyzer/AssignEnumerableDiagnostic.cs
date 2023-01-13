@@ -38,7 +38,7 @@ namespace Collections.Analyzer
             foreach (var variable in declarationExpression.Variables)
             {
                 if (context.SemanticModel.GetDeclaredSymbol(variable) is ILocalSymbol localSymbol &&
-                    localSymbol.Type.AllInterfaces.Any(o => o.Name == nameof(IEnumerable))
+                    localSymbol.Type.Name == nameof(IEnumerable)
                     && variable.Initializer?.Value is InvocationExpressionSyntax invocationExpression &&
                     ExpressionExtensions.IsRedundantMethod(context, invocationExpression))
                 {
