@@ -5,10 +5,10 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics.CI0002
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RedundantArrayToArrayConversionDiagnostic : DiagnosticAnalyzer
+    public sealed class ArrayToArrayDiagnostic : DiagnosticAnalyzer
     {
         internal static readonly DiagnosticDescriptor RedundantArrayToArrayRule = new(
             "CI0002",

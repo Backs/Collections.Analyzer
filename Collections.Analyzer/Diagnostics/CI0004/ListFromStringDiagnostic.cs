@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics.CI0004
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ListFromStringDiagnostic : DiagnosticAnalyzer

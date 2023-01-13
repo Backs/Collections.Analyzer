@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics.CI0003
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AssignEnumerableDiagnostic : DiagnosticAnalyzer

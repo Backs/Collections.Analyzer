@@ -7,10 +7,10 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics.CI0005
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RedundantToArrayLengthDiagnostic : DiagnosticAnalyzer
+    public sealed class ToArrayLengthDiagnostic : DiagnosticAnalyzer
     {
         internal static readonly DiagnosticDescriptor RedundantToArrayLengthRule = new(
             "CI0005",

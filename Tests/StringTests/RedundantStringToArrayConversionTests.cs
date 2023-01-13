@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Collections.Analyzer;
+using Collections.Analyzer.CodeFixes;
+using Collections.Analyzer.Diagnostics.CI0001;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
@@ -7,7 +9,7 @@ using NUnit.Framework;
 
 namespace Tests.StringTests
 {
-    public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<RedundantStringToArrayConversionDiagnostic,
+    public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<StringToArrayDiagnostic,
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]

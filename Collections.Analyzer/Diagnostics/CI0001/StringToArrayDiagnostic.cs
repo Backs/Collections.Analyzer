@@ -6,10 +6,10 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics.CI0001
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RedundantStringToArrayConversionDiagnostic : DiagnosticAnalyzer
+    public sealed class StringToArrayDiagnostic : DiagnosticAnalyzer
     {
         private static readonly IReadOnlyCollection<string> Methods =
             new HashSet<string>(new[] {nameof(Enumerable.ToArray), nameof(Enumerable.ToList)});
@@ -54,7 +54,7 @@ namespace Collections.Analyzer
             IMethodSymbol methodSymbol,
             InvocationExpressionSyntax invocationExpression)
         {
-            if (StringExtensions.IsTypeMethodCalled(methodSymbol))
+            if (StringExtensions.ToCharArrayCalled(methodSymbol))
                 context.ReportDiagnostic(Diagnostic.Create(RedundantStringToArrayRule,
                     invocationExpression.GetLocation(),
                     methodSymbol.ToString()));

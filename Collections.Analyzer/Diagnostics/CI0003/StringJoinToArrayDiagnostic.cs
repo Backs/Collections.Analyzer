@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics.CI0003
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddRangeDiagnostic : DiagnosticAnalyzer
+    public class StringJoinToArrayDiagnostic : DiagnosticAnalyzer
     {
-        internal static readonly DiagnosticDescriptor AddRangeRule = new(
+        internal static readonly DiagnosticDescriptor StringJoinToArrayRule = new(
             "CI0003",
             Resources.CI0003_Title,
             Resources.CI0003_Title,
@@ -20,7 +20,7 @@ namespace Collections.Analyzer
         );
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(AddRangeRule);
+            ImmutableArray.Create(StringJoinToArrayRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -34,15 +34,15 @@ namespace Collections.Analyzer
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
 
-            if (!ExpressionExtensions.IsRedundantMethod(context, invocationExpression)) return;
-
-            if (invocationExpression.Parent is ArgumentSyntax argument &&
-                argument.Parent is ArgumentListSyntax argumentList &&
-                argumentList.Parent is InvocationExpressionSyntax identifier &&
-                identifier.Expression is MemberAccessExpressionSyntax memberAccessExpression &&
-                memberAccessExpression.Name.ToString() == nameof(List<object>.AddRange))
-                context.ReportDiagnostic(Diagnostic.Create(AddRangeRule, invocationExpression.GetLocation(),
-                    invocationExpression.ToString()));
+            if (invocationExpression.Expression is MemberAccessExpressionSyntax
+                {
+                    Expression: PredefinedTypeSyntax
+                } memberAccessExpression && memberAccessExpression.Name.ToString() == nameof(string.Join) &&
+                invocationExpression.ArgumentList.Arguments.ElementAtOrDefault(1)?.Expression is
+                    InvocationExpressionSyntax identifier)
+                if (ExpressionExtensions.IsRedundantMethod(context, identifier))
+                    context.ReportDiagnostic(Diagnostic.Create(StringJoinToArrayRule, identifier.GetLocation(),
+                        identifier.ToString()));
         }
     }
 }

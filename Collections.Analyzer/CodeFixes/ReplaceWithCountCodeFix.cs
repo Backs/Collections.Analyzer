@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Collections.Analyzer.Diagnostics.CI0005;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -10,14 +11,14 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceWithCountCodeFix))]
     [Shared]
     public class ReplaceWithCountCodeFix : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            RedundantToArrayLengthDiagnostic.RedundantToArrayLengthRule.Id);
+            ToArrayLengthDiagnostic.RedundantToArrayLengthRule.Id);
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

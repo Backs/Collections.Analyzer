@@ -5,11 +5,11 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Collections.Analyzer
+namespace Collections.Analyzer.Diagnostics
 {
     internal static class StringExtensions
     {
-        public static bool IsTypeMethodCalled(IMethodSymbol methodSymbol)
+        public static bool ToCharArrayCalled(IMethodSymbol methodSymbol)
         {
             return methodSymbol.ContainingType.OriginalDefinition.Name == nameof(String)
                    && methodSymbol.Name == nameof(string.ToCharArray);

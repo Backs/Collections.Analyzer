@@ -1,10 +1,12 @@
 ﻿using Collections.Analyzer;
+using Collections.Analyzer.CodeFixes;
+using Collections.Analyzer.Diagnostics.CI0005;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
 namespace Tests.ArrayLengthTests
 {
-    internal sealed class RedundantToArrayLengthVerifier : CodeFixVerifier<RedundantToArrayLengthDiagnostic,
+    internal sealed class RedundantToArrayLengthVerifier : CodeFixVerifier<ToArrayLengthDiagnostic,
         ReplaceWithCountCodeFix,
         RedundantToArrayLengthTests,
         NUnitVerifier>

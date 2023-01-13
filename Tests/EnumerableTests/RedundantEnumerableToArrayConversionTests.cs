@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Collections.Analyzer;
+using Collections.Analyzer.CodeFixes;
+using Collections.Analyzer.Diagnostics.CI0003;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
@@ -8,7 +10,7 @@ using NUnit.Framework;
 namespace Tests.EnumerableTests
 {
     public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
-        RedundantEnumerableToArrayOnReturnConversionDiagnostic,
+        EnumerableToArrayOnReturnDiagnostic,
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
