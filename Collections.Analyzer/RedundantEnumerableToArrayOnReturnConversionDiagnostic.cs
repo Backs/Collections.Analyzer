@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Collections.Analyzer
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RedundantEnumerableToArrayConversionDiagnostic : DiagnosticAnalyzer
+    public sealed class RedundantEnumerableToArrayOnReturnConversionDiagnostic : DiagnosticAnalyzer
     {
         internal static readonly DiagnosticDescriptor RedundantEnumerableToArrayRule = new(
             "CI0003",

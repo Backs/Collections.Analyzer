@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Tests.EnumerableTests
 {
     public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
-        RedundantEnumerableToArrayConversionDiagnostic,
+        RedundantEnumerableToArrayOnReturnConversionDiagnostic,
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
