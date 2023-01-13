@@ -17,7 +17,7 @@ namespace Collections.Analyzer
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
             RedundantStringToArrayConversionDiagnostic.RedundantStringToArrayRule.Id,
             RedundantArrayToArrayConversionDiagnostic.RedundantArrayToArrayRule.Id,
-            RedundantEnumerableToArrayConversionDiagnostic.RedundantEnumerableToArrayRule.Id);
+            RedundantEnumerableToArrayOnReturnConversionDiagnostic.RedundantEnumerableToArrayRule.Id);
 
         public override FixAllProvider GetFixAllProvider()
         {

@@ -22,6 +22,8 @@
         <EmbeddedResource Include="Resources\AddRange2.txt" />
         <EmbeddedResource Include="Resources\ArrayToArrayAfter.txt" />
         <EmbeddedResource Include="Resources\ArrayToArrayBefore.txt" />
+        <EmbeddedResource Include="Resources\AssignEnumerableAfter2.txt" />
+        <EmbeddedResource Include="Resources\AssignEnumerableBefore2.txt" />
         <EmbeddedResource Include="Resources\Constructor2.txt" />
         <EmbeddedResource Include="Resources\Constructor3.txt" />
         <EmbeddedResource Include="Resources\EnumerablePropertyToArray.txt" />
@@ -62,6 +64,10 @@
         <EmbeddedResource Include="Resources\ConstructorBefore.txt" />
         <EmbeddedResource Include="Resources\ObjectInitializer.txt" />
         <EmbeddedResource Include="Resources\ObjectInitializerBefore.txt" />
+        <EmbeddedResource Include="Resources\AssignEnumerable1.txt" />
+        <EmbeddedResource Include="Resources\AssignEnumerable2.txt" />
+        <EmbeddedResource Include="Resources\AssignEnumerableAfter1.txt" />
+        <EmbeddedResource Include="Resources\AssignEnumerableBefore1.txt" />
     </ItemGroup>
 
 </Project>
