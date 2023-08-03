@@ -26,6 +26,7 @@
         <EmbeddedResource Include="Resources\AssignEnumerableBefore2.txt" />
         <EmbeddedResource Include="Resources\Constructor2.txt" />
         <EmbeddedResource Include="Resources\Constructor3.txt" />
+        <EmbeddedResource Include="Resources\Constructor4.txt" />
         <EmbeddedResource Include="Resources\EnumerablePropertyToArray.txt" />
         <EmbeddedResource Include="Resources\ForeachStringToArray.txt" />
         <EmbeddedResource Include="Resources\ForeachStringToArrayAfter.txt" />

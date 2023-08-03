@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Collections.Analyzer;
 using Collections.Analyzer.CodeFixes;
 using Collections.Analyzer.Diagnostics.CI0003;
 using Microsoft.CodeAnalysis.CSharp.Testing;
@@ -13,9 +12,11 @@ namespace Tests.ArrayTests
         RemoveRedundantMethodCallCodeFix, NUnitVerifier>
     {
         [Test]
-        public Task ConstructorTest()
+        [TestCase("Constructor1.txt")]
+        [TestCase("Constructor4.txt")]
+        public Task ConstructorTest(string fileName)
         {
-            var code = ResourceReader.ReadFromFile("Constructor1.txt");
+            var code = ResourceReader.ReadFromFile(fileName);
 
             return ConstructorVerifier
                 .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 40, 12, 54));

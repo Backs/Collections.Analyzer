@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -38,7 +37,7 @@ namespace Collections.Analyzer.Diagnostics.CI0003
             if (objectCreationExpression.ArgumentList?.Arguments == null) return;
 
             var constructor = context.SemanticModel.GetSymbolInfo(objectCreationExpression).Symbol as IMethodSymbol;
-            
+
             if (constructor == null) return;
 
             var parameters = constructor
@@ -51,39 +50,19 @@ namespace Collections.Analyzer.Diagnostics.CI0003
 
                 if (!ExpressionExtensions.IsRedundantMethod(context, invocationExpression)) continue;
 
-                var parameter = parameters[i];
-                
-                if (parameter.Type.Name != nameof(IEnumerable)) continue;
+                var callerType = ExpressionExtensions.GetCallerType(context, invocationExpression);
+                if (callerType == null)
+                    continue;
 
-                if (ExpressionIsIEnumerable(context, invocationExpression))
+                var parameter = parameters[i];
+
+                if (SymbolEqualityComparer.Default.Equals(callerType, parameter.Type) ||
+                    callerType.AllInterfaces.Contains(parameter.Type))
+                {
                     context.ReportDiagnostic(Diagnostic.Create(ConstructorRule, invocationExpression.GetLocation(),
                         invocationExpression.ToString()));
+                }
             }
-        }
-
-        private static bool ExpressionIsIEnumerable(SyntaxNodeAnalysisContext context,
-            InvocationExpressionSyntax invocationExpression)
-        {
-            // list.ToArray()
-            var isVariable = invocationExpression.Expression is MemberAccessExpressionSyntax
-                             {
-                                 Expression: IdentifierNameSyntax identifier
-                             }
-                             && context.SemanticModel.GetTypeInfo(identifier).Type!.AllInterfaces.Any(o =>
-                                 o.Name == nameof(IEnumerable));
-
-            if (isVariable)
-                return true;
-
-            // GetList().ToArray()
-            var isMethod = invocationExpression.Expression is MemberAccessExpressionSyntax
-                           {
-                               Expression: InvocationExpressionSyntax invocationExpressionSyntax
-                           }
-                           && context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol ms
-                           && ms.ReturnType.AllInterfaces.Any(o => o.Name == nameof(IEnumerable));
-
-            return isMethod;
         }
     }
 }

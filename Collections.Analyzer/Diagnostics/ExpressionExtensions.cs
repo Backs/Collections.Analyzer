@@ -18,5 +18,20 @@ namespace Collections.Analyzer.Diagnostics
             return context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol is IMethodSymbol redundantMethod &&
                    Methods.Contains(redundantMethod.Name);
         }
+
+        public static ITypeSymbol? GetCallerType(SyntaxNodeAnalysisContext context,
+            InvocationExpressionSyntax invocationExpression)
+        {
+            if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression)
+                return null;
+            var symbol = context.SemanticModel.GetSymbolInfo(memberAccessExpression.Expression).Symbol;
+
+            return symbol switch
+            {
+                ILocalSymbol localSymbol => localSymbol.Type,
+                IMethodSymbol methodSymbol => methodSymbol.ReturnType,
+                _ => null
+            };
+        }
     }
 }
