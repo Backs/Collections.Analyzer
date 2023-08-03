@@ -4,7 +4,7 @@
         <LangVersion>10</LangVersion>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>0.2.8.1</PackageVersion>
+        <PackageVersion>0.2.9</PackageVersion>
         <Title>Collections.Analyzer</Title>
         <Authors>Rogatnev Sergey</Authors>
         <Description>Collections.Analyzer is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.</Description>
