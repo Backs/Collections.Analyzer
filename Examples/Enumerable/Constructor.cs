@@ -7,16 +7,16 @@ namespace Examples.Enumerable
     {
         public void CallConstructor()
         {
-            var list = System.Linq.Enumerable.Empty<int>();
+            var enumerable = System.Linq.Enumerable.Empty<int>();
 
-            var obj = new MyClass<int>(list.ToList());
+            var obj = new MyClass<int>(enumerable.ToList());
         }
 
         public void ManyArgumentsConstructor()
         {
-            var list = System.Linq.Enumerable.Empty<Constructor>();
+            ICollection<Constructor> list = new Constructor[10];
 
-            var obj = new MyClass<Constructor>(list.ToArray(), false, GetList().ToArray());
+            var obj = new MyClass<Constructor>(list.ToArray(), false, GetEnumerable().ToArray());
         }
 
         public void ArrayTest()
@@ -26,7 +26,7 @@ namespace Examples.Enumerable
             var obj = new MyClass<int>(list.ToArray(), true);
         }
 
-        private static IEnumerable<Constructor> GetList()
+        private static IEnumerable<Constructor> GetEnumerable()
         {
             return System.Linq.Enumerable.Empty<Constructor>();
         }
@@ -36,6 +36,11 @@ namespace Examples.Enumerable
             private readonly IEnumerable<T> source;
 
             public MyClass(IEnumerable<T> source)
+            {
+                source = source;
+            }
+            
+            public MyClass(ICollection<T> source)
             {
                 source = source;
             }
