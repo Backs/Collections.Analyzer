@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Collections.Analyzer;
 using Collections.Analyzer.CodeFixes;
 using Collections.Analyzer.Diagnostics.CI0003;
 using Microsoft.CodeAnalysis.CSharp.Testing;
@@ -20,6 +19,25 @@ namespace Tests.EnumerableTests
 
             return RedundantEnumerableToArrayConversionVerifier
                 .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 20, 12, 34));
+        }
+        
+        [Test]
+        public Task AsyncEnumerableMethodToArrayTest()
+        {
+            var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray.txt");
+
+            return RedundantEnumerableToArrayConversionVerifier
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(15, 20, 15, 34));
+        }
+        
+        [Test]
+        public Task AsyncValueTaskEnumerableMethodToArrayTest()
+        {
+            var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray2.txt");
+
+            return RedundantEnumerableToArrayConversionVerifier
+                .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(15, 20, 15, 34),
+                    DiagnosticResult.CompilerError("CS0246").WithSpan(9, 29, 9, 56));
         }
         
         [Test]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Examples.Enumerable
 {
@@ -11,6 +12,17 @@ namespace Examples.Enumerable
 
             list = list.Select(o => o);
 
+            return list.ToArray();
+        }
+        
+        public static async Task<IEnumerable<int>> Method1Async()
+        {
+            IEnumerable<int> list = new List<int>();
+
+            list = list.Select(o => o);
+
+            await Task.CompletedTask;
+            
             return list.ToArray();
         }
 
@@ -27,10 +39,28 @@ namespace Examples.Enumerable
 
             return list.ToList();
         }
+        
+        public static async Task<IEnumerable<int>> Method3Async()
+        {
+            var list = new HashSet<int>();
+            
+            await Task.CompletedTask;
+
+            return list.ToList();
+        }
+
+        public static async ValueTask<IEnumerable<int>> Method4Async()
+        {
+            var list = new HashSet<int>();
+            
+            await Task.CompletedTask;
+
+            return list.ToList();
+        }
 
         public static IEnumerable<int> Method4()
         {
-            return GetSet();
+            return GetSet().ToArray();
         }
 
         public static HashSet<int> GetSet()

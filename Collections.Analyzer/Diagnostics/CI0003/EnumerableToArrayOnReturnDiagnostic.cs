@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -73,9 +74,9 @@ namespace Collections.Analyzer.Diagnostics.CI0003
                 switch (node)
                 {
                     case MethodDeclarationSyntax method:
-                        return context.SemanticModel.GetTypeInfo(method.ReturnType).Type;
+                        return GetType(context, method.ReturnType);
                     case PropertyDeclarationSyntax property:
-                        return context.SemanticModel.GetTypeInfo(property.Type).Type;
+                        return GetType(context, property.Type);
                     default:
                         node = node.Parent;
                         break;
@@ -83,6 +84,22 @@ namespace Collections.Analyzer.Diagnostics.CI0003
             }
 
             return null;
+        }
+
+        private static ITypeSymbol? GetType(SyntaxNodeAnalysisContext context, ExpressionSyntax returnType)
+        {
+            var typeSymbol = context.SemanticModel.GetTypeInfo(returnType).Type as INamedTypeSymbol;
+
+            if (typeSymbol == null)
+                return null;
+
+            if (typeSymbol is {IsGenericType: true, Name: nameof(Task)}
+                or {IsGenericType: true, Name: nameof(ValueTask)})
+            {
+                return typeSymbol.TypeArguments.FirstOrDefault();
+            }
+
+            return typeSymbol;
         }
     }
 }

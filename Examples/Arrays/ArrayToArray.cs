@@ -46,8 +46,8 @@ namespace Examples.Arrays
 
         private class MyClass
         {
-            public int[] ArrayProperty { get; set; }
-            public IEnumerable<string> EnumerableProperty { get; set; }
+            public int[] ArrayProperty { get; set; } = null!;
+            public IEnumerable<string> EnumerableProperty { get; set; } = null!;
         }
     }
 }

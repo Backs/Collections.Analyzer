@@ -33,28 +33,28 @@ namespace Examples.Enumerable
 
         private class MyClass<T>
         {
-            private readonly IEnumerable<T> source;
+            private readonly IEnumerable<T> source = null!;
 
             public MyClass(IEnumerable<T> source)
             {
-                source = source;
+                this.source = source;
             }
             
             public MyClass(ICollection<T> source)
             {
-                source = source;
+                this.source = source;
             }
 
             public MyClass(IEnumerable<T> source, bool value, IReadOnlyCollection<T> test)
             {
-                source = source;
-                if (value) source = test;
+                this.source = source;
+                if (value) this.source = test;
             }
             
             public MyClass(T[] source, bool value)
             {
-                source = source;
-                if (value) source = null;
+                this.source = source;
+                if (value) this.source = null!;
             }
         }
     }

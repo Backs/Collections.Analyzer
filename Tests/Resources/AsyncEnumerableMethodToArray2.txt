@@ -1,0 +1,18 @@
+﻿namespace Examples
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    public class ReturnArray
+    {
+        public static async ValueTask<IEnumerable<int>> Method1()
+        {
+            var list = new List<int>();
+            
+            await Task.CompletedTask;
+
+            return list.ToArray();
+        }
+    }
+}
