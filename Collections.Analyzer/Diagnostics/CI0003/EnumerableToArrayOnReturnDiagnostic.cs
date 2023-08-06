@@ -92,17 +92,13 @@ namespace Collections.Analyzer.Diagnostics.CI0003
 
             if (typeSymbol == null)
                 return null;
-            
-            if (typeSymbol is {IsGenericType: true, Name: nameof(Task)})
+
+            if (typeSymbol is {IsGenericType: true, Name: nameof(Task)}
+                or {IsGenericType: true, Name: nameof(ValueTask)})
             {
                 return typeSymbol.TypeArguments.FirstOrDefault();
             }
-            
-            if (typeSymbol is {IsGenericType: true, Name: nameof(ValueTask)})
-            {
-                return typeSymbol.TypeArguments.FirstOrDefault();
-            }
-            
+
             return typeSymbol;
         }
     }

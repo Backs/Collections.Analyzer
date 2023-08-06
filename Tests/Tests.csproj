@@ -25,6 +25,7 @@
         <EmbeddedResource Include="Resources\AssignEnumerableAfter2.txt" />
         <EmbeddedResource Include="Resources\AssignEnumerableBefore2.txt" />
         <EmbeddedResource Include="Resources\AsyncEnumerableMethodToArray.txt" />
+        <EmbeddedResource Include="Resources\AsyncEnumerableMethodToArray2.txt" />
         <EmbeddedResource Include="Resources\Constructor2.txt" />
         <EmbeddedResource Include="Resources\Constructor3.txt" />
         <EmbeddedResource Include="Resources\Constructor4.txt" />
