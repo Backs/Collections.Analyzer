@@ -49,6 +49,15 @@ namespace Examples.Enumerable
             return list.ToList();
         }
 
+        public static async ValueTask<IEnumerable<int>> Method4Async()
+        {
+            var list = new HashSet<int>();
+            
+            await Task.CompletedTask;
+
+            return list.ToList();
+        }
+
         public static IEnumerable<int> Method4()
         {
             return GetSet().ToArray();

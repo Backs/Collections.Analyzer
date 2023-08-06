@@ -97,7 +97,12 @@ namespace Collections.Analyzer.Diagnostics.CI0003
             {
                 return typeSymbol.TypeArguments.FirstOrDefault();
             }
-
+            
+            if (typeSymbol is {IsGenericType: true, Name: nameof(ValueTask)})
+            {
+                return typeSymbol.TypeArguments.FirstOrDefault();
+            }
+            
             return typeSymbol;
         }
     }
