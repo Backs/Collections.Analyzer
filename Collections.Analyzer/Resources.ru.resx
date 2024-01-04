@@ -42,4 +42,13 @@
     <data name="CI0005_Title" xml:space="preserve">
         <value>Неоптимальный подсчет элементов коллекции</value>
     </data>
+    <data name="CI0006_Title" xml:space="preserve">
+        <value>Инициализация коллекции используется без указания первоначального размера</value>
+    </data>
+    <data name="NotEnoughCapacity" xml:space="preserve">
+        <value>Первоначальный размер коллекции не соответсвует количеству элементов при инициализации</value>
+    </data>
+    <data name="SetActualCapacity" xml:space="preserve">
+        <value>Указать первоначальный размер коллекции</value>
+    </data>
 </root>

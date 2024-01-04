@@ -114,6 +114,24 @@ namespace Collections.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collection initializer is used without capacity.
+        /// </summary>
+        internal static string CI0006_Title {
+            get {
+                return ResourceManager.GetString("CI0006_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial collection capacity is less than amount of actual values.
+        /// </summary>
+        internal static string NotEnoughCapacity {
+            get {
+                return ResourceManager.GetString("NotEnoughCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove method call {0}.
         /// </summary>
         internal static string RemoveRedundantCall {
@@ -137,6 +155,15 @@ namespace Collections.Analyzer {
         internal static string ReplaceWithToCharArray {
             get {
                 return ResourceManager.GetString("ReplaceWithToCharArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set actual capacity.
+        /// </summary>
+        internal static string SetActualCapacity {
+            get {
+                return ResourceManager.GetString("SetActualCapacity", resourceCulture);
             }
         }
     }

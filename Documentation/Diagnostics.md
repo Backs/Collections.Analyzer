@@ -5,3 +5,4 @@
 | [CI0003](CI0003.md) | Redundant enumerable conversion | Warning | Redundant `ToArray` or `ToList` method call on types that implements `IEnumerable` interface        |
 | [CI0004](CI0004.md) | Not optimal `List<char>` constructor usage | Warning | String parameter for `List<char>` constructor is better to use with `ToCharArray` call              |
 | [CI0005](CI0005.md) | Not optimal count of collection items | Warning | It's better to use LINQ method `Count()` instead of calling `ToArray()` and using property `Length` |
+| [CI0006](CI0006.md) | Collection initializer is used without capacity | Warning | Set initial capacity with collection initializer                                                    |

@@ -1,3 +1,6 @@
+## 0.2.11
+Added collection initializer diagnostic to [CI0006](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0006.md)
+
 ## 0.2.8.1
 Fix variable initializer.
 
