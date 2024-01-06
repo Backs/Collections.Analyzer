@@ -50,4 +50,13 @@
     <data name="CI0005_Title" xml:space="preserve">
         <value>Not optimal count of collection items</value>
     </data>
+    <data name="CI0006_Title" xml:space="preserve">
+        <value>Collection initializer is used without capacity</value>
+    </data>
+    <data name="NotEnoughCapacity" xml:space="preserve">
+        <value>Initial collection capacity is less than amount of actual values</value>
+    </data>
+    <data name="SetActualCapacity" xml:space="preserve">
+        <value>Set actual capacity</value>
+    </data>
 </root>
