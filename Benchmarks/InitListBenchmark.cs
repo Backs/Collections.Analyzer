@@ -11,7 +11,7 @@ namespace Benchmarks
     public class InitListBenchmark
     {
         [BenchmarkCategory("One")]
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public List<int> InitList1()
         {
             return new List<int> {1};
@@ -36,6 +36,20 @@ namespace Benchmarks
         public List<int> InitListWithSize5()
         {
             return new List<int>(5) {1, 2, 3, 4, 5};
+        }
+        
+        [BenchmarkCategory("Ten")]
+        [Benchmark]
+        public List<int> InitList10()
+        {
+            return new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+        }
+        
+        [BenchmarkCategory("Ten")]
+        [Benchmark]
+        public List<int> InitListWithSize10()
+        {
+            return new List<int>(10) {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
         }
     }
 }
