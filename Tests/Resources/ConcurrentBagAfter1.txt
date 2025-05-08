@@ -1,0 +1,15 @@
+﻿using System.Collections.Concurrent;
+using System.Linq;
+
+namespace Examples.ConcurrentCollections
+{
+    public class DictionaryIsEmpty
+    {
+        public bool Method1()
+        {
+            var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
+    
+            return !bag.IsEmpty;
+        }
+    }
+}

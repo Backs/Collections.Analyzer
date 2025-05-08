@@ -37,7 +37,7 @@
         <value>Заменить на вызов метода ToCharArray</value>
     </data>
     <data name="ReplaceWithCountCall" xml:space="preserve">
-        <value>Заменить на вызов метода Count</value>
+        <value>Заменить на вызов свойства Count</value>
     </data>
     <data name="CI0005_Title" xml:space="preserve">
         <value>Неоптимальный подсчет элементов коллекции</value>
@@ -50,5 +50,11 @@
     </data>
     <data name="SetActualCapacity" xml:space="preserve">
         <value>Указать первоначальный размер коллекции</value>
+    </data>
+    <data name="CI0007_Title" xml:space="preserve">
+        <value>Вызов метода Any() блокирует коллекцию</value>
+    </data>
+    <data name="ReplaceWithIsEmpty" xml:space="preserve">
+        <value>Заменить на вызов свойства IsEmpty</value>
     </data>
 </root>

@@ -123,6 +123,15 @@ namespace Collections.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any() is blocking on concurrent collections.
+        /// </summary>
+        internal static string CI0007_Title {
+            get {
+                return ResourceManager.GetString("CI0007_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial collection capacity is less than amount of actual values.
         /// </summary>
         internal static string NotEnoughCapacity {
@@ -146,6 +155,15 @@ namespace Collections.Analyzer {
         internal static string ReplaceWithCountCall {
             get {
                 return ResourceManager.GetString("ReplaceWithCountCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace with IsEmpty.
+        /// </summary>
+        internal static string ReplaceWithIsEmpty {
+            get {
+                return ResourceManager.GetString("ReplaceWithIsEmpty", resourceCulture);
             }
         }
         
