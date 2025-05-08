@@ -5,6 +5,6 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        BenchmarkRunner.Run<InitListBenchmark>();
+        BenchmarkRunner.Run<ConcurrentCollectionsBenchmark>();
     }
 }

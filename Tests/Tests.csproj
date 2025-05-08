@@ -40,6 +40,13 @@
         <EmbeddedResource Include="Resources\ConcurrentDictionaryAfter2.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionaryBefore1.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionaryBefore2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueue1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueue2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueue3.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueueAfter1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueueAfter2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueueBefore1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentQueueBefore2.txt" />
         <EmbeddedResource Include="Resources\Constructor2.txt" />
         <EmbeddedResource Include="Resources\Constructor3.txt" />
         <EmbeddedResource Include="Resources\Constructor4.txt" />

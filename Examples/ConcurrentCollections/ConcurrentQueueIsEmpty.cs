@@ -7,24 +7,24 @@ public class ConcurrentQueueIsEmpty
 {
     public bool Method1()
     {
-        var dict = new ConcurrentQueue<string>(new[] { "a", "b", "c" });
+        var queue = new ConcurrentQueue<string>(new[] { "a", "b", "c" });
 
-        return dict.Any();
+        return queue.Any();
     }
 
     public bool Method2()
     {
-        var dict = new ConcurrentQueue<string>(new[] { "a", "b", "c" });
+        var queue = new ConcurrentQueue<string>(new[] { "a", "b", "c" });
 
-        return dict.Any(o => o == "d");
+        return queue.Any(o => o == "d");
     }
 
     public bool Method3()
     {
-        return GetBag().Any();
+        return GetQueue().Any();
     }
 
-    private static ConcurrentQueue<string> GetBag()
+    private static ConcurrentQueue<string> GetQueue()
     {
         return new ConcurrentQueue<string>(new[] { "a", "b", "c" });
     }

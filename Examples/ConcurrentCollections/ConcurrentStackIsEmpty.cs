@@ -7,24 +7,24 @@ public class ConcurrentStackIsEmpty
 {
     public bool Method1()
     {
-        var dict = new ConcurrentStack<string>(new[] { "a", "b", "c" });
+        var stack = new ConcurrentStack<string>(new[] { "a", "b", "c" });
 
-        return dict.Any();
+        return stack.Any();
     }
 
     public bool Method2()
     {
-        var dict = new ConcurrentStack<string>(new[] { "a", "b", "c" });
+        var stack = new ConcurrentStack<string>(new[] { "a", "b", "c" });
 
-        return dict.Any(o => o == "d");
+        return stack.Any(o => o == "d");
     }
 
     public bool Method3()
     {
-        return GetBag().Any();
+        return GetStack().Any();
     }
 
-    private static ConcurrentStack<string> GetBag()
+    private static ConcurrentStack<string> GetStack()
     {
         return new ConcurrentStack<string>(new[] { "a", "b", "c" });
     }
