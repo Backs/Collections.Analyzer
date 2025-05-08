@@ -35,8 +35,7 @@ public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray2.txt");
 
         return RedundantEnumerableToArrayConversionVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(15, 20, 15, 34),
-                DiagnosticResult.CompilerError("CS0246").WithSpan(9, 29, 9, 56));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(13, 20, 13, 34));
     }
         
     [Test]
