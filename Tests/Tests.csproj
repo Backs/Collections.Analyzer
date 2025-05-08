@@ -47,6 +47,13 @@
         <EmbeddedResource Include="Resources\ConcurrentQueueAfter2.txt" />
         <EmbeddedResource Include="Resources\ConcurrentQueueBefore1.txt" />
         <EmbeddedResource Include="Resources\ConcurrentQueueBefore2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStack1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStack2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStack3.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStackAfter1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStackAfter2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStackBefore1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentStackBefore2.txt" />
         <EmbeddedResource Include="Resources\Constructor2.txt" />
         <EmbeddedResource Include="Resources\Constructor3.txt" />
         <EmbeddedResource Include="Resources\Constructor4.txt" />
