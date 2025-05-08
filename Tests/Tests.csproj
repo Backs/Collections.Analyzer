@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -13,8 +13,9 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.2" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.NUnit" Version="1.1.2" />
         <PackageReference Include="Microsoft.CodeAnalysis" Version="4.13.0" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+        <PackageReference Include="NUnit" Version="4.3.2" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.3.2" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Resources\AddRangeAfter.txt" />
