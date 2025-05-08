@@ -7,16 +7,16 @@ public class ConcurrentBagIsEmpty
 {
     public bool Method1()
     {
-        var dict = new ConcurrentBag<string>(new[] { "a", "b", "c" });
+        var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
 
-        return dict.Any();
+        return bag.Any();
     }
 
     public bool Method2()
     {
-        var dict = new ConcurrentBag<string>(new[] { "a", "b", "c" });
+        var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
 
-        return dict.Any(o => o == "d");
+        return bag.Any(o => o == "d");
     }
 
     public bool Method3()

@@ -8,27 +8,36 @@ using NUnit.Framework;
 namespace Tests.ConcurrentDictionaryIsEmptyTests;
 
 [TestFixture]
-public class IsEmptyTests: CSharpCodeFixTest<
+public class IsEmptyTests : CSharpCodeFixTest<
     ConcurrentCollectionIsEmptyDiagnostic, ReplaceAnyWithIsEmptyCodeFix, DefaultVerifier>
 {
     [Test]
-    public Task IsEmptyTest()
+    public Task LocalVariableIsEmptyTest()
     {
         var code = ResourceReader.ReadFromFile("ConcurrentDictionary1.txt");
 
-        return ConcurrentCollectionIsEmptyVerifier
+        return ConcurrentDictionaryIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(15, 20, 15, 30));
     }
     
+    [Test]
+    public Task ReturnValueIsEmptyTest()
+    {
+        var code = ResourceReader.ReadFromFile("ConcurrentDictionary3.txt");
+
+        return ConcurrentDictionaryIsEmptyVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 35));
+    }
+
     [Test]
     public Task IsEmptyNoWarnTest()
     {
         var code = ResourceReader.ReadFromFile("ConcurrentDictionary2.txt");
 
-        return ConcurrentCollectionIsEmptyVerifier
+        return ConcurrentDictionaryIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
-    
+
     [Test]
     [TestCase("ConcurrentDictionaryBefore1.txt", "ConcurrentDictionaryAfter1.txt")]
     [TestCase("ConcurrentDictionaryBefore2.txt", "ConcurrentDictionaryAfter2.txt")]
@@ -37,6 +46,6 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile(before);
         var fixedCode = ResourceReader.ReadFromFile(after);
 
-        return ConcurrentCollectionIsEmptyVerifier.VerifyCodeFixAsync(code, fixedCode);
+        return ConcurrentDictionaryIsEmptyVerifier.VerifyCodeFixAsync(code, fixedCode);
     }
 }

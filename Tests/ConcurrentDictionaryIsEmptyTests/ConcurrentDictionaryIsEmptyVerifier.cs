@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace Tests.ConcurrentDictionaryIsEmptyTests;
 
-public class ConcurrentCollectionIsEmptyVerifier : CodeFixVerifier<
+public class ConcurrentDictionaryIsEmptyVerifier : CodeFixVerifier<
     ConcurrentCollectionIsEmptyDiagnostic,
     ReplaceAnyWithIsEmptyCodeFix,
     IsEmptyTests,

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Examples.ConcurrentCollections;
 
-public class DictionaryIsEmpty
+public class ConcurrentDictionaryIsEmpty
 {
     public bool Method1()
     {

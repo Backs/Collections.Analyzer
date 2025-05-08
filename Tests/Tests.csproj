@@ -26,8 +26,16 @@
         <EmbeddedResource Include="Resources\AssignEnumerableBefore2.txt" />
         <EmbeddedResource Include="Resources\AsyncEnumerableMethodToArray.txt" />
         <EmbeddedResource Include="Resources\AsyncEnumerableMethodToArray2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBag1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBag2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBag3.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBagAfter1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBagAfter2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBagBefore1.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentBagBefore2.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionary1.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionary2.txt" />
+        <EmbeddedResource Include="Resources\ConcurrentDictionary3.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionaryAfter1.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionaryAfter2.txt" />
         <EmbeddedResource Include="Resources\ConcurrentDictionaryBefore1.txt" />
