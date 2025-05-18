@@ -57,7 +57,7 @@ public class ConcurrentCollectionIsEmptyDiagnostic : DiagnosticAnalyzer
            )
         {
             context.ReportDiagnostic(Diagnostic.Create(ReplaceAnyWithIsEmptyRule,
-                invocationExpression.GetLocation(),
+                invocationExpression.Expression.GetLocation(),
                 redundantMethod.ToString()));
         }
         else if (invocationExpression.Expression is MemberAccessExpressionSyntax
@@ -68,7 +68,7 @@ public class ConcurrentCollectionIsEmptyDiagnostic : DiagnosticAnalyzer
                  && ConcurrentTypes.Contains(ms.ReturnType.Name))
         {
             context.ReportDiagnostic(Diagnostic.Create(ReplaceAnyWithIsEmptyRule,
-                invocationExpression.GetLocation(),
+                invocationExpression.Expression.GetLocation(),
                 redundantMethod.ToString()));
         }
     }

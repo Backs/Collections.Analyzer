@@ -17,7 +17,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentQueue1.txt");
 
         return ConcurrentQueueIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 31));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 29));
     }
     
     [Test]
@@ -26,7 +26,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentQueue2.txt");
 
         return ConcurrentQueueIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 36));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 34));
     }
 
     [Test]
@@ -41,6 +41,8 @@ public class IsEmptyTests: CSharpCodeFixTest<
     [Test]
     [TestCase("ConcurrentQueueBefore1.txt", "ConcurrentQueueAfter1.txt")]
     [TestCase("ConcurrentQueueBefore2.txt", "ConcurrentQueueAfter2.txt")]
+    [TestCase("ConcurrentQueueBefore3.txt", "ConcurrentQueueAfter3.txt")]
+    [TestCase("ConcurrentQueueBefore4.txt", "ConcurrentQueueAfter4.txt")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

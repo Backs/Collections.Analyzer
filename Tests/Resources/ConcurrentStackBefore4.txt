@@ -9,7 +9,7 @@ namespace Examples.ConcurrentCollections
         {
             var stack = new ConcurrentStack<string>(new[] { "a", "b", "c" });
     
-            return {|CI0007:stack.Any|}();
+            return !{|CI0007:stack.Any|}();
         }
     }
 }

@@ -1,3 +1,6 @@
+## 0.2.12.1
+Concurrent collections improvements.
+
 ## 0.2.12
 Added concurrent collections diagnostic [CI0007](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0007.md)
 

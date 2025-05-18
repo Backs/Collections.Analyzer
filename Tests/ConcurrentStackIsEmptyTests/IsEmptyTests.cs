@@ -17,7 +17,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentStack1.txt");
 
         return ConcurrentStackIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 31));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 29));
     }
     
     [Test]
@@ -26,7 +26,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentStack2.txt");
 
         return ConcurrentStackIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 36));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 34));
     }
 
     [Test]
@@ -41,6 +41,8 @@ public class IsEmptyTests: CSharpCodeFixTest<
     [Test]
     [TestCase("ConcurrentStackBefore1.txt", "ConcurrentStackAfter1.txt")]
     [TestCase("ConcurrentStackBefore2.txt", "ConcurrentStackAfter2.txt")]
+    [TestCase("ConcurrentStackBefore3.txt", "ConcurrentStackAfter3.txt")]
+    [TestCase("ConcurrentStackBefore4.txt", "ConcurrentStackAfter4.txt")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

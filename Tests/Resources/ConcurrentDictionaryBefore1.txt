@@ -12,7 +12,7 @@ namespace Examples.ConcurrentCollections
                 [0] = "str"
             };
     
-            return {|CI0007:dict.Any()|};
+            return {|CI0007:dict.Any|}();
         }
     }
 }

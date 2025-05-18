@@ -17,7 +17,7 @@ public class IsEmptyTests : CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentDictionary1.txt");
 
         return ConcurrentDictionaryIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(15, 20, 15, 30));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(15, 20, 15, 28));
     }
     
     [Test]
@@ -26,7 +26,7 @@ public class IsEmptyTests : CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentDictionary3.txt");
 
         return ConcurrentDictionaryIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 35));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 33));
     }
 
     [Test]
@@ -41,6 +41,8 @@ public class IsEmptyTests : CSharpCodeFixTest<
     [Test]
     [TestCase("ConcurrentDictionaryBefore1.txt", "ConcurrentDictionaryAfter1.txt")]
     [TestCase("ConcurrentDictionaryBefore2.txt", "ConcurrentDictionaryAfter2.txt")]
+    [TestCase("ConcurrentDictionaryBefore3.txt", "ConcurrentDictionaryAfter3.txt")]
+    [TestCase("ConcurrentDictionaryBefore4.txt", "ConcurrentDictionaryAfter4.txt")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

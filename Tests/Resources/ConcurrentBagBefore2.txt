@@ -7,7 +7,7 @@ namespace Examples.ConcurrentCollections
     {
         public bool Method3()
         {
-            return {|CI0007:GetBag().Any()|};
+            return {|CI0007:GetBag().Any|}();
         }
     
         private static ConcurrentBag<string> GetBag()

@@ -28,4 +28,30 @@ public class ConcurrentBagIsEmpty
     {
         return new ConcurrentBag<string>(new[] { "a", "b", "c" });
     }
+
+    public bool Method4()
+    {
+        var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
+
+        return !bag.Any();
+    }
+
+    public void Method5()
+    {
+        var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
+
+        var isEmpty = !bag.Any();
+    }
+
+    public void Method6()
+    {
+        var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
+
+        WithEmpty(bag.Any());
+    }
+
+    private void WithEmpty(bool b)
+    {
+        throw new System.NotImplementedException();
+    }
 }

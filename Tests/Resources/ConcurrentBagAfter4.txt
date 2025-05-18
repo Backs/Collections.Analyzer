@@ -7,9 +7,9 @@ namespace Examples.ConcurrentCollections
     {
         public bool Method1()
         {
-            var stack = new ConcurrentStack<string>(new[] { "a", "b", "c" });
+            var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
     
-            return {|CI0007:stack.Any|}();
+            return bag.IsEmpty;
         }
     }
 }

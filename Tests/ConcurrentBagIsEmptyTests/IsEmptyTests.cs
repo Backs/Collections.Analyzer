@@ -17,7 +17,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentBag1.txt");
 
         return ConcurrentBagIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 29));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 27));
     }
     
     [Test]
@@ -26,7 +26,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
         var code = ResourceReader.ReadFromFile("ConcurrentBag2.txt");
 
         return ConcurrentBagIsEmptyVerifier
-            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 34));
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 32));
     }
 
     [Test]
@@ -41,6 +41,8 @@ public class IsEmptyTests: CSharpCodeFixTest<
     [Test]
     [TestCase("ConcurrentBagBefore1.txt", "ConcurrentBagAfter1.txt")]
     [TestCase("ConcurrentBagBefore2.txt", "ConcurrentBagAfter2.txt")]
+    [TestCase("ConcurrentBagBefore3.txt", "ConcurrentBagAfter3.txt")]
+    [TestCase("ConcurrentBagBefore4.txt", "ConcurrentBagAfter4.txt")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

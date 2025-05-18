@@ -7,7 +7,7 @@ namespace Examples.ConcurrentCollections
     {
         public bool Method3()
         {
-            return {|CI0007:GetStack().Any()|};
+            return {|CI0007:GetStack().Any|}();
         }
     
         private static ConcurrentStack<string> GetStack()

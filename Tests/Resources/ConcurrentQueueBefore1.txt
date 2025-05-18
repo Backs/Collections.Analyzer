@@ -9,7 +9,7 @@ namespace Examples.ConcurrentCollections
         {
             var queue = new ConcurrentQueue<string>(new[] { "a", "b", "c" });
     
-            return {|CI0007:queue.Any()|};
+            return {|CI0007:queue.Any|}();
         }
     }
 }

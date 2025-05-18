@@ -5,17 +5,14 @@ namespace Examples.ConcurrentCollections
 {
     public class DictionaryIsEmpty
     {
-        public bool Method3()
+        public bool Method()
         {
-            return {|CI0007:GetDict().Any|}();
-        }
-    
-        private static ConcurrentDictionary<int, string> GetDict()
-        {
-            return new ConcurrentDictionary<int, string>
+            var dict = new ConcurrentDictionary<int, string>
             {
                 [0] = "str"
             };
+    
+            return !{|CI0007:dict.Any|}();
         }
     }
 }

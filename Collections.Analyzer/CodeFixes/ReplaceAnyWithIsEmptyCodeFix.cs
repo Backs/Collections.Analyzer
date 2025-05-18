@@ -27,8 +27,9 @@ public class ReplaceAnyWithIsEmptyCodeFix : CodeFixProvider
         var root = await context.Document.GetSyntaxRootAsync();
         var diagnostic = context.Diagnostics.First();
 
-        var syntaxNode = root!.FindNode(context.Span) as InvocationExpressionSyntax;
-        if (syntaxNode?.Expression is not MemberAccessExpressionSyntax memberAccessExpressionSyntax) return;
+        var memberAccessExpressionSyntax = root!.FindNode(context.Span) as MemberAccessExpressionSyntax;
+        if (memberAccessExpressionSyntax == null)
+            return;
 
         var title = Resources.ReplaceWithIsEmpty;
 
@@ -45,15 +46,29 @@ public class ReplaceAnyWithIsEmptyCodeFix : CodeFixProvider
     private static async Task<Document> FixAsync(Document document, MemberAccessExpressionSyntax originalExpression,
         CancellationToken cancellationToken)
     {
-        var newExpression = PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                originalExpression.Expression,
-                IdentifierName(nameof(ConcurrentDictionary<object, object>.IsEmpty)))
-            )
-            .NormalizeWhitespace();
+        ExpressionSyntax newExpression = MemberAccessExpression(
+            SyntaxKind.SimpleMemberAccessExpression,
+            originalExpression.Expression,
+            IdentifierName(nameof(ConcurrentDictionary<object, object>.IsEmpty)));
+
+        var expressionParent = originalExpression.Parent;
+
+        if (expressionParent?.Parent is PrefixUnaryExpressionSyntax
+            {
+                RawKind: (int)SyntaxKind.LogicalNotExpression
+            })
+        {
+            expressionParent = expressionParent.Parent;
+        }
+        else
+        {
+            newExpression = PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, newExpression);
+        }
+
+        newExpression.NormalizeWhitespace();
 
         var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-        var newRoot = oldRoot!.ReplaceNode(originalExpression.Parent, newExpression);
+        var newRoot = oldRoot!.ReplaceNode(expressionParent, newExpression);
 
         return document.WithSyntaxRoot(newRoot);
     }

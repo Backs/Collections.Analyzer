@@ -7,7 +7,7 @@ namespace Examples.ConcurrentCollections
     {
         public bool Method3()
         {
-            return {|CI0007:GetQueue().Any()|};
+            return {|CI0007:GetQueue().Any|}();
         }
     
         private static ConcurrentQueue<string> GetQueue()

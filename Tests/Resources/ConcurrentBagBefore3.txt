@@ -3,13 +3,18 @@ using System.Linq;
 
 namespace Examples.ConcurrentCollections
 {
-    public class DictionaryIsEmpty
+    public class C 
     {
-        public bool Method1()
+        public void Method6()
         {
             var bag = new ConcurrentBag<string>(new[] { "a", "b", "c" });
     
-            return {|CI0007:bag.Any|}();
+            WithEmpty({|CI0007:bag.Any|}());
+        }
+    
+        private void WithEmpty(bool b)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
