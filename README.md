@@ -29,3 +29,24 @@ Automatically fixes found problems.
 # Diagnostics
 
 [Full set of diagnostics](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/Diagnostics.md)
+
+# Installation
+
+Every analyzer can be installed as a usual nuget-package. Just add a package reference to a project:
+
+```
+<PackageReference Include="Collections.Analyzer" Version="0.2.12.1" />
+```
+
+The analyzer will work only in the project it was added to. If you want to analyse all projects in your solution, you
+can add file `Directory.build.props` to the solution directory with content:
+
+```
+<Project>
+  <ItemGroup>
+    <PackageReference Include="Collections.Analyzer" Version="0.2.12.1" />
+  </ItemGroup>
+</Project>
+```
+
+MSBuild will read these properties.
