@@ -7,3 +7,4 @@
 | [CI0005](CI0005.md) | Not optimal count of collection items           | Warning  | It's better to use LINQ method `Count()` instead of calling `ToArray()` and using property `Length` |
 | [CI0006](CI0006.md) | Collection initializer is used without capacity | Warning  | Set initial capacity with collection initializer                                                    |
 | [CI0007](CI0007.md) | Method `Any()` is used on concurrent collection | Warning  | Use `IsEmpty` property to check empty collection                                                    |
+| [CI0008](CI0008.md) | Consider using HashSet for Contains operations  | Warning  | Array is used with `Contains()` method. `HashSet<T>` provides O(1) lookup performance               |

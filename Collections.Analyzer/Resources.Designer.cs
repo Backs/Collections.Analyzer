@@ -132,6 +132,42 @@ namespace Collections.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Replace array with HashSet.
+        /// </summary>
+        internal static string CI0008_CodeFixTitle {
+            get {
+                return ResourceManager.GetString("CI0008_CodeFixTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HashSet&lt;T&gt; provides O(1) lookup time for Contains() operation, while array has O(n) time complexity.
+        /// </summary>
+        internal static string CI0008_Description {
+            get {
+                return ResourceManager.GetString("CI0008_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Array &apos;{0}&apos; is used with Contains() method. Consider using HashSet&amp;lt;{1}&amp;gt; for better performance.
+        /// </summary>
+        internal static string CI0008_MessageFormat {
+            get {
+                return ResourceManager.GetString("CI0008_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Consider using HashSet instead of array for Contains operations.
+        /// </summary>
+        internal static string CI0008_Title {
+            get {
+                return ResourceManager.GetString("CI0008_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial collection capacity is less than amount of actual values.
         /// </summary>
         internal static string NotEnoughCapacity {

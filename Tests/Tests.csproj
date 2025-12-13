@@ -122,6 +122,21 @@
         <EmbeddedResource Include="Resources\AssignEnumerableAfter1.txt" />
         <EmbeddedResource Include="Resources\AssignEnumerableBefore1.txt" />
         <EmbeddedResource Include="Resources\ListInitializer1.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains1.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains2.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains3.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains4.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains5.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains6.txt" />
+        <EmbeddedResource Include="Resources\ArrayContains7.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsAfter1.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsAfter2.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsAfter3.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsAfter4.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsBefore1.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsBefore2.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsBefore3.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsBefore4.txt" />
     </ItemGroup>
 
 </Project>

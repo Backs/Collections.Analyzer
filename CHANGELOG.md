@@ -1,3 +1,6 @@
+## 0.2.13
+Added [CI0008](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0008.md): Diagnostic to suggest using HashSet instead of array for Contains operations. HashSet provides O(1) lookup performance compared to O(n) for arrays.
+
 ## 0.2.12.1
 Concurrent collections improvements.
 
