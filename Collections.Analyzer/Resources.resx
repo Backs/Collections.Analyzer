@@ -65,4 +65,16 @@
     <data name="ReplaceWithIsEmpty" xml:space="preserve">
         <value>Replace with IsEmpty</value>
     </data>
+    <data name="CI0008_Title" xml:space="preserve">
+        <value>Consider using HashSet instead of array for Contains operations</value>
+    </data>
+    <data name="CI0008_MessageFormat" xml:space="preserve">
+        <value>Array '{0}' is used with Contains() method. Consider using HashSet&amp;lt;{1}&amp;gt; for better performance</value>
+    </data>
+    <data name="CI0008_Description" xml:space="preserve">
+        <value>HashSet&lt;T&gt; provides O(1) lookup time for Contains() operation, while array has O(n) time complexity</value>
+    </data>
+    <data name="CI0008_CodeFixTitle" xml:space="preserve">
+        <value>Replace array with HashSet</value>
+    </data>
 </root>
