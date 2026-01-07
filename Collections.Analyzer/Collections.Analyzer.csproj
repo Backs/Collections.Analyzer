@@ -48,7 +48,7 @@
     
     <Target Name="_AddCodeFixesToPackage" BeforeTargets="_GetPackageFiles">
         <ItemGroup>
-            <_CodeFixesDll Include="..\Collections.Analyzer.CodeFixes\bin\$(Configuration)\netstandard2.0\Collections.Analyzer.CodeFixes.dll" />
+            <_CodeFixesDll Include="$(MSBuildThisFileDirectory)../Collections.Analyzer.CodeFixes/bin/$(Configuration)/netstandard2.0/Collections.Analyzer.CodeFixes.dll" />
             <None Include="@(_CodeFixesDll)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
         </ItemGroup>
     </Target>
