@@ -17,15 +17,15 @@
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\CHANGELOG.md" />
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\CHANGELOG.md"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.13.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.13.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0"/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="Resources.resx">
@@ -45,11 +45,14 @@
             <_Parameter1>Collections.Analyzer.CodeFixes</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
-    
+
     <Target Name="_AddCodeFixesToPackage" BeforeTargets="_GetPackageFiles">
+        <PropertyGroup>
+            <CodeFixesPath>..\Collections.Analyzer.CodeFixes\bin\$(Configuration)\netstandard2.0\Collections.Analyzer.CodeFixes.dll</CodeFixesPath>
+        </PropertyGroup>
         <ItemGroup>
-            <_CodeFixesDll Include="$(MSBuildThisFileDirectory)../Collections.Analyzer.CodeFixes/bin/$(Configuration)/netstandard2.0/Collections.Analyzer.CodeFixes.dll" />
-            <None Include="@(_CodeFixesDll)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+            <_CodeFixesDll Include="$(CodeFixesPath)"/>
+            <None Include="@(_CodeFixesDll)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('$(CodeFixesPath)')"/>
         </ItemGroup>
     </Target>
 </Project>

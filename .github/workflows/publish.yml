@@ -20,9 +20,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Collections.Analyzer.sln
 
-    - name: Build
-      run: dotnet build Collections.Analyzer.sln --configuration Release --no-restore
-      
+    - name: Build Analyzer
+      run: dotnet build Collections.Analyzer/Collections.Analyzer.csproj --configuration Release
+
+    - name: Build CodeFixes
+      run: dotnet build Collections.Analyzer.CodeFixes/Collections.Analyzer.CodeFixes.csproj --configuration Release
+
     - name: Test
       run: dotnet test --configuration Release --no-build --verbosity normal
 
