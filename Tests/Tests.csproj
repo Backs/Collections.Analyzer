@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Collections.Analyzer\Collections.Analyzer.csproj" />
+        <ProjectReference Include="..\Collections.Analyzer.CodeFixes\Collections.Analyzer.CodeFixes.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.2" />

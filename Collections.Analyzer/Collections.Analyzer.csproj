@@ -3,6 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <IncludeBuildOutput>false</IncludeBuildOutput>
+        <DevelopmentDependency>true</DevelopmentDependency>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageVersion>0.2.14</PackageVersion>
         <Title>Collections.Analyzer</Title>
@@ -21,8 +22,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.13.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.13.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
     </ItemGroup>
     <ItemGroup>
         <None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
@@ -40,4 +40,16 @@
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
     </ItemGroup>
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Collections.Analyzer.CodeFixes</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+    
+    <Target Name="_AddCodeFixesToPackage" BeforeTargets="_GetPackageFiles">
+        <ItemGroup>
+            <_CodeFixesDll Include="..\Collections.Analyzer.CodeFixes\bin\$(Configuration)\netstandard2.0\Collections.Analyzer.CodeFixes.dll" />
+            <None Include="@(_CodeFixesDll)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        </ItemGroup>
+    </Target>
 </Project>
