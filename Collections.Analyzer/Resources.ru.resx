@@ -69,4 +69,13 @@
     <data name="CI0008_CodeFixTitle" xml:space="preserve">
         <value>Заменить массив на HashSet</value>
     </data>
+    <data name="CI0009_Title" xml:space="preserve">
+        <value>Емкость списка следует установить исходя из размера коллекции источника.</value>
+    </data>
+    <data name="CI0009_MessageFormat" xml:space="preserve">
+        <value>Установите первоначальный размер коллекции как '{0}'</value>
+    </data>
+    <data name="SetCapacity" xml:space="preserve">
+        <value>Указать размер списка на основе исходной коллекции</value>
+    </data>
 </root>

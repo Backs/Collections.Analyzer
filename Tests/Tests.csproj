@@ -98,6 +98,11 @@
         <EmbeddedResource Include="Resources\ListInitializer2.txt" />
         <EmbeddedResource Include="Resources\ListInitializerBefore2.txt" />
         <EmbeddedResource Include="Resources\ListInitializerBefore3.txt" />
+        <EmbeddedResource Include="Resources\ListLoopArray1.txt" />
+        <EmbeddedResource Include="Resources\ListLoopCollectionForeachAfter.txt" />
+        <EmbeddedResource Include="Resources\ListLoopCollectionForeachBefore.txt" />
+        <EmbeddedResource Include="Resources\ListLoopImplicitNewAfter.txt" />
+        <EmbeddedResource Include="Resources\ListLoopImplicitNewBefore.txt" />
         <EmbeddedResource Include="Resources\ObjectInitializerAfter.txt" />
         <EmbeddedResource Include="Resources\StringJoin1.txt" />
         <EmbeddedResource Include="Resources\StringJoinAfter.txt" />
@@ -141,6 +146,14 @@
         <EmbeddedResource Include="Resources\ArrayContainsBefore2.txt" />
         <EmbeddedResource Include="Resources\ArrayContainsBefore3.txt" />
         <EmbeddedResource Include="Resources\ArrayContainsBefore4.txt" />
+        <None Remove="Resources\ListLoopArrayForBefore.txt" />
+        <EmbeddedResource Include="Resources\ListLoopArrayForBefore.txt" />
+        <None Remove="Resources\ListLoopArrayForAfter.txt" />
+        <EmbeddedResource Include="Resources\ListLoopArrayForAfter.txt" />
+        <None Remove="Resources\ListLoopArrayForeachAfter.txt" />
+        <EmbeddedResource Include="Resources\ListLoopArrayForeachAfter.txt" />
+        <None Remove="Resources\ListLoopArrayForeachBefore.txt" />
+        <EmbeddedResource Include="Resources\ListLoopArrayForeachBefore.txt" />
     </ItemGroup>
 
 </Project>

@@ -168,6 +168,24 @@ namespace Collections.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set capacity to &apos;{0}&apos;.
+        /// </summary>
+        internal static string CI0009_MessageFormat {
+            get {
+                return ResourceManager.GetString("CI0009_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List capacity should be set based on the source collection.
+        /// </summary>
+        internal static string CI0009_Title {
+            get {
+                return ResourceManager.GetString("CI0009_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial collection capacity is less than amount of actual values.
         /// </summary>
         internal static string NotEnoughCapacity {
@@ -218,6 +236,15 @@ namespace Collections.Analyzer {
         internal static string SetActualCapacity {
             get {
                 return ResourceManager.GetString("SetActualCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set capacity based on source collection.
+        /// </summary>
+        internal static string SetCapacity {
+            get {
+                return ResourceManager.GetString("SetCapacity", resourceCulture);
             }
         }
     }
