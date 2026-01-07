@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Collections.Analyzer\Collections.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Collections.Analyzer.CodeFixes\Collections.Analyzer.CodeFixes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,6 @@
-﻿namespace Collections.Analyzer.Diagnostics
+﻿namespace Collections.Analyzer.Diagnostics;
+
+internal static class Categories
 {
-    internal static class Categories
-    {
-        public static readonly string Performance = "Performance";
-    }
+    public const string Performance = "Performance";
 }

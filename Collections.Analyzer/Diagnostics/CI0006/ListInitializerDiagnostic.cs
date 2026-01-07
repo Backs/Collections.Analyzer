@@ -26,40 +26,63 @@ namespace Collections.Analyzer.Diagnostics.CI0006
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.ObjectCreationExpression);
+            context.RegisterSyntaxNodeAction(Analyze,
+                SyntaxKind.ObjectCreationExpression,
+                SyntaxKind.ImplicitObjectCreationExpression);
         }
 
         private static void Analyze(SyntaxNodeAnalysisContext context)
         {
-            var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
+            var objectCreation = (BaseObjectCreationExpressionSyntax)context.Node;
 
-            if (objectCreationExpression.Type is GenericNameSyntax genericName
-                && genericName.Identifier.ToString() == "List"
-                && objectCreationExpression.Initializer?.Expressions.Count > 0)
+            if (objectCreation.Initializer == null || objectCreation.Initializer.Expressions.Count == 0)
             {
-                if (objectCreationExpression.ArgumentList == null ||
-                    objectCreationExpression.ArgumentList?.Arguments.Count == 0)
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(InitializeListWithCapacityRule,
-                        objectCreationExpression.GetLocation(), Resources.CI0006_Title));
-                }
-                else if (LessCapacity(context, objectCreationExpression))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(InitializeListWithCapacityRule,
-                        objectCreationExpression.GetLocation(), Resources.NotEnoughCapacity));
-                }
+                return;
+            }
+
+            var typeInfo = context.SemanticModel.GetTypeInfo(objectCreation);
+
+            if (typeInfo.Type is not INamedTypeSymbol type)
+                return;
+
+            var listTypeSymbol = context.Compilation.GetTypeByMetadataName("System.Collections.Generic.List`1");
+
+            if (!SymbolEqualityComparer.Default.Equals(type.OriginalDefinition, listTypeSymbol))
+            {
+                return;
+            }
+
+            if (objectCreation.ArgumentList == null || objectCreation.ArgumentList.Arguments.Count == 0)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(InitializeListWithCapacityRule,
+                    objectCreation.GetLocation(), Resources.CI0006_Title));
+            }
+            else if (HasInsufficientCapacity(context, objectCreation))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(InitializeListWithCapacityRule,
+                    objectCreation.GetLocation(), Resources.NotEnoughCapacity));
             }
         }
 
-        private static bool LessCapacity(SyntaxNodeAnalysisContext context,
-            BaseObjectCreationExpressionSyntax objectCreationExpression)
+        private static bool HasInsufficientCapacity(SyntaxNodeAnalysisContext context,
+            BaseObjectCreationExpressionSyntax objectCreation)
         {
-            var argument = objectCreationExpression.ArgumentList!.Arguments.First();
-            if (argument.Expression is not LiteralExpressionSyntax) return false;
+            if (context.SemanticModel.GetSymbolInfo(objectCreation).Symbol is not IMethodSymbol symbol ||
+                symbol.Parameters.Length != 1 ||
+                symbol.Parameters[0].Type.SpecialType != SpecialType.System_Int32)
+            {
+                return false;
+            }
 
-            var capacity = context.SemanticModel.GetConstantValue(argument.Expression).Value as int?;
+            var argument = objectCreation.ArgumentList!.Arguments[0];
+            var constantValue = context.SemanticModel.GetConstantValue(argument.Expression);
 
-            return capacity < objectCreationExpression.Initializer?.Expressions.Count;
+            if (!constantValue.HasValue || constantValue.Value is not int capacity)
+            {
+                return false;
+            }
+
+            return capacity < objectCreation.Initializer!.Expressions.Count;
         }
     }
 }

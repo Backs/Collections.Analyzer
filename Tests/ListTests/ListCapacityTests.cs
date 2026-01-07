@@ -28,10 +28,29 @@ public class ListCapacityTests : CSharpCodeFixTest<
         return ListCapacityVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 25, 9, 54));
     }
+    
+    [Test]
+    public Task ListObjectCreationCapacityTest()
+    {
+        var code = ResourceReader.ReadFromFile("ListInitializer3.txt");
+
+        return ListCapacityVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 31, 9, 49));
+    }
+    
+    [Test]
+    public Task ListObjectCreationLessCapacityTest()
+    {
+        var code = ResourceReader.ReadFromFile("ListInitializer4.txt");
+
+        return ListCapacityVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 31, 9, 50));
+    }
 
     [Test]
     [TestCase("ListInitializerBefore1.txt", "ListInitializerAfter1.txt")]
     [TestCase("ListInitializerBefore2.txt", "ListInitializerAfter2.txt")]
+    [TestCase("ListInitializerBefore3.txt", "ListInitializerAfter3.txt")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);
