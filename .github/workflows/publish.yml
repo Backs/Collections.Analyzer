@@ -27,7 +27,7 @@ jobs:
       run: dotnet build Collections.Analyzer.CodeFixes/Collections.Analyzer.CodeFixes.csproj --configuration Release
 
     - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test --configuration Release --verbosity normal
 
     - name: Pack
       run: dotnet pack Collections.Analyzer/Collections.Analyzer.csproj --configuration Release --no-build --output nupkgs
