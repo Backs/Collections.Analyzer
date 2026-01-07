@@ -89,11 +89,15 @@
         <EmbeddedResource Include="Resources\GetStringToCharArraySelectAfter.txt" />
         <EmbeddedResource Include="Resources\ListCountAfter.txt" />
         <EmbeddedResource Include="Resources\ListCountBefore.txt" />
+        <EmbeddedResource Include="Resources\ListInitializer3.txt" />
+        <EmbeddedResource Include="Resources\ListInitializer4.txt" />
         <EmbeddedResource Include="Resources\ListInitializerAfter1.txt" />
         <EmbeddedResource Include="Resources\ListInitializerAfter2.txt" />
+        <EmbeddedResource Include="Resources\ListInitializerAfter3.txt" />
         <EmbeddedResource Include="Resources\ListInitializerBefore1.txt" />
         <EmbeddedResource Include="Resources\ListInitializer2.txt" />
         <EmbeddedResource Include="Resources\ListInitializerBefore2.txt" />
+        <EmbeddedResource Include="Resources\ListInitializerBefore3.txt" />
         <EmbeddedResource Include="Resources\ObjectInitializerAfter.txt" />
         <EmbeddedResource Include="Resources\StringJoin1.txt" />
         <EmbeddedResource Include="Resources\StringJoinAfter.txt" />
