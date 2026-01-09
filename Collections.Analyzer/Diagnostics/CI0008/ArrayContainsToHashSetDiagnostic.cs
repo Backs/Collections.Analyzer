@@ -10,6 +10,9 @@ namespace Collections.Analyzer.Diagnostics.CI0008;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 {
+    private const string MinArrayLengthOption = "dotnet_diagnostic.CI0008.min_items_count";
+    private const int DefaultMinArrayLength = 1;
+
     private static readonly DiagnosticDescriptor Rule = new(
         "CI0008",
         Resources.CI0008_Title,
@@ -37,9 +40,11 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
     {
         var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
 
+        var minLength = GetMinArrayLength(context);
+
         foreach (var variable in localDeclaration.Declaration.Variables)
         {
-            AnalyzeVariable(context, variable, localDeclaration.Declaration.Type);
+            AnalyzeVariable(context, variable, localDeclaration.Declaration.Type, minLength);
         }
     }
 
@@ -47,12 +52,14 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
     {
         var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
+        var minLength = GetMinArrayLength(context);
+
         foreach (var variable in fieldDeclaration.Declaration.Variables)
         {
-            AnalyzeVariable(context, variable, fieldDeclaration.Declaration.Type);
+            AnalyzeVariable(context, variable, fieldDeclaration.Declaration.Type, minLength);
         }
     }
-    
+
     private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
     {
         var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
@@ -70,7 +77,9 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
             return;
 
         var arraySize = CountArrayElements(arrayInitializer);
-        if (arraySize <= 1)
+        var minLength = GetMinArrayLength(context);
+
+        if (arraySize < minLength)
             return;
 
         var propertySymbol = context.SemanticModel.GetDeclaredSymbol(propertyDeclaration);
@@ -94,7 +103,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
             context.ReportDiagnostic(diagnostic);
         }
     }
-    
+
     private static InitializerExpressionSyntax? FindArrayInitializer(EqualsValueClauseSyntax equalsValue)
     {
         if (equalsValue.Value is ImplicitArrayCreationExpressionSyntax implicitArray)
@@ -109,10 +118,9 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         return null;
     }
 
-    private static void AnalyzeVariable(
-        SyntaxNodeAnalysisContext context,
+    private static void AnalyzeVariable(SyntaxNodeAnalysisContext context,
         VariableDeclaratorSyntax variable,
-        TypeSyntax typeSyntax)
+        TypeSyntax typeSyntax, int minLength)
     {
         var typeInfo = context.SemanticModel.GetTypeInfo(typeSyntax);
         if (typeInfo.Type is not IArrayTypeSymbol arrayType)
@@ -123,7 +131,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
             return;
 
         var arraySize = CountArrayElements(initializer);
-        if (arraySize <= 1)
+        if (arraySize < minLength)
             return;
 
         var variableSymbol = context.SemanticModel.GetDeclaredSymbol(variable);
@@ -183,7 +191,10 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
             var parent = identifier.Parent;
 
             // check Contains
-            if (!result.HasContainsCall && parent is MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax invocation })
+            if (!result.HasContainsCall && parent is MemberAccessExpressionSyntax
+                {
+                    Parent: InvocationExpressionSyntax invocation
+                })
             {
                 var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
                 if (methodSymbol?.Name == nameof(Enumerable.Contains))
@@ -223,7 +234,20 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 
         return null;
     }
-    
+
+    private static int GetMinArrayLength(SyntaxNodeAnalysisContext context)
+    {
+        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
+
+        if (options.TryGetValue(MinArrayLengthOption, out var valueString) &&
+            int.TryParse(valueString, out var value) && value >= 0)
+        {
+            return value;
+        }
+
+        return DefaultMinArrayLength;
+    }
+
     private static int CountArrayElements(InitializerExpressionSyntax initializer)
     {
         return initializer.Expressions.Count;

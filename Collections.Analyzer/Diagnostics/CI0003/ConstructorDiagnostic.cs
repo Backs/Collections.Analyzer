@@ -57,7 +57,7 @@ namespace Collections.Analyzer.Diagnostics.CI0003
                 var parameter = parameters[i];
 
                 if (SymbolEqualityComparer.Default.Equals(callerType, parameter.Type) ||
-                    callerType.AllInterfaces.Contains(parameter.Type))
+                    callerType.AllInterfaces.Contains(parameter.Type, SymbolEqualityComparer.Default))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(ConstructorRule, invocationExpression.GetLocation(),
                         invocationExpression.ToString()));

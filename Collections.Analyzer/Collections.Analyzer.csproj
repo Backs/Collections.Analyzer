@@ -3,14 +3,14 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
         <DevelopmentDependency>true</DevelopmentDependency>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>0.2.14</PackageVersion>
+        <PackageVersion>0.2.14.1</PackageVersion>
         <Title>Collections.Analyzer</Title>
         <Authors>Rogatnev Sergey</Authors>
         <Description>Collections.Analyzer is a set of roslyn-based diagnostics for C#-projects that detect potential problems with operating different collections.</Description>
         <PackageProjectUrl>https://github.com/Backs/Collections.Analyzer</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/Backs/Collections.Analyzer/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Backs/Collections.Analyzer</RepositoryUrl>
         <Nullable>enable</Nullable>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,6 +19,7 @@
     <ItemGroup>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
         <None Include="..\CHANGELOG.md"/>
+        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.13.0"/>

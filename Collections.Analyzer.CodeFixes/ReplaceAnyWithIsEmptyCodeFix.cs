@@ -68,7 +68,7 @@ public class ReplaceAnyWithIsEmptyCodeFix : CodeFixProvider
         newExpression.NormalizeWhitespace();
 
         var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-        var newRoot = oldRoot!.ReplaceNode(expressionParent, newExpression);
+        var newRoot = oldRoot!.ReplaceNode(expressionParent!, newExpression);
 
         return document.WithSyntaxRoot(newRoot);
     }
