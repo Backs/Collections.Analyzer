@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Collections.Analyzer.CodeFixes;
 using Collections.Analyzer.Diagnostics.CI0008;
 using Microsoft.CodeAnalysis.CSharp.Testing;
@@ -18,6 +19,44 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0008").WithSpan(7, 13, 7, 20));
+    }
+    
+    [Test]
+    public Task MinArrayLength_ShouldWarn()
+    {
+        var code = ResourceReader.ReadFromFile("ArrayContains1.txt");
+
+        var test = new CSharpCodeFixTest<ArrayContainsToHashSetDiagnostic, ArrayContainsToHashSetCodeFix, DefaultVerifier>
+        {
+            TestCode = code,
+        };
+        
+        test.TestState.AnalyzerConfigFiles.Add(
+            ("/.editorconfig", $"is_global = true{Environment.NewLine}dotnet_diagnostic.CI0008.min_items_count = 5")
+        );
+
+        test.ExpectedDiagnostics.Add(
+            DiagnosticResult.CompilerWarning("CI0008").WithSpan(7, 13, 7, 20)
+        );
+        
+        return test.RunAsync();
+    }
+
+    [Test]
+    public Task MinArrayLength_ShouldNotWarn()
+    {
+        var code = ResourceReader.ReadFromFile("ArrayContains1.txt");
+
+        var test = new CSharpCodeFixTest<ArrayContainsToHashSetDiagnostic, ArrayContainsToHashSetCodeFix, DefaultVerifier>
+        {
+            TestCode = code,
+        };
+        
+        test.TestState.AnalyzerConfigFiles.Add(
+            ("/.editorconfig", $"is_global = true{Environment.NewLine}dotnet_diagnostic.CI0008.min_items_count = 10")
+        );
+
+        return test.RunAsync();
     }
 
     [Test]

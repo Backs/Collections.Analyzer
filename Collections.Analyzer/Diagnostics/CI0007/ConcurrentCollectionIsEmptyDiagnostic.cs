@@ -53,7 +53,7 @@ public class ConcurrentCollectionIsEmptyDiagnostic : DiagnosticAnalyzer
             {
                 Expression: IdentifierNameSyntax identifier
             } && context.SemanticModel.GetTypeInfo(identifier).Type != null
-              && ConcurrentTypes.Contains(context.SemanticModel.GetTypeInfo(identifier).Type.Name)
+              && ConcurrentTypes.Contains(context.SemanticModel.GetTypeInfo(identifier).Type!.Name)
            )
         {
             context.ReportDiagnostic(Diagnostic.Create(ReplaceAnyWithIsEmptyRule,
