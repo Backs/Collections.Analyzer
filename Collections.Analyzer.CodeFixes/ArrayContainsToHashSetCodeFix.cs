@@ -123,7 +123,7 @@ public class ArrayContainsToHashSetCodeFix : CodeFixProvider
         if (root == null || semanticModel == null)
             return document;
 
-        // Получаем тип элементов массива
+        // Get the array element type
         var typeInfo = semanticModel.GetTypeInfo(propertyDeclaration.Type, cancellationToken);
         if (typeInfo.Type is not IArrayTypeSymbol arrayType)
             return document;
@@ -133,21 +133,20 @@ public class ArrayContainsToHashSetCodeFix : CodeFixProvider
 
         var newType = CreateHashSetType(elementTypeName);
 
-        // Создаём новый инициализатор
+        // Create a new initializer
         var newInitializer = CreateHashSetInitializer(propertyDeclaration.Initializer, elementTypeName);
         if (newInitializer == null)
             return document;
 
-        // Создаём новое объявление свойства
+        // Create a new property declaration
         var newPropertyDeclaration = propertyDeclaration
             .WithType(newType)
             .WithInitializer(newInitializer)
             .WithAdditionalAnnotations(Formatter.Annotation);
 
-        // Заменяем в дереве
         var newRoot = root.ReplaceNode(propertyDeclaration, newPropertyDeclaration);
 
-        // Добавляем using System.Collections.Generic
+        // Add using System.Collections.Generic
         newRoot = AddUsingDirective(newRoot);
 
         return document.WithSyntaxRoot(newRoot);

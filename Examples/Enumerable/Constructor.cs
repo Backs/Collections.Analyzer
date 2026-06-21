@@ -1,61 +1,60 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Examples.Enumerable
+namespace Examples.Enumerable;
+
+public class Constructor
 {
-    public class Constructor
+    public void CallConstructor()
     {
-        public void CallConstructor()
-        {
-            var enumerable = System.Linq.Enumerable.Empty<int>();
+        var enumerable = System.Linq.Enumerable.Empty<int>();
 
-            var obj = new MyClass<int>(enumerable.ToList());
-        }
+        var obj = new MyClass<int>(enumerable.ToList());
+    }
 
-        public void ManyArgumentsConstructor()
-        {
-            ICollection<Constructor> list = new Constructor[10];
+    public void ManyArgumentsConstructor()
+    {
+        ICollection<Constructor> list = new Constructor[10];
 
-            var obj = new MyClass<Constructor>(list.ToArray(), false, GetEnumerable().ToArray());
-        }
+        var obj = new MyClass<Constructor>(list.ToArray(), false, GetEnumerable().ToArray());
+    }
 
-        public void ArrayTest()
-        {
-            var list = new List<int>();
+    public void ArrayTest()
+    {
+        var list = new List<int>();
             
-            var obj = new MyClass<int>(list.ToArray(), true);
+        var obj = new MyClass<int>(list.ToArray(), true);
+    }
+
+    private static IEnumerable<Constructor> GetEnumerable()
+    {
+        return System.Linq.Enumerable.Empty<Constructor>();
+    }
+
+    private class MyClass<T>
+    {
+        private readonly IEnumerable<T> source = null!;
+
+        public MyClass(IEnumerable<T> source)
+        {
+            this.source = source;
+        }
+            
+        public MyClass(ICollection<T> source)
+        {
+            this.source = source;
         }
 
-        private static IEnumerable<Constructor> GetEnumerable()
+        public MyClass(IEnumerable<T> source, bool value, IReadOnlyCollection<T> test)
         {
-            return System.Linq.Enumerable.Empty<Constructor>();
+            this.source = source;
+            if (value) this.source = test;
         }
-
-        private class MyClass<T>
+            
+        public MyClass(T[] source, bool value)
         {
-            private readonly IEnumerable<T> source = null!;
-
-            public MyClass(IEnumerable<T> source)
-            {
-                this.source = source;
-            }
-            
-            public MyClass(ICollection<T> source)
-            {
-                this.source = source;
-            }
-
-            public MyClass(IEnumerable<T> source, bool value, IReadOnlyCollection<T> test)
-            {
-                this.source = source;
-                if (value) this.source = test;
-            }
-            
-            public MyClass(T[] source, bool value)
-            {
-                this.source = source;
-                if (value) this.source = null!;
-            }
+            this.source = source;
+            if (value) this.source = null!;
         }
     }
 }

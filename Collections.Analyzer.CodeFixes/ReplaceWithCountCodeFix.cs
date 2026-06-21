@@ -11,56 +11,55 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Collections.Analyzer.CodeFixes
+namespace Collections.Analyzer.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceWithCountCodeFix))]
+[Shared]
+public class ReplaceWithCountCodeFix : CodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceWithCountCodeFix))]
-    [Shared]
-    public class ReplaceWithCountCodeFix : CodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
+        ToArrayLengthDiagnostic.RedundantToArrayLengthRule.Id);
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            ToArrayLengthDiagnostic.RedundantToArrayLengthRule.Id);
+        var root = await context.Document.GetSyntaxRootAsync();
+        var diagnostic = context.Diagnostics.First();
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            var root = await context.Document.GetSyntaxRootAsync();
-            var diagnostic = context.Diagnostics.First();
+        var syntaxNode = root!.FindNode(context.Span) as MemberAccessExpressionSyntax;
+        if (syntaxNode?.Expression is not InvocationExpressionSyntax invocationExpressionSyntax) return;
 
-            var syntaxNode = root!.FindNode(context.Span) as MemberAccessExpressionSyntax;
-            if (syntaxNode?.Expression is not InvocationExpressionSyntax invocationExpressionSyntax) return;
+        var title = Resources.ReplaceWithCountCall;
 
-            var title = Resources.ReplaceWithCountCall;
+        context.RegisterCodeFix(
+            CodeAction.Create(
+                title,
+                token => FixAsync(context.Document, invocationExpressionSyntax, token),
+                title
+            ),
+            diagnostic
+        );
+    }
 
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    title,
-                    token => FixAsync(context.Document, invocationExpressionSyntax, token),
-                    title
-                ),
-                diagnostic
-            );
-        }
+    private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax originalExpression,
+        CancellationToken cancellationToken)
+    {
+        var internalExpression = (originalExpression.Expression as MemberAccessExpressionSyntax)?.Expression;
 
-        private static async Task<Document> FixAsync(Document document, InvocationExpressionSyntax originalExpression,
-            CancellationToken cancellationToken)
-        {
-            var internalExpression = (originalExpression.Expression as MemberAccessExpressionSyntax)?.Expression;
+        if (internalExpression == null || originalExpression.Parent == null) return document;
 
-            if (internalExpression == null || originalExpression.Parent == null) return document;
+        var newExpression = InvocationExpression(
+            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                internalExpression,
+                IdentifierName(nameof(Enumerable.Count))), originalExpression.ArgumentList).NormalizeWhitespace();
 
-            var newExpression = InvocationExpression(
-                MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                    internalExpression,
-                    IdentifierName(nameof(Enumerable.Count))), originalExpression.ArgumentList).NormalizeWhitespace();
+        var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+        var newRoot = oldRoot!.ReplaceNode(originalExpression.Parent, newExpression);
 
-            var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = oldRoot!.ReplaceNode(originalExpression.Parent, newExpression);
+        return document.WithSyntaxRoot(newRoot);
+    }
 
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return WellKnownFixAllProviders.BatchFixer;
-        }
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return WellKnownFixAllProviders.BatchFixer;
     }
 }

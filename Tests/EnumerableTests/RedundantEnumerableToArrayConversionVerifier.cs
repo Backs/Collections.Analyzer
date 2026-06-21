@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Testing;
 namespace Tests.EnumerableTests;
 
 internal sealed class RedundantEnumerableToArrayConversionVerifier : CodeFixVerifier<
-    EnumerableToArrayOnReturnDiagnostic, RemoveRedundantMethodCallCodeFix,
+    RedundantEnumerableToArrayDiagnostic, RemoveRedundantMethodCallCodeFix,
     RedundantEnumerableToArrayConversionTests,
     DefaultVerifier>
 {

@@ -158,12 +158,12 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 
     private static SyntaxNode? GetAnalysisScope(SyntaxNode node)
     {
-        // Для локальных переменных - метод
+        // For local variables - method
         var method = node.FirstAncestorOrSelf<BaseMethodDeclarationSyntax>();
         if (method != null)
             return method;
 
-        // Для полей - весь класс
+        // For fields - the entire class
         var classDeclaration = node.FirstAncestorOrSelf<ClassDeclarationSyntax>();
         if (classDeclaration != null)
             return classDeclaration;
@@ -205,7 +205,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 
             if (parent is ElementAccessExpressionSyntax elementAccess)
             {
-                // Проверяем, это чтение или запись
+                // Check if it's a read or write operation
                 if (elementAccess.Parent is AssignmentExpressionSyntax assignment &&
                     assignment.Left == elementAccess)
                 {

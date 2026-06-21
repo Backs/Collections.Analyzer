@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace Tests.ArrayTests;
 
-public class AddRangeVerifier : CodeFixVerifier<AddRangeDiagnostic, RemoveRedundantMethodCallCodeFix,
+public class AddRangeVerifier : CodeFixVerifier<RedundantEnumerableToArrayDiagnostic, RemoveRedundantMethodCallCodeFix,
     AddRangeTests,
     DefaultVerifier>
 {

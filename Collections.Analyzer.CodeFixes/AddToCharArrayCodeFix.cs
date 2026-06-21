@@ -10,65 +10,64 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Collections.Analyzer.CodeFixes
+namespace Collections.Analyzer.CodeFixes;
+
+using static SyntaxFactory;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddToCharArrayCodeFix))]
+[Shared]
+public class AddToCharArrayCodeFix : CodeFixProvider
 {
-    using static SyntaxFactory;
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
+        ListFromStringDiagnostic.ListFromStringRule.Id);
 
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddToCharArrayCodeFix))]
-    [Shared]
-    public class AddToCharArrayCodeFix : CodeFixProvider
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            ListFromStringDiagnostic.ListFromStringRule.Id);
+        var root = await context.Document.GetSyntaxRootAsync();
+        var diagnostic = context.Diagnostics.First();
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            var root = await context.Document.GetSyntaxRootAsync();
-            var diagnostic = context.Diagnostics.First();
+        var arg = root!.FindNode(context.Span) as ArgumentSyntax;
 
-            var arg = root!.FindNode(context.Span) as ArgumentSyntax;
+        var title = arg?.Expression is IdentifierNameSyntax
+            ? Resources.AddToCharArray
+            : Resources.ReplaceWithToCharArray;
 
-            var title = arg?.Expression is IdentifierNameSyntax
-                ? Resources.AddToCharArray
-                : Resources.ReplaceWithToCharArray;
+        context.RegisterCodeFix(
+            CodeAction.Create(
+                title,
+                token => FixAsync(context.Document, arg?.Expression, token),
+                title
+            ),
+            diagnostic
+        );
+    }
 
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    title,
-                    token => FixAsync(context.Document, arg?.Expression, token),
-                    title
-                ),
-                diagnostic
-            );
-        }
+    private static async Task<Document> FixAsync(Document document, ExpressionSyntax? originalExpression,
+        CancellationToken cancellationToken)
+    {
+        var identifier = originalExpression as IdentifierNameSyntax;
 
-        private static async Task<Document> FixAsync(Document document, ExpressionSyntax? originalExpression,
-            CancellationToken cancellationToken)
-        {
-            var identifier = originalExpression as IdentifierNameSyntax;
+        if (identifier == null)
+            identifier =
+                ((originalExpression as InvocationExpressionSyntax)?.Expression as MemberAccessExpressionSyntax)
+                ?.Expression as IdentifierNameSyntax;
 
-            if (identifier == null)
-                identifier =
-                    ((originalExpression as InvocationExpressionSyntax)?.Expression as MemberAccessExpressionSyntax)
-                    ?.Expression as IdentifierNameSyntax;
+        if (identifier == null) return document;
 
-            if (identifier == null) return document;
+        var newExpression = InvocationExpression(
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(identifier.Identifier),
+                IdentifierName(nameof(string.ToCharArray))));
 
-            var newExpression = InvocationExpression(
-                MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(identifier.Identifier),
-                    IdentifierName(nameof(string.ToCharArray))));
+        var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+        var newRoot = oldRoot!.ReplaceNode(originalExpression!, newExpression);
 
-            var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = oldRoot!.ReplaceNode(originalExpression!, newExpression);
+        return document.WithSyntaxRoot(newRoot);
+    }
 
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return WellKnownFixAllProviders.BatchFixer;
-        }
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return WellKnownFixAllProviders.BatchFixer;
     }
 }

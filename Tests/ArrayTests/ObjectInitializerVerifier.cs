@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace Tests.ArrayTests;
 
-public sealed class ObjectInitializerVerifier: CodeFixVerifier<ObjectInitializerDiagnostic, RemoveRedundantMethodCallCodeFix,
+public sealed class ObjectInitializerVerifier: CodeFixVerifier<RedundantEnumerableToArrayDiagnostic, RemoveRedundantMethodCallCodeFix,
     ObjectInitializerTests,
     DefaultVerifier>
 {

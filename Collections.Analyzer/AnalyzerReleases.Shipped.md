@@ -9,7 +9,7 @@
 ---------|-------------|----------|---------------------------------------
  CI0001  | Performance | Warning  | StringToArrayDiagnostic               
  CI0002  | Performance | Warning  | ArrayToArrayDiagnostic                
- CI0003  | Performance | Warning  | AddRangeDiagnostic                    
+ CI0003  | Performance | Warning  | RedundantEnumerableToArrayDiagnostic  
  CI0004  | Performance | Warning  | ListFromStringDiagnostic              
  CI0005  | Performance | Warning  | ToArrayLengthDiagnostic               
  CI0006  | Performance | Warning  | ListInitializerDiagnostic             

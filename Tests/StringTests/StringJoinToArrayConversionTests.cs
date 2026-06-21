@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Tests.StringTests;
 
-public class StringJoinToArrayConversionTests : CSharpCodeFixTest<StringJoinToArrayDiagnostic,
+public class StringJoinToArrayConversionTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiagnostic,
     RemoveRedundantMethodCallCodeFix, DefaultVerifier>
 {
     [Test]

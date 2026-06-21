@@ -11,65 +11,58 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Collections.Analyzer.CodeFixes
+namespace Collections.Analyzer.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantMethodCallCodeFix))]
+[Shared]
+public class RemoveRedundantMethodCallCodeFix : CodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantMethodCallCodeFix))]
-    [Shared]
-    public class RemoveRedundantMethodCallCodeFix : CodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
+        StringToArrayDiagnostic.RedundantStringToArrayRule.Id,
+        ArrayToArrayDiagnostic.RedundantArrayToArrayRule.Id,
+        RedundantEnumerableToArrayDiagnostic.Rule.Id);
+
+    public override FixAllProvider GetFixAllProvider()
     {
-        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-            StringToArrayDiagnostic.RedundantStringToArrayRule.Id,
-            ArrayToArrayDiagnostic.RedundantArrayToArrayRule.Id,
-            EnumerableToArrayOnReturnDiagnostic.RedundantEnumerableToArrayRule.Id,
-            AddRangeDiagnostic.AddRangeRule.Id,
-            AssignEnumerableDiagnostic.AssignEnumerableRule.Id,
-            ConstructorDiagnostic.ConstructorRule.Id,
-            ObjectInitializerDiagnostic.RedundantArrayToArrayRule.Id,
-            EnumerableToArrayOnReturnDiagnostic.RedundantEnumerableToArrayRule.Id,
-            StringJoinToArrayDiagnostic.StringJoinToArrayRule.Id);
+        return WellKnownFixAllProviders.BatchFixer;
+    }
 
-        public override FixAllProvider GetFixAllProvider()
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        var root = await context.Document.GetSyntaxRootAsync();
+        var diagnostic = context.Diagnostics.First();
+        var invocationExpressionSyntax = root!.FindNode(context.Span) as InvocationExpressionSyntax;
+        if (invocationExpressionSyntax == null)
         {
-            return WellKnownFixAllProviders.BatchFixer;
+            var arg = root.FindNode(context.Span) as ArgumentSyntax;
+            invocationExpressionSyntax = arg?.Expression as InvocationExpressionSyntax;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            var root = await context.Document.GetSyntaxRootAsync();
-            var diagnostic = context.Diagnostics.First();
-            var invocationExpressionSyntax = root!.FindNode(context.Span) as InvocationExpressionSyntax;
-            if (invocationExpressionSyntax == null)
-            {
-                var arg = root.FindNode(context.Span) as ArgumentSyntax;
-                invocationExpressionSyntax = arg?.Expression as InvocationExpressionSyntax;
-            }
+        var name = (invocationExpressionSyntax?.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
 
-            var name = (invocationExpressionSyntax?.Expression as MemberAccessExpressionSyntax)?.Name.Identifier;
+        var title = string.Format(Resources.RemoveRedundantCall, name);
 
-            var title = string.Format(Resources.RemoveRedundantCall, name);
+        context.RegisterCodeFix(
+            CodeAction.Create(
+                title,
+                token => FixAsync(context.Document, invocationExpressionSyntax, token),
+                title
+            ),
+            diagnostic
+        );
+    }
 
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    title,
-                    token => FixAsync(context.Document, invocationExpressionSyntax, token),
-                    title
-                ),
-                diagnostic
-            );
-        }
+    private static async Task<Document> FixAsync(Document document,
+        InvocationExpressionSyntax? originalInvocationExpression,
+        CancellationToken cancellationToken)
+    {
+        var expression = (originalInvocationExpression?.Expression as MemberAccessExpressionSyntax)?.Expression;
 
-        private static async Task<Document> FixAsync(Document document,
-            InvocationExpressionSyntax? originalInvocationExpression,
-            CancellationToken cancellationToken)
-        {
-            var expression = (originalInvocationExpression?.Expression as MemberAccessExpressionSyntax)?.Expression;
+        if (expression == null) return document;
 
-            if (expression == null) return document;
+        var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+        var newRoot = oldRoot!.ReplaceNode(originalInvocationExpression!, expression);
 
-            var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = oldRoot!.ReplaceNode(originalInvocationExpression!, expression);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
+        return document.WithSyntaxRoot(newRoot);
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Testing;
 namespace Tests.EnumerableTests;
 
 public class AssignEnumerableVerifier : CodeFixVerifier<
-    AssignEnumerableDiagnostic, 
+    RedundantEnumerableToArrayDiagnostic, 
     RemoveRedundantMethodCallCodeFix,
     AssignEnumerableTests,
     DefaultVerifier>
