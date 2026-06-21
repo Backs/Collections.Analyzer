@@ -9,7 +9,7 @@ namespace Tests.EnumerableTests;
 
 [TestFixture]
 public class AssignEnumerableTests : CSharpCodeFixTest<
-    AssignEnumerableDiagnostic,
+    RedundantEnumerableToArrayDiagnostic,
     RemoveRedundantMethodCallCodeFix, DefaultVerifier>
 {
     [Test]

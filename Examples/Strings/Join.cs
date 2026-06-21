@@ -1,24 +1,23 @@
 ﻿using System.Linq;
 
-namespace Examples.Strings
+namespace Examples.Strings;
+
+public class Join
 {
-    public class Join
+    public static void JoinArray()
     {
-        public static void JoinArray()
-        {
-            var array = new int[10];
+        var array = new int[10];
 
-            var result = string.Join("; ", array.Where(o => o != 1).ToArray());
-        }
+        var result = string.Join("; ", array.Where(o => o != 1).ToArray());
+    }
 
-        public static void MethodJoinArray()
-        {
-            var result = string.Join("; ", GetArray().Where(o => o != 1).ToList());
-        }
+    public static void MethodJoinArray()
+    {
+        var result = string.Join("; ", GetArray().Where(o => o != 1).ToList());
+    }
 
-        private static int[] GetArray()
-        {
-            return new int[10];
-        }
+    private static int[] GetArray()
+    {
+        return new int[10];
     }
 }

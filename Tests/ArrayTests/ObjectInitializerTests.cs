@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Tests.ArrayTests;
 
 [TestFixture]
-public class ObjectInitializerTests : CSharpCodeFixTest<ObjectInitializerDiagnostic,
+public class ObjectInitializerTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiagnostic,
     RemoveRedundantMethodCallCodeFix, DefaultVerifier>
 {
     [Test]

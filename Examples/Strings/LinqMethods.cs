@@ -1,43 +1,42 @@
 ﻿using System.Linq;
 
-namespace Examples.Strings
+namespace Examples.Strings;
+
+public class LinqMethods
 {
-    public class LinqMethods
+    public void ToCharArraySelect()
     {
-        public void ToCharArraySelect()
-        {
-            var str = "string";
+        var str = "string";
 
-            var result = str.ToCharArray().Select(o => o);
-        }
+        var result = str.ToCharArray().Select(o => o);
+    }
 
-        public void ToArraySelect()
-        {
-            var str = "string";
+    public void ToArraySelect()
+    {
+        var str = "string";
 
-            var result = str.ToArray().Any(o => o != ' ');
-        }
+        var result = str.ToArray().Any(o => o != ' ');
+    }
 
-        public void ToListSelect()
-        {
-            var str = "string";
+    public void ToListSelect()
+    {
+        var str = "string";
 
-            var result = str.ToList().Any();
-        }
+        var result = str.ToList().Any();
+    }
 
-        public void GetStringToCharArraySelect()
-        {
-            var result = GetString().ToCharArray().Select(o => o);
-        }
+    public void GetStringToCharArraySelect()
+    {
+        var result = GetString().ToCharArray().Select(o => o);
+    }
 
-        public void GetStringToArraySelect()
-        {
-            var result = GetString().ToArray().Select(o => o);
-        }
+    public void GetStringToArraySelect()
+    {
+        var result = GetString().ToArray().Select(o => o);
+    }
 
-        private static string GetString()
-        {
-            return "str";
-        }
+    private static string GetString()
+    {
+        return "str";
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace Tests.ArrayTests;
 
-public class ConstructorVerifier : CodeFixVerifier<ConstructorDiagnostic, RemoveRedundantMethodCallCodeFix,
+public class ConstructorVerifier : CodeFixVerifier<RedundantEnumerableToArrayDiagnostic, RemoveRedundantMethodCallCodeFix,
     ConstructorTests,
     DefaultVerifier>
 {

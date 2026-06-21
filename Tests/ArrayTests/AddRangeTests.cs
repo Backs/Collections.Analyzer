@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Tests.ArrayTests;
 
-public class AddRangeTests : CSharpCodeFixTest<AddRangeDiagnostic,
+public class AddRangeTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiagnostic,
     RemoveRedundantMethodCallCodeFix, DefaultVerifier>
 {
     [Test]
