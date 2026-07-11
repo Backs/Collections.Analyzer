@@ -104,8 +104,20 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         }
     }
 
-    private static InitializerExpressionSyntax? FindArrayInitializer(EqualsValueClauseSyntax equalsValue)
+    private static bool IsLinqContains(IMethodSymbol? methodSymbol, Compilation compilation)
     {
+        if (methodSymbol == null || methodSymbol.Name != nameof(Enumerable.Contains))
+            return false;
+
+        var enumerableType = compilation.GetTypeByMetadataName("System.Linq.Enumerable");
+        return SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, enumerableType);
+    }
+
+    private static InitializerExpressionSyntax? FindArrayInitializer(EqualsValueClauseSyntax? equalsValue)
+    {
+        if (equalsValue == null)
+            return null;
+
         if (equalsValue.Value is ImplicitArrayCreationExpressionSyntax implicitArray)
             return implicitArray.Initializer;
 
@@ -126,7 +138,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         if (typeInfo.Type is not IArrayTypeSymbol arrayType)
             return;
 
-        var initializer = FindArrayInitializer(variable);
+        var initializer = FindArrayInitializer(variable.Initializer);
         if (initializer == null)
             return;
 
@@ -177,62 +189,60 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         SyntaxNodeAnalysisContext context)
     {
         var result = new UsageAnalysis();
-        var descendantNodes = scope.DescendantNodes().ToList();
+        var descendantNodes = scope.DescendantNodes();
 
         foreach (var node in descendantNodes)
         {
             if (node is not IdentifierNameSyntax identifier)
                 continue;
 
-            var symbol = context.SemanticModel.GetSymbolInfo(identifier).Symbol;
+            if (identifier.Identifier.ValueText != variableSymbol.Name)
+                continue;
+
+            var symbolInfo = context.SemanticModel.GetSymbolInfo(identifier);
+            var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
             if (!SymbolEqualityComparer.Default.Equals(symbol, variableSymbol))
                 continue;
 
-            var parent = identifier.Parent;
-
-            // check Contains
-            if (!result.HasContainsCall && parent is MemberAccessExpressionSyntax
-                {
-                    Parent: InvocationExpressionSyntax invocation
-                })
+            if (IsLinqContainsUsage(identifier, context))
             {
-                var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
-                if (methodSymbol?.Name == nameof(Enumerable.Contains))
-                {
-                    result.HasContainsCall = true;
-                }
+                result.HasContainsCall = true;
             }
-
-            if (parent is ElementAccessExpressionSyntax elementAccess)
+            else
             {
-                // Check if it's a read or write operation
-                if (elementAccess.Parent is AssignmentExpressionSyntax assignment &&
-                    assignment.Left == elementAccess)
-                {
-                    result.HasModification = true;
-                }
-                else
-                {
-                    result.HasIndexAccess = true;
-                }
+                result.HasUnsupportedUsage = true;
             }
         }
 
         return result;
     }
 
-    private static InitializerExpressionSyntax? FindArrayInitializer(VariableDeclaratorSyntax variable)
+    private static bool IsLinqContainsUsage(IdentifierNameSyntax identifier, SyntaxNodeAnalysisContext context)
     {
-        if (variable.Initializer?.Value is ImplicitArrayCreationExpressionSyntax implicitArray)
-            return implicitArray.Initializer;
+        var parent = identifier.Parent;
 
-        if (variable.Initializer?.Value is ArrayCreationExpressionSyntax arrayCreation)
-            return arrayCreation.Initializer;
+        // Case: arr.Contains(...)
+        if (parent is MemberAccessExpressionSyntax memberAccess &&
+            memberAccess.Expression == identifier &&
+            memberAccess.Parent is InvocationExpressionSyntax invocation)
+        {
+            var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
+            return IsLinqContains(methodSymbol, context.Compilation);
+        }
 
-        if (variable.Initializer?.Value is InitializerExpressionSyntax initializerExpression)
-            return initializerExpression;
+        // Case: Enumerable.Contains(arr, ...)
+        if (parent is ArgumentSyntax argument &&
+            argument.Parent is ArgumentListSyntax argumentList &&
+            argumentList.Parent is InvocationExpressionSyntax staticInvocation)
+        {
+            var methodSymbol = context.SemanticModel.GetSymbolInfo(staticInvocation).Symbol as IMethodSymbol;
+            if (IsLinqContains(methodSymbol, context.Compilation) && methodSymbol!.IsStatic)
+            {
+                return argumentList.Arguments.IndexOf(argument) == 0;
+            }
+        }
 
-        return null;
+        return false;
     }
 
     private static int GetMinArrayLength(SyntaxNodeAnalysisContext context)
@@ -256,8 +266,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
     private class UsageAnalysis
     {
         public bool HasContainsCall { get; set; }
-        public bool HasIndexAccess { get; set; }
-        public bool HasModification { get; set; }
-        public bool ShouldWarn => HasContainsCall && !HasIndexAccess && !HasModification;
+        public bool HasUnsupportedUsage { get; set; }
+        public bool ShouldWarn => HasContainsCall && !HasUnsupportedUsage;
     }
 }
