@@ -139,6 +139,12 @@
         <EmbeddedResource Include="Resources\ArrayContains5.txt" />
         <EmbeddedResource Include="Resources\ArrayContains6.txt" />
         <EmbeddedResource Include="Resources\ArrayContains7.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsFalsePositive1.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsFalsePositive2.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsFalsePositive3.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsFalsePositive4.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsFalsePositive5.txt" />
+        <EmbeddedResource Include="Resources\ArrayContainsFalsePositive6.txt" />
         <EmbeddedResource Include="Resources\ArrayContainsAfter1.txt" />
         <EmbeddedResource Include="Resources\ArrayContainsAfter2.txt" />
         <EmbeddedResource Include="Resources\ArrayContainsAfter3.txt" />
