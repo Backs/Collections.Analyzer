@@ -75,4 +75,12 @@ public class DictionaryLookupTests
             .WithSpan(17, 39, 17, 80)
             .WithArguments("list"));
     }
+
+    [Test]
+    public Task DictionaryLookup8Test()
+    {
+        var code = ResourceReader.ReadFromFile("DictionaryLookup8.cs");
+
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
+    }
 }

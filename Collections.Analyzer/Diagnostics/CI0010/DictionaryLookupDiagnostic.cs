@@ -122,8 +122,17 @@ public sealed class DictionaryLookupDiagnostic : DiagnosticAnalyzer
         var collectionExpression = memberAccess.Expression;
         if (!IsDefinedOutside(context, collectionExpression, scopeNode)) return;
 
+        // Skip IQueryable
+        var typeInfo = context.SemanticModel.GetTypeInfo(collectionExpression);
+        if (typeInfo.Type != null && IsIQueryable(typeInfo.Type)) return;
+
         var collectionName = collectionExpression.ToString();
         context.ReportDiagnostic(Diagnostic.Create(Rule, invocation.GetLocation(), collectionName));
+    }
+
+    private static bool IsIQueryable(ITypeSymbol type)
+    {
+        return type.Name == nameof(IQueryable) || type.AllInterfaces.Any(i => i.Name == nameof(IQueryable));
     }
 
     private static string[] GetLambdaParameters(LambdaExpressionSyntax lambda)
