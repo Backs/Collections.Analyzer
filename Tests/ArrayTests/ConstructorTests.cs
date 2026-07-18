@@ -11,8 +11,8 @@ public class ConstructorTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiag
     RemoveRedundantMethodCallCodeFix, DefaultVerifier>
 {
     [Test]
-    [TestCase("Constructor1.txt")]
-    [TestCase("Constructor4.txt")]
+    [TestCase("Constructor1.cs")]
+    [TestCase("Constructor4.cs")]
     public Task ConstructorTest(string fileName)
     {
         var code = ResourceReader.ReadFromFile(fileName);
@@ -24,7 +24,7 @@ public class ConstructorTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiag
     [Test]
     public Task ManyArgumentsTest()
     {
-        var code = ResourceReader.ReadFromFile("Constructor2.txt");
+        var code = ResourceReader.ReadFromFile("Constructor2.cs");
 
         return ConstructorVerifier
             .VerifyAnalyzerAsync(code,
@@ -35,14 +35,14 @@ public class ConstructorTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiag
     [Test]
     public Task NoErrorTest()
     {
-        var code = ResourceReader.ReadFromFile("Constructor3.txt");
+        var code = ResourceReader.ReadFromFile("Constructor3.cs");
 
         return ConstructorVerifier
             .VerifyAnalyzerAsync(code);
     }
 
     [Test]
-    [TestCase("ConstructorBefore.txt", "ConstructorAfter.txt")]
+    [TestCase("ConstructorBefore.cs", "ConstructorAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

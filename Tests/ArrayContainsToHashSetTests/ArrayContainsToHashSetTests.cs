@@ -15,7 +15,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task LocalVariableImplicitArray_ShouldWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains1.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains1.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0008").WithSpan(7, 13, 7, 20));
@@ -24,7 +24,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task MinArrayLength_ShouldWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains1.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains1.cs");
 
         var test = new CSharpCodeFixTest<ArrayContainsToHashSetDiagnostic, ArrayContainsToHashSetCodeFix, DefaultVerifier>
         {
@@ -45,7 +45,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task MinArrayLength_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains1.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains1.cs");
 
         var test = new CSharpCodeFixTest<ArrayContainsToHashSetDiagnostic, ArrayContainsToHashSetCodeFix, DefaultVerifier>
         {
@@ -62,7 +62,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task FieldExplicitArray_ShouldWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains2.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains2.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0008").WithSpan(5, 28, 5, 34));
@@ -71,7 +71,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task FieldCollectionInitializer_ShouldWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains3.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains3.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0008").WithSpan(5, 28, 5, 34));
@@ -80,7 +80,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task PropertyImplicitArray_ShouldWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains4.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains4.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0008").WithSpan(5, 18, 5, 23));
@@ -89,7 +89,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task ArrayWithIndexAccess_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains5.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains5.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
@@ -98,7 +98,7 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task ArrayWithModification_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains6.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains6.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
@@ -107,17 +107,17 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     [Test]
     public Task ArrayWithoutContains_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContains7.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContains7.cs");
 
         return ArrayContainsVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
 
     [Test]
-    [TestCase("ArrayContainsBefore1.txt", "ArrayContainsAfter1.txt")]
-    [TestCase("ArrayContainsBefore2.txt", "ArrayContainsAfter2.txt")]
-    [TestCase("ArrayContainsBefore3.txt", "ArrayContainsAfter3.txt", Ignore = "Different syntax tree in result")]
-    [TestCase("ArrayContainsBefore4.txt", "ArrayContainsAfter4.txt")]
+    [TestCase("ArrayContainsBefore1.cs", "ArrayContainsAfter1.cs")]
+    [TestCase("ArrayContainsBefore2.cs", "ArrayContainsAfter2.cs")]
+    [TestCase("ArrayContainsBefore3.cs", "ArrayContainsAfter3.cs", Ignore = "Different syntax tree in result")]
+    [TestCase("ArrayContainsBefore4.cs", "ArrayContainsAfter4.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

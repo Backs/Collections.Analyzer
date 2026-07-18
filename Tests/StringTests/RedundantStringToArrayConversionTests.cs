@@ -13,7 +13,7 @@ public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<StringToA
     [Test]
     public Task ForeachToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("ForeachStringToArray.txt");
+        var code = ResourceReader.ReadFromFile("ForeachStringToArray.cs");
 
         return RedundantStringToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(12, 31, 12, 44));
@@ -22,7 +22,7 @@ public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<StringToA
     [Test]
     public Task ForeachToCharArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("ForeachStringToCharArray.txt");
+        var code = ResourceReader.ReadFromFile("ForeachStringToCharArray.cs");
 
         return RedundantStringToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 31, 10, 48));
@@ -31,7 +31,7 @@ public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<StringToA
     [Test]
     public Task SelectToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("SelectStringToArray.txt");
+        var code = ResourceReader.ReadFromFile("SelectStringToArray.cs");
 
         return RedundantStringToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(11, 26, 11, 39));
@@ -40,16 +40,16 @@ public class RedundantStringToArrayConversionTests : CSharpCodeFixTest<StringToA
     [Test]
     public Task GetStringSelectToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("GetStringSelectToArray.txt");
+        var code = ResourceReader.ReadFromFile("GetStringSelectToArray.cs");
 
         return RedundantStringToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0001").WithSpan(10, 26, 10, 47));
     }
 
-    [TestCase("ForeachStringToArrayBefore.txt", "ForeachStringToArrayAfter.txt")]
-    [TestCase("ForeachStringToListBefore.txt", "ForeachStringToListAfter.txt")]
-    [TestCase("ForeachStringToCharArrayBefore.txt", "ForeachStringToCharArrayAfter.txt")]
-    [TestCase("GetStringToCharArraySelectBefore.txt", "GetStringToCharArraySelectAfter.txt")]
+    [TestCase("ForeachStringToArrayBefore.cs", "ForeachStringToArrayAfter.cs")]
+    [TestCase("ForeachStringToListBefore.cs", "ForeachStringToListAfter.cs")]
+    [TestCase("ForeachStringToCharArrayBefore.cs", "ForeachStringToCharArrayAfter.cs")]
+    [TestCase("GetStringToCharArraySelectBefore.cs", "GetStringToCharArraySelectAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

@@ -13,13 +13,13 @@ public class StringJoinToArrayConversionTests : CSharpCodeFixTest<RedundantEnume
     [Test]
     public Task StringJoinToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("StringJoin1.txt");
+        var code = ResourceReader.ReadFromFile("StringJoin1.cs");
 
         return StringJoinToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(11, 44, 11, 78));
     }
 
-    [TestCase("StringJoinBefore.txt", "StringJoinAfter.txt")]
+    [TestCase("StringJoinBefore.cs", "StringJoinAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

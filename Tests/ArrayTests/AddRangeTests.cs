@@ -13,7 +13,7 @@ public class AddRangeTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiagnos
     [Test]
     public Task AddRange1Test()
     {
-        var code = ResourceReader.ReadFromFile("AddRange1.txt");
+        var code = ResourceReader.ReadFromFile("AddRange1.cs");
 
         return AddRangeVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(13, 27, 13, 42));
@@ -22,14 +22,14 @@ public class AddRangeTests : CSharpCodeFixTest<RedundantEnumerableToArrayDiagnos
     [Test]
     public Task AddRange2Test()
     {
-        var code = ResourceReader.ReadFromFile("AddRange2.txt");
+        var code = ResourceReader.ReadFromFile("AddRange2.cs");
 
         return AddRangeVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 27, 12, 47));
     }
 
     [Test]
-    [TestCase("AddRangeBefore.txt", "AddRangeAfter.txt")]
+    [TestCase("AddRangeBefore.cs", "AddRangeAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

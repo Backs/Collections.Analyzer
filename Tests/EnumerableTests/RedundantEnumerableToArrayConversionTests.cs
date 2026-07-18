@@ -14,7 +14,7 @@ public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
     [Test]
     public Task EnumerableMethodToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("EnumerableMethodToArray.txt");
+        var code = ResourceReader.ReadFromFile("EnumerableMethodToArray.cs");
 
         return RedundantEnumerableToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(12, 20, 12, 34));
@@ -23,7 +23,7 @@ public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
     [Test]
     public Task AsyncEnumerableMethodToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray.txt");
+        var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray.cs");
 
         return RedundantEnumerableToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(15, 20, 15, 34));
@@ -32,7 +32,7 @@ public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
     [Test]
     public Task AsyncValueTaskEnumerableMethodToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray2.txt");
+        var code = ResourceReader.ReadFromFile("AsyncEnumerableMethodToArray2.cs");
 
         return RedundantEnumerableToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(13, 20, 13, 34));
@@ -41,7 +41,7 @@ public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
     [Test]
     public Task EnumerablePropertyToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("EnumerablePropertyToArray.txt");
+        var code = ResourceReader.ReadFromFile("EnumerablePropertyToArray.cs");
 
         return RedundantEnumerableToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(11, 20, 11, 33));
@@ -50,7 +50,7 @@ public class RedundantEnumerableToArrayConversionTests : CSharpCodeFixTest<
     [Test]
     public Task GetSetToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("GetSetToArray.txt");
+        var code = ResourceReader.ReadFromFile("GetSetToArray.cs");
 
         return RedundantEnumerableToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(10, 20, 10, 38));

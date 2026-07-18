@@ -11,8 +11,8 @@ public class RedundantToArrayLengthTests : CSharpCodeFixTest<ToArrayLengthDiagno
     ReplaceWithCountCodeFix, DefaultVerifier>
 {
     [Test]
-    [TestCase("ArrayCountBefore.txt", "ArrayCountAfter.txt")]
-    [TestCase("ListCountBefore.txt", "ListCountAfter.txt")]
+    [TestCase("ArrayCountBefore.cs", "ArrayCountAfter.cs")]
+    [TestCase("ListCountBefore.cs", "ListCountAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

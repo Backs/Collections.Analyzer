@@ -13,17 +13,17 @@ public class ListLoopTests : CSharpCodeFixTest<ListLoopDiagnostic, SetListCapaci
     [Test]
     public Task NoWarningTest()
     {
-        var code = ResourceReader.ReadFromFile("ListLoopArray1.txt");
+        var code = ResourceReader.ReadFromFile("ListLoopArray1.cs");
 
         return ListCapacityVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
     
     [Test]
-    [TestCase("ListLoopArrayForBefore.txt", "ListLoopArrayForAfter.txt")]
-    [TestCase("ListLoopArrayForeachBefore.txt", "ListLoopArrayForeachAfter.txt")]
-    [TestCase("ListLoopCollectionForeachBefore.txt", "ListLoopCollectionForeachAfter.txt")]
-    [TestCase("ListLoopImplicitNewBefore.txt", "ListLoopImplicitNewAfter.txt")]
+    [TestCase("ListLoopArrayForBefore.cs", "ListLoopArrayForAfter.cs")]
+    [TestCase("ListLoopArrayForeachBefore.cs", "ListLoopArrayForeachAfter.cs")]
+    [TestCase("ListLoopCollectionForeachBefore.cs", "ListLoopCollectionForeachAfter.cs")]
+    [TestCase("ListLoopImplicitNewBefore.cs", "ListLoopImplicitNewAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);
