@@ -26,11 +26,17 @@ public sealed class DictionaryLookupDiagnostic : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.ForEachStatement, SyntaxKind.ForStatement);
+        context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.ForEachStatement, SyntaxKind.ForStatement, SyntaxKind.InvocationExpression);
     }
 
     private static void Analyze(SyntaxNodeAnalysisContext context)
     {
+        if (context.Node is InvocationExpressionSyntax invocationNode)
+        {
+            AnalyzeInvocation(context, invocationNode);
+            return;
+        }
+
         var loopBody = context.Node switch
         {
             ForEachStatementSyntax foreachStatement => foreachStatement.Statement,
@@ -48,34 +54,91 @@ public sealed class DictionaryLookupDiagnostic : DiagnosticAnalyzer
 
         foreach (var invocation in invocations)
         {
-            if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) 
-                continue;
-
-            var methodName = memberAccess.Name.Identifier.Text;
-            if (methodName is not (
-                nameof(Enumerable.First) or 
-                nameof(Enumerable.FirstOrDefault) or 
-                nameof(Enumerable.Single) or 
-                nameof(Enumerable.SingleOrDefault) or 
-                nameof(Enumerable.Any))) continue;
-
-            if (invocation.ArgumentList.Arguments.Count != 1) continue;
-            var argument = invocation.ArgumentList.Arguments[0];
-
-            if (argument.Expression is not LambdaExpressionSyntax lambda) 
-                continue;
-
-            if (!IsSearchingByLoopVariable(lambda, context.SemanticModel, context.Node, loopVariables)) 
-                continue;
-
-            // Check if the collection is defined outside the loop
-            var collectionExpression = memberAccess.Expression;
-            if (!IsDefinedOutside(context, collectionExpression, context.Node)) 
-                continue;
-
-            var collectionName = collectionExpression.ToString();
-            context.ReportDiagnostic(Diagnostic.Create(Rule, invocation.GetLocation(), collectionName));
+            AnalyzeInvocationWithVariables(context, invocation, context.Node, loopVariables);
         }
+    }
+
+    private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+    {
+        if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) return;
+
+        var methodName = memberAccess.Name.Identifier.Text;
+        if (methodName is not (
+            nameof(Enumerable.Select) or
+            nameof(Enumerable.Where) or
+            nameof(Enumerable.Any) or
+            nameof(Enumerable.All) or
+            nameof(Enumerable.Count) or
+            nameof(Enumerable.First) or
+            nameof(Enumerable.FirstOrDefault) or
+            nameof(Enumerable.Single) or
+            nameof(Enumerable.SingleOrDefault)))
+            return;
+
+        if (invocation.ArgumentList.Arguments.Count == 0) 
+            return;
+        var argument = invocation.ArgumentList.Arguments[0];
+
+        if (argument.Expression is not LambdaExpressionSyntax lambda) 
+            return;
+
+        var loopVariables = GetLambdaParameters(lambda);
+        if (loopVariables.Length == 0) 
+            return;
+
+        var body = lambda is SimpleLambdaExpressionSyntax simple ? simple.Body : (lambda as ParenthesizedLambdaExpressionSyntax)?.Body;
+        if (body == null) 
+            return;
+
+        var innerInvocations = body.DescendantNodesAndSelf()
+            .OfType<InvocationExpressionSyntax>();
+
+        foreach (var innerInvocation in innerInvocations)
+        {
+            AnalyzeInvocationWithVariables(context, innerInvocation, invocation, loopVariables);
+        }
+    }
+
+    private static void AnalyzeInvocationWithVariables(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, SyntaxNode scopeNode, string[] loopVariables)
+    {
+        if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) return;
+
+        var methodName = memberAccess.Name.Identifier.Text;
+        if (methodName is not (
+            nameof(Enumerable.First) or 
+            nameof(Enumerable.FirstOrDefault) or 
+            nameof(Enumerable.Single) or 
+            nameof(Enumerable.SingleOrDefault) or 
+            nameof(Enumerable.Any))) return;
+
+        if (invocation.ArgumentList.Arguments.Count != 1) return;
+        var argument = invocation.ArgumentList.Arguments[0];
+
+        if (argument.Expression is not LambdaExpressionSyntax lambda) return;
+
+        if (!IsSearchingByLoopVariable(lambda, context.SemanticModel, scopeNode, loopVariables)) return;
+
+        // Check if the collection is defined outside the loop
+        var collectionExpression = memberAccess.Expression;
+        if (!IsDefinedOutside(context, collectionExpression, scopeNode)) return;
+
+        var collectionName = collectionExpression.ToString();
+        context.ReportDiagnostic(Diagnostic.Create(Rule, invocation.GetLocation(), collectionName));
+    }
+
+    private static string[] GetLambdaParameters(LambdaExpressionSyntax lambda)
+    {
+        if (lambda is SimpleLambdaExpressionSyntax simple)
+        {
+            return new[] { simple.Parameter.Identifier.Text };
+        }
+
+        if (lambda is ParenthesizedLambdaExpressionSyntax parenthesized)
+        {
+            return parenthesized.ParameterList.Parameters.Select(p => p.Identifier.Text).ToArray();
+        }
+
+        return System.Array.Empty<string>();
     }
 
 
@@ -99,7 +162,7 @@ public sealed class DictionaryLookupDiagnostic : DiagnosticAnalyzer
         if (expression is not BinaryExpressionSyntax binary) return false;
         if (!binary.IsKind(SyntaxKind.EqualsExpression)) return false;
 
-        // Check if one side is a property access on lambda parameter and other side is a loop variable
+        // Check if one side is a property access on lambda parameter and another side is a loop variable
         return (IsPropertyAccessOnParameter(lambda, binary.Left) && IsLoopVariableOrMember(binary.Right, semanticModel, loop, loopVariables)) ||
                (IsPropertyAccessOnParameter(lambda, binary.Right) && IsLoopVariableOrMember(binary.Left, semanticModel, loop, loopVariables));
     }

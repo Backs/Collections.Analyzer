@@ -65,4 +65,14 @@ public class DictionaryLookupTests
             .WithSpan(15, 25, 15, 82)
             .WithArguments("groupedRCStatistics"));
     }
+
+    [Test]
+    public Task DictionaryLookup7Test()
+    {
+        var code = ResourceReader.ReadFromFile("DictionaryLookup7.cs");
+
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
+            .WithSpan(17, 39, 17, 80)
+            .WithArguments("list"));
+    }
 }
