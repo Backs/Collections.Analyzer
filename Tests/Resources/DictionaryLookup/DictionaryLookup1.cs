@@ -16,7 +16,7 @@ class TestClass
 
         foreach (var key in keys)
         {
-            var item = list.FirstOrDefault(x => x.Id == key);
+            var item = {|CI0010:list.FirstOrDefault(x => x.Id == key)|};
             Console.Write(item);
         }
     }

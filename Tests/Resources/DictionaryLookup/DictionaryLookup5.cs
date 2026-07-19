@@ -13,7 +13,7 @@ class TestClass
     {
         foreach (var requisite in requisites)
         {
-            if (actual.Any(a => a.DocType == requisite.DocType))
+            if ({|CI0010:actual.Any(a => a.DocType == requisite.DocType)|})
             {
                 Console.WriteLine("Found");
             }

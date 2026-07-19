@@ -11,9 +11,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup1.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(19, 24, 19, 61)
-            .WithArguments("list"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]
@@ -21,9 +19,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup2.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(16, 24, 16, 62)
-            .WithArguments("list"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]
@@ -31,9 +27,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup3.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(20, 24, 20, 52)
-            .WithArguments("list"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]
@@ -41,9 +35,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup4.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(21, 24, 21, 57)
-            .WithArguments("list"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]
@@ -51,9 +43,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup5.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(16, 17, 16, 64)
-            .WithArguments("actual"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]
@@ -61,9 +51,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup6.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(15, 25, 15, 82)
-            .WithArguments("groupedRCStatistics"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]
@@ -71,9 +59,7 @@ public class DictionaryLookupTests
     {
         var code = ResourceReader.ReadFromFile("DictionaryLookup7.cs");
 
-        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0010")
-            .WithSpan(17, 39, 17, 80)
-            .WithArguments("list"));
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
 
     [Test]

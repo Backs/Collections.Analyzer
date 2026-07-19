@@ -1,3 +1,6 @@
+## 0.2.15
+Added [CI0010](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0010.md): Diagnostic to suggest using `Dictionary` for lookups in collections inside loops or LINQ chains. This optimizes performance from O(N*M) to O(N+M).
+
 ## 0.2.14
 Added [CI0009](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0009.md): Diagnostic to suggest initialize `List<T>` capacity with the size of a source collection.
 

@@ -14,6 +14,6 @@ public class TestClass
         var list = new MyClass[10];
         var keys = new Tuple<Guid, int>[10];
 
-        var result = keys.Select(x => list.FirstOrDefault(o => o.Id == x.Item1)).ToArray();
+        var result = keys.Select(x => {|CI0010:list.FirstOrDefault(o => o.Id == x.Item1)|}).ToArray();
     }
 }

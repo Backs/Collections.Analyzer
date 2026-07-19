@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Collections.Analyzer.Diagnostics.CI0008;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -16,7 +17,7 @@ namespace Collections.Analyzer.CodeFixes;
 public class ArrayContainsToHashSetCodeFix : CodeFixProvider
 {
     public sealed override ImmutableArray<string> FixableDiagnosticIds =>
-        ImmutableArray.Create("CI0008");
+        ImmutableArray.Create(ArrayContainsToHashSetDiagnostic.Rule.Id);
 
     public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 

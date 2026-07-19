@@ -12,7 +12,7 @@ public class TestClass
         for (int i = 0; i < 12; i++)
         {
             var month = i + 1;
-            var tuple = groupedRCStatistics.FirstOrDefault(p => p.Item1 == month);
+            var tuple = {|CI0010:groupedRCStatistics.FirstOrDefault(p => p.Item1 == month)|};
             result[i] = tuple != null ? tuple.Item2 : "t";
         }
 

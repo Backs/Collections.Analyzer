@@ -17,7 +17,7 @@ class TestClass
     {
         foreach (var key in keys)
         {
-            var item = list.First(x => x.Id == key);
+            var item = {|CI0010:list.First(x => x.Id == key)|};
             Console.Write(item);
         }
     }
