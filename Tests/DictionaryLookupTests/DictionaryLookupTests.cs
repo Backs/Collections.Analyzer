@@ -83,4 +83,12 @@ public class DictionaryLookupTests
 
         return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
     }
+
+    [Test]
+    public Task DictionaryLookup9Test()
+    {
+        var code = ResourceReader.ReadFromFile("DictionaryLookup9.cs");
+
+        return DictionaryLookupVerifier.VerifyAnalyzerAsync(code);
+    }
 }
