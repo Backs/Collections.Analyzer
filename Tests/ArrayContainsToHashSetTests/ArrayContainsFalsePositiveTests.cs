@@ -14,7 +14,7 @@ public class ArrayContainsFalsePositiveTests : CSharpCodeFixTest<
     [Test]
     public Task CustomContainsMethod_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive1.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive1.cs");
 
         return ArrayContainsVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
@@ -22,7 +22,7 @@ public class ArrayContainsFalsePositiveTests : CSharpCodeFixTest<
     [Test]
     public Task ExtensionContainsMethod_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive2.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive2.cs");
 
         return ArrayContainsVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
@@ -30,7 +30,7 @@ public class ArrayContainsFalsePositiveTests : CSharpCodeFixTest<
     [Test]
     public Task ArrayLengthUsage_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive3.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive3.cs");
 
         return ArrayContainsVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
@@ -38,7 +38,7 @@ public class ArrayContainsFalsePositiveTests : CSharpCodeFixTest<
     [Test]
     public Task ArrayPassedAsArgument_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive4.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive4.cs");
 
         return ArrayContainsVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
@@ -46,7 +46,7 @@ public class ArrayContainsFalsePositiveTests : CSharpCodeFixTest<
     [Test]
     public Task ArrayAliasing_ShouldNotWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive5.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive5.cs");
 
         return ArrayContainsVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
@@ -54,7 +54,7 @@ public class ArrayContainsFalsePositiveTests : CSharpCodeFixTest<
     [Test]
     public Task StaticLinqContains_ShouldWarn()
     {
-        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive6.txt");
+        var code = ResourceReader.ReadFromFile("ArrayContainsFalsePositive6.cs");
 
         return ArrayContainsVerifier.VerifyAnalyzerAsync(code,
             DiagnosticResult.CompilerWarning("CI0008").WithSpan(7, 15, 7, 22).WithArguments("numbers", "int"));

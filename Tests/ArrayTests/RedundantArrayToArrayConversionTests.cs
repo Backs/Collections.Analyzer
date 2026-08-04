@@ -13,7 +13,7 @@ public class RedundantArrayToArrayConversionTests : CSharpCodeFixTest<ArrayToArr
     [Test]
     public Task ArrayToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("ArrayToArray.txt");
+        var code = ResourceReader.ReadFromFile("ArrayToArray.cs");
 
         return RedundantArrayToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(11, 26, 11, 41));
@@ -22,15 +22,15 @@ public class RedundantArrayToArrayConversionTests : CSharpCodeFixTest<ArrayToArr
     [Test]
     public Task GetArrayToArrayTest()
     {
-        var code = ResourceReader.ReadFromFile("GetArrayToArray.txt");
+        var code = ResourceReader.ReadFromFile("GetArrayToArray.cs");
 
         return RedundantArrayToArrayConversionVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0002").WithSpan(10, 26, 10, 46));
     }
 
     [Test]
-    [TestCase("ArrayToArrayBefore.txt", "ArrayToArrayAfter.txt")]
-    [TestCase("GetArrayToArrayBefore.txt", "GetArrayToArrayAfter.txt")]
+    [TestCase("ArrayToArrayBefore.cs", "ArrayToArrayAfter.cs")]
+    [TestCase("GetArrayToArrayBefore.cs", "GetArrayToArrayAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

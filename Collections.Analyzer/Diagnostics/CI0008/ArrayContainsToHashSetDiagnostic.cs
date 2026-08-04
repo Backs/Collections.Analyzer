@@ -13,7 +13,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
     private const string MinArrayLengthOption = "dotnet_diagnostic.CI0008.min_items_count";
     private const int DefaultMinArrayLength = 1;
 
-    private static readonly DiagnosticDescriptor Rule = new(
+    internal static readonly DiagnosticDescriptor Rule = new(
         "CI0008",
         Resources.CI0008_Title,
         Resources.CI0008_MessageFormat,

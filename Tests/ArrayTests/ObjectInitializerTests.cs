@@ -14,14 +14,14 @@ public class ObjectInitializerTests : CSharpCodeFixTest<RedundantEnumerableToArr
     [Test]
     public Task ObjectInitializerTest()
     {
-        var code = ResourceReader.ReadFromFile("ObjectInitializer.txt");
+        var code = ResourceReader.ReadFromFile("ObjectInitializer.cs");
 
         return ObjectInitializerVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0003").WithSpan(15, 30, 15, 61), DiagnosticResult.CompilerWarning("CI0003").WithSpan(16, 30, 16, 61));
     }
         
     [Test]
-    [TestCase("ObjectInitializerBefore.txt", "ObjectInitializerAfter.txt")]
+    [TestCase("ObjectInitializerBefore.cs", "ObjectInitializerAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

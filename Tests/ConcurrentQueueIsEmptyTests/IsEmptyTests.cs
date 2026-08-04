@@ -14,7 +14,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
     [Test]
     public Task LocalVariableIsEmptyTest()
     {
-        var code = ResourceReader.ReadFromFile("ConcurrentQueue1.txt");
+        var code = ResourceReader.ReadFromFile("ConcurrentQueue1.cs");
 
         return ConcurrentQueueIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(12, 20, 12, 29));
@@ -23,7 +23,7 @@ public class IsEmptyTests: CSharpCodeFixTest<
     [Test]
     public Task ReturnValueIsEmptyTest()
     {
-        var code = ResourceReader.ReadFromFile("ConcurrentQueue2.txt");
+        var code = ResourceReader.ReadFromFile("ConcurrentQueue2.cs");
 
         return ConcurrentQueueIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 34));
@@ -32,17 +32,17 @@ public class IsEmptyTests: CSharpCodeFixTest<
     [Test]
     public Task IsEmptyNoWarnTest()
     {
-        var code = ResourceReader.ReadFromFile("ConcurrentQueue3.txt");
+        var code = ResourceReader.ReadFromFile("ConcurrentQueue3.cs");
 
         return ConcurrentQueueIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
 
     [Test]
-    [TestCase("ConcurrentQueueBefore1.txt", "ConcurrentQueueAfter1.txt")]
-    [TestCase("ConcurrentQueueBefore2.txt", "ConcurrentQueueAfter2.txt")]
-    [TestCase("ConcurrentQueueBefore3.txt", "ConcurrentQueueAfter3.txt")]
-    [TestCase("ConcurrentQueueBefore4.txt", "ConcurrentQueueAfter4.txt")]
+    [TestCase("ConcurrentQueueBefore1.cs", "ConcurrentQueueAfter1.cs")]
+    [TestCase("ConcurrentQueueBefore2.cs", "ConcurrentQueueAfter2.cs")]
+    [TestCase("ConcurrentQueueBefore3.cs", "ConcurrentQueueAfter3.cs")]
+    [TestCase("ConcurrentQueueBefore4.cs", "ConcurrentQueueAfter4.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

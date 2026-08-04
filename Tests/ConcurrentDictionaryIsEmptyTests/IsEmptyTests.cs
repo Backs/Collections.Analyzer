@@ -14,7 +14,7 @@ public class IsEmptyTests : CSharpCodeFixTest<
     [Test]
     public Task LocalVariableIsEmptyTest()
     {
-        var code = ResourceReader.ReadFromFile("ConcurrentDictionary1.txt");
+        var code = ResourceReader.ReadFromFile("ConcurrentDictionary1.cs");
 
         return ConcurrentDictionaryIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(15, 20, 15, 28));
@@ -23,7 +23,7 @@ public class IsEmptyTests : CSharpCodeFixTest<
     [Test]
     public Task ReturnValueIsEmptyTest()
     {
-        var code = ResourceReader.ReadFromFile("ConcurrentDictionary3.txt");
+        var code = ResourceReader.ReadFromFile("ConcurrentDictionary3.cs");
 
         return ConcurrentDictionaryIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0007").WithSpan(10, 20, 10, 33));
@@ -32,17 +32,17 @@ public class IsEmptyTests : CSharpCodeFixTest<
     [Test]
     public Task IsEmptyNoWarnTest()
     {
-        var code = ResourceReader.ReadFromFile("ConcurrentDictionary2.txt");
+        var code = ResourceReader.ReadFromFile("ConcurrentDictionary2.cs");
 
         return ConcurrentDictionaryIsEmptyVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
     }
 
     [Test]
-    [TestCase("ConcurrentDictionaryBefore1.txt", "ConcurrentDictionaryAfter1.txt")]
-    [TestCase("ConcurrentDictionaryBefore2.txt", "ConcurrentDictionaryAfter2.txt")]
-    [TestCase("ConcurrentDictionaryBefore3.txt", "ConcurrentDictionaryAfter3.txt")]
-    [TestCase("ConcurrentDictionaryBefore4.txt", "ConcurrentDictionaryAfter4.txt")]
+    [TestCase("ConcurrentDictionaryBefore1.cs", "ConcurrentDictionaryAfter1.cs")]
+    [TestCase("ConcurrentDictionaryBefore2.cs", "ConcurrentDictionaryAfter2.cs")]
+    [TestCase("ConcurrentDictionaryBefore3.cs", "ConcurrentDictionaryAfter3.cs")]
+    [TestCase("ConcurrentDictionaryBefore4.cs", "ConcurrentDictionaryAfter4.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

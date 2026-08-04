@@ -14,7 +14,7 @@ public class ListCapacityTests : CSharpCodeFixTest<
     [Test]
     public Task ListCapacityTest()
     {
-        var code = ResourceReader.ReadFromFile("ListInitializer1.txt");
+        var code = ResourceReader.ReadFromFile("ListInitializer1.cs");
 
         return ListCapacityVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 25, 9, 51));
@@ -23,7 +23,7 @@ public class ListCapacityTests : CSharpCodeFixTest<
     [Test]
     public Task ListLessCapacityTest()
     {
-        var code = ResourceReader.ReadFromFile("ListInitializer2.txt");
+        var code = ResourceReader.ReadFromFile("ListInitializer2.cs");
 
         return ListCapacityVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 25, 9, 54));
@@ -32,7 +32,7 @@ public class ListCapacityTests : CSharpCodeFixTest<
     [Test]
     public Task ListObjectCreationCapacityTest()
     {
-        var code = ResourceReader.ReadFromFile("ListInitializer3.txt");
+        var code = ResourceReader.ReadFromFile("ListInitializer3.cs");
 
         return ListCapacityVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 31, 9, 49));
@@ -41,16 +41,16 @@ public class ListCapacityTests : CSharpCodeFixTest<
     [Test]
     public Task ListObjectCreationLessCapacityTest()
     {
-        var code = ResourceReader.ReadFromFile("ListInitializer4.txt");
+        var code = ResourceReader.ReadFromFile("ListInitializer4.cs");
 
         return ListCapacityVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0006").WithSpan(9, 31, 9, 50));
     }
 
     [Test]
-    [TestCase("ListInitializerBefore1.txt", "ListInitializerAfter1.txt")]
-    [TestCase("ListInitializerBefore2.txt", "ListInitializerAfter2.txt")]
-    [TestCase("ListInitializerBefore3.txt", "ListInitializerAfter3.txt")]
+    [TestCase("ListInitializerBefore1.cs", "ListInitializerAfter1.cs")]
+    [TestCase("ListInitializerBefore2.cs", "ListInitializerAfter2.cs")]
+    [TestCase("ListInitializerBefore3.cs", "ListInitializerAfter3.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);

@@ -13,7 +13,7 @@ public class ListFromStringTests : CSharpCodeFixTest<ListFromStringDiagnostic,
     [Test]
     public Task ListConstructor1Test()
     {
-        var code = ResourceReader.ReadFromFile("StringListConstructor1.txt");
+        var code = ResourceReader.ReadFromFile("StringListConstructor1.cs");
 
         return ListFromStringVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0004").WithSpan(12, 41, 12, 54));
@@ -22,14 +22,14 @@ public class ListFromStringTests : CSharpCodeFixTest<ListFromStringDiagnostic,
     [Test]
     public Task ListConstructor2Test()
     {
-        var code = ResourceReader.ReadFromFile("StringListConstructor2.txt");
+        var code = ResourceReader.ReadFromFile("StringListConstructor2.cs");
 
         return ListFromStringVerifier
             .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0004").WithSpan(12, 41, 12, 44));
     }
 
-    [TestCase("StringListConstructorBefore1.txt", "StringListConstructorAfter.txt")]
-    [TestCase("StringListConstructorBefore2.txt", "StringListConstructorAfter.txt")]
+    [TestCase("StringListConstructorBefore1.cs", "StringListConstructorAfter.cs")]
+    [TestCase("StringListConstructorBefore2.cs", "StringListConstructorAfter.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);
