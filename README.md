@@ -16,7 +16,9 @@ For more information, see the following articles:
 
 ### Compiler warnings
 
-Analyze your C#-code and warn about redundant method calls.
+Analyze your C#-code and warn about:
+- **Redundant method calls** and inefficient collection transformations.
+- **N+1 Query Problems** in loops and LINQ expressions when accessing repositories or services.
 
 ![Code fix string](https://raw.githubusercontent.com/Backs/Collections.Analyzer/master/Documentation/img/string-example-2.png)
 

@@ -114,6 +114,30 @@ public class NPlusOneQueryTests : CSharpAnalyzerTest<NPlusOneQueryAnalyzer, Defa
     }
 
     [Test]
+    public Task StaticMethod_ShouldNotWarn()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery17.cs");
+
+        return NPlusOneQueryVerifier.VerifyAnalyzerAsync(code);
+    }
+
+    [Test]
+    public Task BatchMethod_ShouldNotWarn()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery18.cs");
+
+        return NPlusOneQueryVerifier.VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
+    }
+
+    [Test]
+    public Task ParameterTypes_ShouldWarnCorrectly()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery20.cs");
+
+        return NPlusOneQueryVerifier.VerifyAnalyzerAsync(code);
+    }
+
+    [Test]
     public Task TestMethod_ByDefault_ShouldNotWarn()
     {
         var code = ResourceReader.ReadFromFile("NPlusOneQuery14.cs");
@@ -199,5 +223,22 @@ public class NPlusOneQueryTests : CSharpAnalyzerTest<NPlusOneQueryAnalyzer, Defa
             NPlusOneQueryVerifier.VerifyAnalyzerAsync(code1, DiagnosticResult.EmptyDiagnosticResults),
             NPlusOneQueryVerifier.VerifyAnalyzerAsync(code2, DiagnosticResult.EmptyDiagnosticResults)
         );
+    }
+
+    [Test]
+    public Task CustomBulkMethodSubstrings_ShouldWarnCorrectly()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery21.cs");
+
+        var test = new CSharpAnalyzerTest<NPlusOneQueryAnalyzer, DefaultVerifier>
+        {
+            TestCode = code,
+        };
+
+        test.TestState.AnalyzerConfigFiles.Add(
+            ("/.editorconfig", $"is_global = true{System.Environment.NewLine}dotnet_diagnostic.CI0011.bulk_method_substrings = CustomSuffix")
+        );
+
+        return test.RunAsync();
     }
 }
