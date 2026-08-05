@@ -41,6 +41,7 @@ This file is intended to help AI agents quickly understand the project structure
 ### 3. Writing Tests
 - Tests should be located in the `Tests` project; the folder should match the diagnostic name.
 - Place source code for tests in `Tests/Resources/<DiagnosticName>/`.
+- **Important**: When adding test data to the `Tests/Resources` folder, do NOT add them to `Tests.csproj` because the entire folder is already included via a wildcard.
 - Use `ResourceReader.ReadFromFile()` to load the code.
 - Use `{|CIxxxx:code|}` syntax in resource files to mark expected diagnostics.
 - Verify both the presence of the diagnostic and the result of applying the fix (if applicable).

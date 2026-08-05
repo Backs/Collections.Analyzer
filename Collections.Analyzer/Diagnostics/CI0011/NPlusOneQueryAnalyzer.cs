@@ -46,6 +46,8 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         "TestMethodAttribute", "TestClassAttribute"
     }.ToFrozenSet();
 
+    private const string AnalyzeTestMethodsOption = "dotnet_diagnostic.CI0011.analyze_test_methods";
+
     public override void Initialize(AnalysisContext context)
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -61,6 +63,15 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeLinqInvocation(SyntaxNodeAnalysisContext context)
     {
         if (context.Node is not InvocationExpressionSyntax invocation) return;
+
+        // Skip analysis if we are inside a test method and it's not explicitly enabled via .editorconfig
+        if (context.SemanticModel.GetEnclosingSymbol(invocation.SpanStart) is IMethodSymbol enclosingMethodSymbol
+            && IsTestMethod(enclosingMethodSymbol)
+            && !IsAnalyzeTestMethodsEnabled(context))
+        {
+            return;
+        }
+
         if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) return;
 
         // Check if the method is one of the LINQ methods that can cause N+1 query issues when used with lambdas
@@ -111,9 +122,10 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     {
         var loopNode = context.Node;
 
-        // Skip analysis if we are inside a test method to avoid false positives in tests
+        // Skip analysis if we are inside a test method and it's not explicitly enabled via .editorconfig
         if (context.SemanticModel.GetEnclosingSymbol(loopNode.SpanStart) is IMethodSymbol enclosingMethodSymbol 
-            && IsTestMethod(enclosingMethodSymbol))
+            && IsTestMethod(enclosingMethodSymbol)
+            && !IsAnalyzeTestMethodsEnabled(context))
         {
             return;
         }
@@ -242,6 +254,13 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }
 
         return symbols;
+    }
+
+    private static bool IsAnalyzeTestMethodsEnabled(SyntaxNodeAnalysisContext context)
+    {
+        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
+        return options.TryGetValue(AnalyzeTestMethodsOption, out var value) && 
+               bool.TryParse(value, out var result) && result;
     }
 
     private static bool IsTestMethod(IMethodSymbol methodSymbol)

@@ -112,4 +112,46 @@ public class NPlusOneQueryTests : CSharpAnalyzerTest<NPlusOneQueryAnalyzer, Defa
 
         return NPlusOneQueryVerifier.VerifyAnalyzerAsync(code);
     }
+
+    [Test]
+    public Task TestMethod_ByDefault_ShouldNotWarn()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery14.cs");
+
+        var test = new CSharpAnalyzerTest<NPlusOneQueryAnalyzer, DefaultVerifier>
+        {
+            TestCode = code,
+            ReferenceAssemblies = ReferenceAssemblies.Net.Net80
+        };
+
+        // Add NUnit assembly reference
+        test.TestState.AdditionalReferences.Add(typeof(TestAttribute).Assembly.Location);
+
+        return test.RunAsync();
+    }
+
+    [Test]
+    public Task TestMethod_WhenEnabledViaEditorConfig_ShouldWarn()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery14.cs");
+
+        var test = new CSharpAnalyzerTest<NPlusOneQueryAnalyzer, DefaultVerifier>
+        {
+            TestCode = code,
+            ReferenceAssemblies = ReferenceAssemblies.Net.Net80
+        };
+
+        // Add NUnit assembly reference
+        test.TestState.AdditionalReferences.Add(typeof(TestAttribute).Assembly.Location);
+
+        test.TestState.AnalyzerConfigFiles.Add(
+            ("/.editorconfig", $"is_global = true{System.Environment.NewLine}dotnet_diagnostic.CI0011.analyze_test_methods = true")
+        );
+
+        test.ExpectedDiagnostics.Add(
+            DiagnosticResult.CompilerWarning("CI0011").WithSpan(13, 24, 13, 48).WithArguments("GetData")
+        );
+
+        return test.RunAsync();
+    }
 }
