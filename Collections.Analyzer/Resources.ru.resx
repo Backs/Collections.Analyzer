@@ -84,4 +84,13 @@
     <data name="CI0010_MessageFormat" xml:space="preserve">
         <value>Коллекция '{0}' используется для линейного поиска в цикле. Рассмотрите возможность преобразования её в Dictionary для повышения производительности</value>
     </data>
+    <data name="CI0011_Title" xml:space="preserve">
+        <value>Потенциальная проблема N+1 запроса</value>
+    </data>
+    <data name="CI0011_MessageFormat" xml:space="preserve">
+        <value>Метод '{0}' вызывается внутри цикла и может привести к проблеме N+1 запроса</value>
+    </data>
+    <data name="CI0011_Description" xml:space="preserve">
+        <value>Избегайте вызова методов доступа к данным внутри цикла на основе переменной цикла, так как это указывает на проблему производительности N+1 запроса.</value>
+    </data>
 </root>

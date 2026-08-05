@@ -1,4 +1,4 @@
-using Collections.Analyzer.Diagnostics.CI0010;
+using Collections.Analyzer.Diagnostics.CI0011;
 using Microsoft.CodeAnalysis.Testing;
 
 namespace Tests.NPlusOneQueryTests;

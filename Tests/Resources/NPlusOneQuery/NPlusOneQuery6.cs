@@ -10,11 +10,15 @@ public class TestClass
 {
     public void TestMethod(IEnumerable<User> users)
     {
+        var repository = new MyRepository();
         foreach (var user in users)
         {
-            var data = GetData(user.Id);
+            var data = {|CI0011:repository.GetData(user.Id)|};
         }
     }
 
-    private string GetData(int id) => id.ToString();
+    public class MyRepository
+    {
+        public string GetData(int id) => id.ToString();
+    }
 }
