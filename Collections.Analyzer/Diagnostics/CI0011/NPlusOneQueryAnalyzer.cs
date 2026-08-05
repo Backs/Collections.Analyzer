@@ -42,12 +42,11 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     }.ToFrozenSet();
 
     private static readonly FrozenSet<string> TestAttributeNames =
-    new[] {
-        "FactAttribute", "TheoryAttribute", "TestAttribute", "TestCaseAttribute", "TestFixtureAttribute",
-        "TestMethodAttribute", "TestClassAttribute"
-    }.ToFrozenSet();
-
-    private static readonly char[] Separator = { ',' };
+        new[]
+        {
+            "FactAttribute", "TheoryAttribute", "TestAttribute", "TestCaseAttribute", "TestFixtureAttribute",
+            "TestMethodAttribute", "TestClassAttribute"
+        }.ToFrozenSet();
 
     private const string AnalyzeTestMethodsOption = "dotnet_diagnostic.CI0011.analyze_test_methods";
     private const string DataAccessTypeSuffixesOption = "dotnet_diagnostic.CI0011.data_access_type_suffixes";
@@ -69,10 +68,11 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     {
         if (context.Node is not InvocationExpressionSyntax invocation) return;
 
+        var config = GetConfig(context);
         // Skip analysis if we are inside a test method and it's not explicitly enabled via .editorconfig
         if (context.SemanticModel.GetEnclosingSymbol(invocation.SpanStart) is IMethodSymbol enclosingMethodSymbol
             && IsTestMethod(enclosingMethodSymbol)
-            && !IsAnalyzeTestMethodsEnabled(context))
+            && !config.AnalyzeTestMethodsEnabled)
         {
             return;
         }
@@ -114,7 +114,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         {
             SimpleLambdaExpressionSyntax simple => new[] { simple.Parameter },
             ParenthesizedLambdaExpressionSyntax parenthesized => parenthesized.ParameterList.Parameters.ToArray(),
-            _ => System.Array.Empty<ParameterSyntax>()
+            _ => Array.Empty<ParameterSyntax>()
         };
 
         return parameters
@@ -127,10 +127,11 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     {
         var loopNode = context.Node;
 
+        var config = GetConfig(context);
         // Skip analysis if we are inside a test method and it's not explicitly enabled via .editorconfig
         if (context.SemanticModel.GetEnclosingSymbol(loopNode.SpanStart) is IMethodSymbol enclosingMethodSymbol 
             && IsTestMethod(enclosingMethodSymbol)
-            && !IsAnalyzeTestMethodsEnabled(context))
+            && !config.AnalyzeTestMethodsEnabled)
         {
             return;
         }
@@ -164,8 +165,9 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
             return;
         }
 
+        var config = GetConfig(context);
         // If a data access method is called using a loop variable, report a diagnostic
-        if (IsDataAccessMethod(methodSymbol, context))
+        if (IsDataAccessMethod(methodSymbol, config))
         {
             var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation(), methodSymbol.Name);
             context.ReportDiagnostic(diagnostic);
@@ -191,32 +193,30 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsDataAccessMethod(IMethodSymbol methodSymbol, SyntaxNodeAnalysisContext context)
+    private static bool IsDataAccessMethod(IMethodSymbol methodSymbol, NPlusOneQueryConfig config)
     {
-        if (!IsDataAccessType(methodSymbol.ContainingType, context))
+        if (!IsDataAccessType(methodSymbol.ContainingType, config))
         {
             return false;
         }
 
         var methodName = methodSymbol.Name;
-        var prefixes = GetDataAccessMethodPrefixes(context);
-        return prefixes.Any(methodName.StartsWith);
+        return config.DataAccessMethodPrefixes.Any(methodName.StartsWith);
     }
 
-    private static bool IsDataAccessType(INamedTypeSymbol? type, SyntaxNodeAnalysisContext context)
+    private static bool IsDataAccessType(INamedTypeSymbol? type, NPlusOneQueryConfig config)
     {
         if (type == null)
         {
             return false;
         }
 
-        var suffixes = GetDataAccessTypeSuffixes(context);
-        if (IsDataAccessTypeName(type.Name, suffixes))
+        if (IsDataAccessTypeName(type.Name, config.DataAccessTypeSuffixes))
         {
             return true;
         }
 
-        return type.AllInterfaces.Any(i => IsDataAccessTypeName(i.Name, suffixes));
+        return type.AllInterfaces.Any(i => IsDataAccessTypeName(i.Name, config.DataAccessTypeSuffixes));
     }
 
     private static bool IsDataAccessTypeName(string typeName, IEnumerable<string> suffixes)
@@ -263,35 +263,6 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         return symbols;
     }
 
-    private static bool IsAnalyzeTestMethodsEnabled(SyntaxNodeAnalysisContext context)
-    {
-        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
-        return options.TryGetValue(AnalyzeTestMethodsOption, out var value) && 
-               bool.TryParse(value, out var result) && result;
-    }
-
-    private static IReadOnlyCollection<string> GetDataAccessTypeSuffixes(SyntaxNodeAnalysisContext context)
-    {
-        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
-        if (options.TryGetValue(DataAccessTypeSuffixesOption, out var value) && !string.IsNullOrWhiteSpace(value))
-        {
-            return value.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
-        }
-
-        return DataAccessTypeSuffixes;
-    }
-
-    private static IReadOnlyCollection<string> GetDataAccessMethodPrefixes(SyntaxNodeAnalysisContext context)
-    {
-        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
-        if (options.TryGetValue(DataAccessMethodPrefixesOption, out var value) && !string.IsNullOrWhiteSpace(value))
-        {
-            return value.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
-        }
-
-        return DataAccessMethodPrefixes;
-    }
-
     private static bool IsTestMethod(IMethodSymbol methodSymbol)
     {
         if (HasTestAttribute(methodSymbol.GetAttributes())) return true;
@@ -307,5 +278,41 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
             var name = attribute.AttributeClass?.Name;
             return name != null && TestAttributeNames.Contains(name);
         });
+    }
+
+    private sealed class NPlusOneQueryConfig
+    {
+        private static readonly char[] Separators = { ',', ';', '|' };
+        public bool AnalyzeTestMethodsEnabled { get; }
+        public IReadOnlyCollection<string> DataAccessTypeSuffixes { get; }
+        public IReadOnlyCollection<string> DataAccessMethodPrefixes { get; }
+
+        private NPlusOneQueryConfig(bool analyzeTestMethodsEnabled, IReadOnlyCollection<string> dataAccessTypeSuffixes, IReadOnlyCollection<string> dataAccessMethodPrefixes)
+        {
+            AnalyzeTestMethodsEnabled = analyzeTestMethodsEnabled;
+            DataAccessTypeSuffixes = dataAccessTypeSuffixes;
+            DataAccessMethodPrefixes = dataAccessMethodPrefixes;
+        }
+
+        public static NPlusOneQueryConfig FromOptions(AnalyzerConfigOptions options)
+        {
+            var analyzeTestMethodsEnabled = options.TryGetValue(AnalyzeTestMethodsOption, out var testMethodsValue) &&
+                                            bool.TryParse(testMethodsValue, out var testMethodsResult) && testMethodsResult;
+
+            var typeSuffixes = options.TryGetValue(DataAccessTypeSuffixesOption, out var typeSuffixesValue) && !string.IsNullOrWhiteSpace(typeSuffixesValue)
+                ? typeSuffixesValue.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray()
+                : NPlusOneQueryAnalyzer.DataAccessTypeSuffixes;
+
+            var methodPrefixes = options.TryGetValue(DataAccessMethodPrefixesOption, out var methodPrefixesValue) && !string.IsNullOrWhiteSpace(methodPrefixesValue)
+                ? methodPrefixesValue.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray()
+                : NPlusOneQueryAnalyzer.DataAccessMethodPrefixes;
+
+            return new NPlusOneQueryConfig(analyzeTestMethodsEnabled, typeSuffixes, methodPrefixes);
+        }
+    }
+
+    private static NPlusOneQueryConfig GetConfig(SyntaxNodeAnalysisContext context)
+    {
+        return AnalyzerConfigHelper.GetConfig(context.Options, context.Node.SyntaxTree, NPlusOneQueryConfig.FromOptions);
     }
 }
