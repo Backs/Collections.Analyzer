@@ -154,4 +154,50 @@ public class NPlusOneQueryTests : CSharpAnalyzerTest<NPlusOneQueryAnalyzer, Defa
 
         return test.RunAsync();
     }
+
+    [Test]
+    public Task CustomTypeSuffixes_ShouldWarn()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery15.cs");
+
+        var test = new CSharpAnalyzerTest<NPlusOneQueryAnalyzer, DefaultVerifier>
+        {
+            TestCode = code,
+        };
+
+        test.TestState.AnalyzerConfigFiles.Add(
+            ("/.editorconfig", $"is_global = true{System.Environment.NewLine}dotnet_diagnostic.CI0011.data_access_type_suffixes = Service")
+        );
+
+        return test.RunAsync();
+    }
+
+    [Test]
+    public Task CustomMethodPrefixes_ShouldWarn()
+    {
+        var code = ResourceReader.ReadFromFile("NPlusOneQuery16.cs");
+
+        var test = new CSharpAnalyzerTest<NPlusOneQueryAnalyzer, DefaultVerifier>
+        {
+            TestCode = code,
+        };
+
+        test.TestState.AnalyzerConfigFiles.Add(
+            ("/.editorconfig", $"is_global = true{System.Environment.NewLine}dotnet_diagnostic.CI0011.data_access_method_prefixes = Fetch")
+        );
+
+        return test.RunAsync();
+    }
+
+    [Test]
+    public Task CustomConfiguration_WithoutSetting_ShouldNotWarn()
+    {
+        var code1 = ResourceReader.ReadFromFile("NPlusOneQuery15_NoMarkup.cs");
+        var code2 = ResourceReader.ReadFromFile("NPlusOneQuery16_NoMarkup.cs");
+
+        return Task.WhenAll(
+            NPlusOneQueryVerifier.VerifyAnalyzerAsync(code1, DiagnosticResult.EmptyDiagnosticResults),
+            NPlusOneQueryVerifier.VerifyAnalyzerAsync(code2, DiagnosticResult.EmptyDiagnosticResults)
+        );
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -46,7 +47,11 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         "TestMethodAttribute", "TestClassAttribute"
     }.ToFrozenSet();
 
+    private static readonly char[] Separator = { ',' };
+
     private const string AnalyzeTestMethodsOption = "dotnet_diagnostic.CI0011.analyze_test_methods";
+    private const string DataAccessTypeSuffixesOption = "dotnet_diagnostic.CI0011.data_access_type_suffixes";
+    private const string DataAccessMethodPrefixesOption = "dotnet_diagnostic.CI0011.data_access_method_prefixes";
 
     public override void Initialize(AnalysisContext context)
     {
@@ -160,7 +165,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }
 
         // If a data access method is called using a loop variable, report a diagnostic
-        if (IsDataAccessMethod(methodSymbol))
+        if (IsDataAccessMethod(methodSymbol, context))
         {
             var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation(), methodSymbol.Name);
             context.ReportDiagnostic(diagnostic);
@@ -186,35 +191,37 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsDataAccessMethod(IMethodSymbol methodSymbol)
+    private static bool IsDataAccessMethod(IMethodSymbol methodSymbol, SyntaxNodeAnalysisContext context)
     {
-        if (!IsDataAccessType(methodSymbol.ContainingType))
+        if (!IsDataAccessType(methodSymbol.ContainingType, context))
         {
             return false;
         }
 
         var methodName = methodSymbol.Name;
-        return DataAccessMethodPrefixes.Any(methodName.StartsWith);
+        var prefixes = GetDataAccessMethodPrefixes(context);
+        return prefixes.Any(methodName.StartsWith);
     }
 
-    private static bool IsDataAccessType(INamedTypeSymbol? type)
+    private static bool IsDataAccessType(INamedTypeSymbol? type, SyntaxNodeAnalysisContext context)
     {
         if (type == null)
         {
             return false;
         }
 
-        if (IsDataAccessTypeName(type.Name))
+        var suffixes = GetDataAccessTypeSuffixes(context);
+        if (IsDataAccessTypeName(type.Name, suffixes))
         {
             return true;
         }
 
-        return type.AllInterfaces.Any(i => IsDataAccessTypeName(i.Name));
+        return type.AllInterfaces.Any(i => IsDataAccessTypeName(i.Name, suffixes));
     }
 
-    private static bool IsDataAccessTypeName(string typeName)
+    private static bool IsDataAccessTypeName(string typeName, IEnumerable<string> suffixes)
     {
-        return !string.IsNullOrEmpty(typeName) && DataAccessTypeSuffixes.Any(typeName.Contains);
+        return !string.IsNullOrEmpty(typeName) && suffixes.Any(typeName.Contains);
     }
 
     private static IReadOnlyCollection<ISymbol> GetLoopVariableSymbols(SyntaxNode loopNode, SemanticModel semanticModel)
@@ -261,6 +268,28 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
         return options.TryGetValue(AnalyzeTestMethodsOption, out var value) && 
                bool.TryParse(value, out var result) && result;
+    }
+
+    private static IReadOnlyCollection<string> GetDataAccessTypeSuffixes(SyntaxNodeAnalysisContext context)
+    {
+        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
+        if (options.TryGetValue(DataAccessTypeSuffixesOption, out var value) && !string.IsNullOrWhiteSpace(value))
+        {
+            return value.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+        }
+
+        return DataAccessTypeSuffixes;
+    }
+
+    private static IReadOnlyCollection<string> GetDataAccessMethodPrefixes(SyntaxNodeAnalysisContext context)
+    {
+        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
+        if (options.TryGetValue(DataAccessMethodPrefixesOption, out var value) && !string.IsNullOrWhiteSpace(value))
+        {
+            return value.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+        }
+
+        return DataAccessMethodPrefixes;
     }
 
     private static bool IsTestMethod(IMethodSymbol methodSymbol)
