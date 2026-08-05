@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -23,6 +24,28 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         Resources.CI0011_Description
     );
 
+    private static readonly string[] DataAccessTypeSuffixes = { "Repository", "Reader", "Writer", "Handler" };
+    private static readonly string[] DataAccessMethodPrefixes = { "Read", "Find", "Get", "TryRead", "TryGet", "TryFind" };
+
+    private static readonly FrozenSet<string> LinqMethodNames =
+    new[] {
+        nameof(Enumerable.Select),
+        nameof(Enumerable.Where),
+        nameof(Enumerable.Any),
+        nameof(Enumerable.All),
+        nameof(Enumerable.Count),
+        nameof(Enumerable.First),
+        nameof(Enumerable.FirstOrDefault),
+        nameof(Enumerable.Single),
+        nameof(Enumerable.SingleOrDefault)
+    }.ToFrozenSet();
+
+    private static readonly FrozenSet<string> TestAttributeNames =
+    new[] {
+        "FactAttribute", "TheoryAttribute", "TestAttribute", "TestCaseAttribute", "TestFixtureAttribute",
+        "TestMethodAttribute", "TestClassAttribute"
+    }.ToFrozenSet();
+
     public override void Initialize(AnalysisContext context)
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -40,12 +63,14 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         if (context.Node is not InvocationExpressionSyntax invocation) return;
         if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) return;
 
+        // Check if the method is one of the LINQ methods that can cause N+1 query issues when used with lambdas
         var methodName = memberAccess.Name.Identifier.Text;
-        if (methodName is not ("Select" or "Where" or "Any" or "All" or "Count" or "First" or "FirstOrDefault" or "Single" or "SingleOrDefault")) return;
+        if (!LinqMethodNames.Contains(methodName)) return;
 
         if (invocation.ArgumentList.Arguments.Count == 0) return;
         var argument = invocation.ArgumentList.Arguments[0];
 
+        // We are looking for lambda expressions passed to LINQ methods
         if (argument.Expression is not LambdaExpressionSyntax lambda) return;
 
         var body = lambda switch
@@ -86,18 +111,21 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     {
         var loopNode = context.Node;
 
-        var enclosingMethodSymbol = context.SemanticModel.GetEnclosingSymbol(loopNode.SpanStart) as IMethodSymbol;
-        if (enclosingMethodSymbol != null && IsTestMethod(enclosingMethodSymbol))
+        // Skip analysis if we are inside a test method to avoid false positives in tests
+        if (context.SemanticModel.GetEnclosingSymbol(loopNode.SpanStart) is IMethodSymbol enclosingMethodSymbol 
+            && IsTestMethod(enclosingMethodSymbol))
         {
             return;
         }
 
+        // Get variables declared by the loop (e.g., 'item' in 'foreach (var item in items)')
         var loopVariables = GetLoopVariableSymbols(loopNode, context.SemanticModel);
         if (loopVariables.Count == 0)
         {
             return;
         }
 
+        // Search for all method calls within the loop body
         var invocations = loopNode.DescendantNodes().OfType<InvocationExpressionSyntax>();
         foreach (var invocation in invocations)
         {
@@ -113,11 +141,13 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
             return;
         }
 
+        // Check if the invocation uses any of the loop variables
         if (!UsesLoopVariable(context, invocation, loopVariables))
         {
             return;
         }
 
+        // If a data access method is called using a loop variable, report a diagnostic
         if (IsDataAccessMethod(methodSymbol))
         {
             var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation(), methodSymbol.Name);
@@ -152,12 +182,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }
 
         var methodName = methodSymbol.Name;
-        return methodName.StartsWith("Read") ||
-               methodName.StartsWith("Find") ||
-               methodName.StartsWith("Get") ||
-               methodName.Contains("TryRead") ||
-               methodName.Contains("TryGet") ||
-               methodName.Contains("TryFind");
+        return DataAccessMethodPrefixes.Any(methodName.StartsWith);
     }
 
     private static bool IsDataAccessType(INamedTypeSymbol? type)
@@ -177,15 +202,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
 
     private static bool IsDataAccessTypeName(string typeName)
     {
-        if (string.IsNullOrEmpty(typeName))
-        {
-            return false;
-        }
-
-        return typeName.Contains("Repository") ||
-               typeName.Contains("Reader") ||
-               typeName.Contains("Writer") ||
-               typeName.Contains("Handler");
+        return !string.IsNullOrEmpty(typeName) && DataAccessTypeSuffixes.Any(typeName.Contains);
     }
 
     private static IReadOnlyCollection<ISymbol> GetLoopVariableSymbols(SyntaxNode loopNode, SemanticModel semanticModel)
@@ -240,7 +257,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         return attributes.Any(attribute =>
         {
             var name = attribute.AttributeClass?.Name;
-            return name is "FactAttribute" or "TheoryAttribute" or "TestAttribute" or "TestCaseAttribute" or "TestFixtureAttribute" or "TestMethodAttribute" or "TestClassAttribute";
+            return name != null && TestAttributeNames.Contains(name);
         });
     }
 }
