@@ -44,12 +44,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
             "FactAttribute", "TheoryAttribute", "TestAttribute", "TestCaseAttribute", "TestFixtureAttribute",
             "TestMethodAttribute", "TestClassAttribute"
         }.ToFrozenSet();
-
-    private const string AnalyzeTestMethodsOption = "dotnet_diagnostic.CI0011.analyze_test_methods";
-    private const string DataAccessTypeSubstringsOption = "dotnet_diagnostic.CI0011.data_access_type_substrings";
-    private const string DataAccessMethodPrefixesOption = "dotnet_diagnostic.CI0011.data_access_method_prefixes";
-    private const string BulkMethodSubstringsOption = "dotnet_diagnostic.CI0011.bulk_method_substrings";
-
+    
     public override void Initialize(AnalysisContext context)
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -67,7 +62,8 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         if (context.Node is not InvocationExpressionSyntax invocation) return;
 
         var config = GetConfig(context);
-        // Skip analysis if we are inside a test method and it's not explicitly enabled via .editorconfig
+        
+        // Skip analysis if we are inside a test method, and it's not explicitly enabled via .editorconfig
         if (context.SemanticModel.GetEnclosingSymbol(invocation.SpanStart) is IMethodSymbol enclosingMethodSymbol
             && IsTestMethod(enclosingMethodSymbol)
             && !config.AnalyzeTestMethodsEnabled)
@@ -106,19 +102,19 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static IReadOnlyCollection<ISymbol> GetLambdaParameters(LambdaExpressionSyntax lambda, SemanticModel semanticModel)
+    private static ISet<ISymbol> GetLambdaParameters(LambdaExpressionSyntax lambda, SemanticModel semanticModel)
     {
-        var parameters = lambda switch
+        IEnumerable<ParameterSyntax> parameters = lambda switch
         {
             SimpleLambdaExpressionSyntax simple => new[] { simple.Parameter },
-            ParenthesizedLambdaExpressionSyntax parenthesized => parenthesized.ParameterList.Parameters.ToArray(),
+            ParenthesizedLambdaExpressionSyntax parenthesized => parenthesized.ParameterList.Parameters,
             _ => Array.Empty<ParameterSyntax>()
         };
 
         return parameters
             .Select(p => semanticModel.GetDeclaredSymbol(p))
             .OfType<ISymbol>()
-            .ToList();
+            .ToImmutableHashSet(SymbolEqualityComparer.Default);
     }
 
     private static void AnalyzeLoopNode(SyntaxNodeAnalysisContext context)
@@ -126,7 +122,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         var loopNode = context.Node;
 
         var config = GetConfig(context);
-        // Skip analysis if we are inside a test method and it's not explicitly enabled via .editorconfig
+        // Skip analysis if we are inside a test method, and it's not explicitly enabled via .editorconfig
         if (context.SemanticModel.GetEnclosingSymbol(loopNode.SpanStart) is IMethodSymbol enclosingMethodSymbol 
             && IsTestMethod(enclosingMethodSymbol)
             && !config.AnalyzeTestMethodsEnabled)
@@ -149,7 +145,10 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, IReadOnlyCollection<ISymbol> loopVariables)
+    private static void AnalyzeInvocation(
+        SyntaxNodeAnalysisContext context, 
+        InvocationExpressionSyntax invocation, 
+        ISet<ISymbol> loopVariables)
     {
         var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
         if (methodSymbol == null)
@@ -172,7 +171,10 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool UsesLoopVariable(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, IReadOnlyCollection<ISymbol> loopVariables)
+    private static bool UsesLoopVariable(
+        SyntaxNodeAnalysisContext context, 
+        InvocationExpressionSyntax invocation, 
+        ISet<ISymbol> loopVariables)
     {
         foreach (var argument in invocation.ArgumentList.Arguments)
         {
@@ -182,7 +184,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
                 continue;
             }
 
-            if (dataFlowAnalysis.ReadInside.Any(symbol => loopVariables.Contains(symbol, SymbolEqualityComparer.Default)))
+            if (dataFlowAnalysis.ReadInside.Any(loopVariables.Contains))
             {
                 return true;
             }
@@ -253,7 +255,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         return !string.IsNullOrEmpty(typeName) && substrings.Any(typeName.Contains);
     }
 
-    private static IReadOnlyCollection<ISymbol> GetLoopVariableSymbols(SyntaxNode loopNode, SemanticModel semanticModel)
+    private static ISet<ISymbol> GetLoopVariableSymbols(SyntaxNode loopNode, SemanticModel semanticModel)
     {
         var symbols = new HashSet<ISymbol>(SymbolEqualityComparer.Default);
 
@@ -319,6 +321,11 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         private static readonly string[] DataAccessTypeSubstringsDefaults = { "Repository", "Reader", "Writer", "Handler" };
         private static readonly string[] DataAccessMethodPrefixesDefaults = { "Read", "Find", "Get", "TryRead", "TryGet", "TryFind" };
         private static readonly string[] BulkMethodSubstringsDefaults = { "Batch", "Bulk", "Range" };
+
+        private const string AnalyzeTestMethodsOption = "dotnet_diagnostic.CI0011.analyze_test_methods";
+        private const string DataAccessTypeSubstringsOption = "dotnet_diagnostic.CI0011.data_access_type_substrings";
+        private const string DataAccessMethodPrefixesOption = "dotnet_diagnostic.CI0011.data_access_method_prefixes";
+        private const string BulkMethodSubstringsOption = "dotnet_diagnostic.CI0011.bulk_method_substrings";
 
 
         private NPlusOneQueryConfig(
