@@ -182,5 +182,23 @@ namespace Collections.Analyzer {
                 return ResourceManager.GetString("CI0010_MessageFormat", resourceCulture);
             }
         }
+        
+        internal static string CI0011_Title {
+            get {
+                return ResourceManager.GetString("CI0011_Title", resourceCulture);
+            }
+        }
+        
+        internal static string CI0011_MessageFormat {
+            get {
+                return ResourceManager.GetString("CI0011_MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string CI0011_Description {
+            get {
+                return ResourceManager.GetString("CI0011_Description", resourceCulture);
+            }
+        }
     }
 }

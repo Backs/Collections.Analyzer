@@ -1,3 +1,10 @@
+## 0.3.0
+- Added [CI0011](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0011.md): Diagnostic to detect potential N+1 Query Problems in loops and LINQ expressions.
+- Added support for `.editorconfig` configuration for CI0011 (data access type substrings, method prefixes, bulk method substrings, and test method analysis).
+- Improved analyzer performance by implementing configuration caching.
+- Excluded static methods and bulk/batch methods from CI0011 analysis to reduce false positives.
+- General documentation updates and refactorings.
+
 ## 0.2.15
 Added [CI0010](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0010.md): Diagnostic to suggest using `Dictionary` for lookups in collections inside loops or LINQ chains. This optimizes performance from O(N*M) to O(N+M).
 

@@ -38,9 +38,8 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 
     private static void AnalyzeLocalDeclaration(SyntaxNodeAnalysisContext context)
     {
-        var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
-
         var minLength = GetMinArrayLength(context);
+        var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
 
         foreach (var variable in localDeclaration.Declaration.Variables)
         {
@@ -50,9 +49,8 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 
     private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
     {
-        var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
-
         var minLength = GetMinArrayLength(context);
+        var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
         foreach (var variable in fieldDeclaration.Declaration.Variables)
         {
@@ -62,6 +60,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
 
     private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
     {
+        var minLength = GetMinArrayLength(context);
         var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
         var typeInfo = context.SemanticModel.GetTypeInfo(propertyDeclaration.Type);
@@ -77,7 +76,6 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
             return;
 
         var arraySize = CountArrayElements(arrayInitializer);
-        var minLength = GetMinArrayLength(context);
 
         if (arraySize < minLength)
             return;
@@ -245,19 +243,6 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         return false;
     }
 
-    private static int GetMinArrayLength(SyntaxNodeAnalysisContext context)
-    {
-        var options = context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
-
-        if (options.TryGetValue(MinArrayLengthOption, out var valueString) &&
-            int.TryParse(valueString, out var value) && value >= 0)
-        {
-            return value;
-        }
-
-        return DefaultMinArrayLength;
-    }
-
     private static int CountArrayElements(InitializerExpressionSyntax initializer)
     {
         return initializer.Expressions.Count;
@@ -268,5 +253,18 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         public bool HasContainsCall { get; set; }
         public bool HasUnsupportedUsage { get; set; }
         public bool ShouldWarn => HasContainsCall && !HasUnsupportedUsage;
+    }
+    private static int GetMinArrayLength(SyntaxNodeAnalysisContext context)
+    {
+        return AnalyzerConfigHelper.GetConfig(context.Options, context.Node.SyntaxTree, options =>
+        {
+            if (options.TryGetValue(MinArrayLengthOption, out var valueString) &&
+                int.TryParse(valueString, out var value) && value >= 0)
+            {
+                return value;
+            }
+
+            return DefaultMinArrayLength;
+        });
     }
 }

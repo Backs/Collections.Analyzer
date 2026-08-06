@@ -16,7 +16,9 @@ For more information, see the following articles:
 
 ### Compiler warnings
 
-Analyze your C#-code and warn about redundant method calls.
+Analyze your C#-code and warn about:
+- **Redundant method calls** and inefficient collection transformations.
+- **N+1 Query Problems** in loops and LINQ expressions when accessing repositories or services.
 
 ![Code fix string](https://raw.githubusercontent.com/Backs/Collections.Analyzer/master/Documentation/img/string-example-2.png)
 
@@ -35,7 +37,7 @@ Automatically fixes found problems.
 Every analyzer can be installed as a usual nuget-package. Just add a package reference to a project:
 
 ```
-<PackageReference Include="Collections.Analyzer" Version="0.2.15" />
+<PackageReference Include="Collections.Analyzer" Version="0.3.0" />
 ```
 
 The analyzer will work only in the project it was added to. If you want to analyse all projects in your solution, you
@@ -44,7 +46,7 @@ can add file `Directory.build.props` to the solution directory with content:
 ```
 <Project>
   <ItemGroup>
-    <PackageReference Include="Collections.Analyzer" Version="0.2.12.1" />
+    <PackageReference Include="Collections.Analyzer" Version="0.3.0" />
   </ItemGroup>
 </Project>
 ```

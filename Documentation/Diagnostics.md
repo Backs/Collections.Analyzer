@@ -10,3 +10,4 @@
 | [CI0008](CI0008.md) | Consider using HashSet for Contains operations             | Warning  | Array is used with `Contains()` method. `HashSet<T>` provides O(1) lookup performance               |
 | [CI0009](CI0009.md) | List capacity should be set based on the source collection | Warning  | Initialize `List<T>` capacity with the size of a source collection                                  |
 | [CI0010](CI0010.md) | Consider using Dictionary for lookups in collections        | Warning  | Collection is used for lookups inside a loop or LINQ. Using `Dictionary` provides O(1) performance. |
+| [CI0011](CI0011.md) | Potential N+1 Query Problem                                | Warning  | Avoid calling data access methods inside a loop based on the loop variable.                         |
