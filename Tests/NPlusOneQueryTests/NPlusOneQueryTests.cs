@@ -180,7 +180,7 @@ public class NPlusOneQueryTests : CSharpAnalyzerTest<NPlusOneQueryAnalyzer, Defa
     }
 
     [Test]
-    public Task CustomTypeSuffixes_ShouldWarn()
+    public Task CustomTypeSubstrings_ShouldWarn()
     {
         var code = ResourceReader.ReadFromFile("NPlusOneQuery15.cs");
 
@@ -190,7 +190,7 @@ public class NPlusOneQueryTests : CSharpAnalyzerTest<NPlusOneQueryAnalyzer, Defa
         };
 
         test.TestState.AnalyzerConfigFiles.Add(
-            ("/.editorconfig", $"is_global = true{System.Environment.NewLine}dotnet_diagnostic.CI0011.data_access_type_suffixes = Service")
+            ("/.editorconfig", $"is_global = true{System.Environment.NewLine}dotnet_diagnostic.CI0011.data_access_type_substrings = Service")
         );
 
         return test.RunAsync();

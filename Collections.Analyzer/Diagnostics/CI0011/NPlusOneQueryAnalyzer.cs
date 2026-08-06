@@ -24,11 +24,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         true,
         Resources.CI0011_Description
     );
-
-    private static readonly string[] DataAccessTypeSuffixes = { "Repository", "Reader", "Writer", "Handler" };
-    private static readonly string[] DataAccessMethodPrefixes = { "Read", "Find", "Get", "TryRead", "TryGet", "TryFind" };
-    private static readonly string[] BulkMethodSubstrings = { "Batch", "Bulk", "Range" };
-
+    
     private static readonly FrozenSet<string> LinqMethodNames =
     new[] {
         nameof(Enumerable.Select),
@@ -50,7 +46,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
         }.ToFrozenSet();
 
     private const string AnalyzeTestMethodsOption = "dotnet_diagnostic.CI0011.analyze_test_methods";
-    private const string DataAccessTypeSuffixesOption = "dotnet_diagnostic.CI0011.data_access_type_suffixes";
+    private const string DataAccessTypeSubstringsOption = "dotnet_diagnostic.CI0011.data_access_type_substrings";
     private const string DataAccessMethodPrefixesOption = "dotnet_diagnostic.CI0011.data_access_method_prefixes";
     private const string BulkMethodSubstringsOption = "dotnet_diagnostic.CI0011.bulk_method_substrings";
 
@@ -180,7 +176,7 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
     {
         foreach (var argument in invocation.ArgumentList.Arguments)
         {
-            var dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(argument.Expression);
+            var dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(argument.Expression)!;
             if (!dataFlowAnalysis.Succeeded)
             {
                 continue;
@@ -244,17 +240,17 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
             return false;
         }
 
-        if (IsDataAccessTypeName(type.Name, config.DataAccessTypeSuffixes))
+        if (IsDataAccessTypeName(type.Name, config.DataAccessTypeSubstrings))
         {
             return true;
         }
 
-        return type.AllInterfaces.Any(i => IsDataAccessTypeName(i.Name, config.DataAccessTypeSuffixes));
+        return type.AllInterfaces.Any(i => IsDataAccessTypeName(i.Name, config.DataAccessTypeSubstrings));
     }
 
-    private static bool IsDataAccessTypeName(string typeName, IEnumerable<string> suffixes)
+    private static bool IsDataAccessTypeName(string typeName, IEnumerable<string> substrings)
     {
-        return !string.IsNullOrEmpty(typeName) && suffixes.Any(typeName.Contains);
+        return !string.IsNullOrEmpty(typeName) && substrings.Any(typeName.Contains);
     }
 
     private static IReadOnlyCollection<ISymbol> GetLoopVariableSymbols(SyntaxNode loopNode, SemanticModel semanticModel)
@@ -315,20 +311,24 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
 
     private sealed class NPlusOneQueryConfig
     {
-        private static readonly char[] Separators = { ',', ';', '|' };
         public bool AnalyzeTestMethodsEnabled { get; }
-        public IReadOnlyCollection<string> DataAccessTypeSuffixes { get; }
+        public IReadOnlyCollection<string> DataAccessTypeSubstrings { get; }
         public IReadOnlyCollection<string> DataAccessMethodPrefixes { get; }
         public IReadOnlyCollection<string> BulkMethodSubstrings { get; }
+        
+        private static readonly string[] DataAccessTypeSubstringsDefaults = { "Repository", "Reader", "Writer", "Handler" };
+        private static readonly string[] DataAccessMethodPrefixesDefaults = { "Read", "Find", "Get", "TryRead", "TryGet", "TryFind" };
+        private static readonly string[] BulkMethodSubstringsDefaults = { "Batch", "Bulk", "Range" };
+
 
         private NPlusOneQueryConfig(
             bool analyzeTestMethodsEnabled,
-            IReadOnlyCollection<string> dataAccessTypeSuffixes,
+            IReadOnlyCollection<string> dataAccessTypeSubstrings,
             IReadOnlyCollection<string> dataAccessMethodPrefixes,
             IReadOnlyCollection<string> bulkMethodSubstrings)
         {
             AnalyzeTestMethodsEnabled = analyzeTestMethodsEnabled;
-            DataAccessTypeSuffixes = dataAccessTypeSuffixes;
+            DataAccessTypeSubstrings = dataAccessTypeSubstrings;
             DataAccessMethodPrefixes = dataAccessMethodPrefixes;
             BulkMethodSubstrings = bulkMethodSubstrings;
         }
@@ -338,19 +338,11 @@ public sealed class NPlusOneQueryAnalyzer : DiagnosticAnalyzer
             var analyzeTestMethodsEnabled = options.TryGetValue(AnalyzeTestMethodsOption, out var testMethodsValue) &&
                                             bool.TryParse(testMethodsValue, out var testMethodsResult) && testMethodsResult;
 
-            var typeSuffixes = options.TryGetValue(DataAccessTypeSuffixesOption, out var typeSuffixesValue) && !string.IsNullOrWhiteSpace(typeSuffixesValue)
-                ? typeSuffixesValue.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray()
-                : NPlusOneQueryAnalyzer.DataAccessTypeSuffixes;
+            var typeSubstrings = AnalyzerConfigHelper.GetList(options, DataAccessTypeSubstringsOption, DataAccessTypeSubstringsDefaults);
+            var methodPrefixes = AnalyzerConfigHelper.GetList(options, DataAccessMethodPrefixesOption, DataAccessMethodPrefixesDefaults);
+            var bulkSubstrings = AnalyzerConfigHelper.GetList(options, BulkMethodSubstringsOption, BulkMethodSubstringsDefaults);
 
-            var methodPrefixes = options.TryGetValue(DataAccessMethodPrefixesOption, out var methodPrefixesValue) && !string.IsNullOrWhiteSpace(methodPrefixesValue)
-                ? methodPrefixesValue.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray()
-                : NPlusOneQueryAnalyzer.DataAccessMethodPrefixes;
-
-            var bulkSubstrings = options.TryGetValue(BulkMethodSubstringsOption, out var bulkSubstringsValue) && !string.IsNullOrWhiteSpace(bulkSubstringsValue)
-                ? bulkSubstringsValue.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray()
-                : NPlusOneQueryAnalyzer.BulkMethodSubstrings;
-
-            return new NPlusOneQueryConfig(analyzeTestMethodsEnabled, typeSuffixes, methodPrefixes, bulkSubstrings);
+            return new NPlusOneQueryConfig(analyzeTestMethodsEnabled, typeSubstrings, methodPrefixes, bulkSubstrings);
         }
     }
 
