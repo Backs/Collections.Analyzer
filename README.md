@@ -8,9 +8,8 @@ different collections.
 
 For more information, see the following articles:
 
-- [Part 1: string to array of chars](https://blog.rogatnev.net/posts/2021/09/Harmful-collection-transformations-part-1-strings.html)
-- [Part 2: automatic diagnostics](https://blog.rogatnev.net/posts/2021/10/Harmful-collection-transformations-part-2-diagnostics.html)
-- [Part 3: collections](https://blog.rogatnev.net/posts/2022/01/Harmful-collection-transformations-part-3-collections.html)
+- [Harmful collection transformations](https://blog.rogatnev.net/posts/2022/01/Harmful-collection-transformations-part-3-collections.html)
+- [Hunting the N+1 Query Problem with a Roslyn Analyzer](https://blog.rogatnev.net/posts/en/2026/08/N-Plus-One-Problem.html)
 
 # Features
 
