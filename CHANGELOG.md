@@ -1,3 +1,6 @@
+## 0.3.1
+- Fixed `ArgumentException` (An item with the same key has already been added) in `AnalyzerConfigHelper` due to race condition when accessing configuration cache from multiple threads.
+
 ## 0.3.0
 - Added [CI0011](https://github.com/Backs/Collections.Analyzer/blob/master/Documentation/CI0011.md): Diagnostic to detect potential N+1 Query Problems in loops and LINQ expressions.
 - Added support for `.editorconfig` configuration for CI0011 (data access type substrings, method prefixes, bulk method substrings, and test method analysis).

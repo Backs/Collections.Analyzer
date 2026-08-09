@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
@@ -8,23 +9,13 @@ namespace Collections.Analyzer.Diagnostics;
 
 internal static class AnalyzerConfigHelper
 {
-    private static readonly ConditionalWeakTable<SyntaxTree, object> ConfigCache = new();
+    private static readonly ConditionalWeakTable<SyntaxTree, ConcurrentDictionary<Type, object>> ConfigCache = new();
     private static readonly char[] Separators = { ',' };
 
     public static T GetConfig<T>(AnalyzerOptions options, SyntaxTree syntaxTree, Func<AnalyzerConfigOptions, T> factory)
     {
-        if (ConfigCache.TryGetValue(syntaxTree, out var cached) && cached is T typedConfig)
-        {
-            return typedConfig;
-        }
-
-        var analyzerOptions = options.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
-        var config = factory(analyzerOptions);
-        
-        ConfigCache.Remove(syntaxTree);
-        ConfigCache.Add(syntaxTree, config!);
-        
-        return config;
+        var typeConfigs = ConfigCache.GetValue(syntaxTree, _ => new ConcurrentDictionary<Type, object>());
+        return (T)typeConfigs.GetOrAdd(typeof(T), _ => factory(options.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree))!);
     }
 
     public static string[] GetList(AnalyzerConfigOptions options, string optionName, string[] defaultValues)
