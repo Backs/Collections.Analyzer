@@ -48,6 +48,15 @@ public class ListCapacityTests : CSharpCodeFixTest<
     }
 
     [Test]
+    public Task ListCollectionExpression_ShouldNotWarn()
+    {
+        var code = ResourceReader.ReadFromFile("ListInitializer5.cs");
+
+        return ListCapacityVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.EmptyDiagnosticResults);
+    }
+
+    [Test]
     [TestCase("ListInitializerBefore1.cs", "ListInitializerAfter1.cs")]
     [TestCase("ListInitializerBefore2.cs", "ListInitializerAfter2.cs")]
     [TestCase("ListInitializerBefore3.cs", "ListInitializerAfter3.cs")]

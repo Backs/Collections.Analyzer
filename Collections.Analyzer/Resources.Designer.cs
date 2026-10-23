@@ -153,6 +153,12 @@ namespace Collections.Analyzer {
             }
         }
         
+        internal static string CI0008_FrozenSetCodeFixTitle {
+            get {
+                return ResourceManager.GetString("CI0008_FrozenSetCodeFixTitle", resourceCulture);
+            }
+        }
+        
         internal static string CI0009_Title {
             get {
                 return ResourceManager.GetString("CI0009_Title", resourceCulture);

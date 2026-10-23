@@ -3,6 +3,7 @@ using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Collections.Analyzer.Diagnostics;
 using Collections.Analyzer.Diagnostics.CI0006;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -18,8 +19,10 @@ using static SyntaxFactory;
 [Shared]
 public class SetListCapacityCodeFix : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-        ListInitializerDiagnostic.InitializeListWithCapacityRule.Id);
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+    [
+        ListInitializerDiagnostic.InitializeListWithCapacityRule.Id
+    ];
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -50,7 +53,7 @@ public class SetListCapacityCodeFix : CodeFixProvider
     {
         var oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             
-        var count = objectCreation.Initializer?.Expressions.Count ?? 0;
+        var count = ExpressionExtensions.GetCollectionElementCount(objectCreation.Initializer);
 
         var newArgumentList = ArgumentList(
             SingletonSeparatedList(
