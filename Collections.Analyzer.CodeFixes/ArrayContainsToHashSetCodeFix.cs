@@ -16,8 +16,7 @@ namespace Collections.Analyzer.CodeFixes;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ArrayContainsToHashSetCodeFix)), Shared]
 public class ArrayContainsToHashSetCodeFix : CodeFixProvider
 {
-    public sealed override ImmutableArray<string> FixableDiagnosticIds =>
-        ImmutableArray.Create(ArrayContainsToHashSetDiagnostic.Rule.Id);
+    public sealed override ImmutableArray<string> FixableDiagnosticIds => [ArrayContainsToHashSetDiagnostic.Rule.Id];
 
     public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -99,11 +98,11 @@ public class ArrayContainsToHashSetCodeFix : CodeFixProvider
         
         var newVariableDeclarator = variableDeclarator.WithInitializer(newInitializer);
         
+        var newVariables = variableDeclaration.Variables.Replace(variableDeclarator, newVariableDeclarator);
+        
         var newVariableDeclaration = variableDeclaration
             .WithType(newType)
-            .WithVariables(
-                SyntaxFactory.SingletonSeparatedList(newVariableDeclarator)
-            )
+            .WithVariables(newVariables)
             .WithAdditionalAnnotations(Formatter.Annotation);
 
         var newRoot = root.ReplaceNode(variableDeclaration, newVariableDeclaration);
@@ -168,9 +167,19 @@ public class ArrayContainsToHashSetCodeFix : CodeFixProvider
         {
             // Case: int[] arr = { 1, 2, 3 };
             // Transform to: HashSet<int> arr = new HashSet<int> { 1, 2, 3 };
+            var collectionInitializer = SyntaxFactory.InitializerExpression(
+                SyntaxKind.CollectionInitializerExpression,
+                initializerExpression.Expressions
+            );
             hashSetCreation = SyntaxFactory.ObjectCreationExpression(hashSetType)
-                .WithInitializer(initializerExpression)
+                .WithInitializer(collectionInitializer)
                 .WithAdditionalAnnotations(Formatter.Annotation);
+        }
+        else if (originalInitializer.Value is CollectionExpressionSyntax)
+        {
+            // Case: int[] arr = [ 1, 2, 3 ];
+            // Transform to: HashSet<int> arr = [ 1, 2, 3 ];
+            return originalInitializer;
         }
         else
         {
@@ -208,8 +217,9 @@ public class ArrayContainsToHashSetCodeFix : CodeFixProvider
         if (root is not CompilationUnitSyntax compilationUnit)
             return root;
 
-        var hasUsing = compilationUnit.Usings.Any(u =>
-            u.Name?.ToString() == "System.Collections.Generic");
+        var hasUsing = compilationUnit.DescendantNodesAndSelf()
+            .OfType<UsingDirectiveSyntax>()
+            .Any(u => u.Name?.ToString() == "System.Collections.Generic");
 
         if (hasUsing)
             return root;

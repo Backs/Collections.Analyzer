@@ -23,8 +23,7 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         Resources.CI0008_Description
     );
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Rule);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
 
     public override void Initialize(AnalysisContext context)
     {
@@ -111,21 +110,14 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         return SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, enumerableType);
     }
 
-    private static InitializerExpressionSyntax? FindArrayInitializer(EqualsValueClauseSyntax? equalsValue)
+    private static SyntaxNode? FindArrayInitializer(EqualsValueClauseSyntax? equalsValue)
     {
-        if (equalsValue == null)
-            return null;
+        return ExpressionExtensions.FindCollectionInitializer(equalsValue);
+    }
 
-        if (equalsValue.Value is ImplicitArrayCreationExpressionSyntax implicitArray)
-            return implicitArray.Initializer;
-
-        if (equalsValue.Value is ArrayCreationExpressionSyntax arrayCreation)
-            return arrayCreation.Initializer;
-
-        if (equalsValue.Value is InitializerExpressionSyntax initializerExpression)
-            return initializerExpression;
-
-        return null;
+    private static int CountArrayElements(SyntaxNode initializer)
+    {
+        return ExpressionExtensions.GetCollectionElementCount(initializer);
     }
 
     private static void AnalyzeVariable(SyntaxNodeAnalysisContext context,
@@ -241,11 +233,6 @@ public class ArrayContainsToHashSetDiagnostic : DiagnosticAnalyzer
         }
 
         return false;
-    }
-
-    private static int CountArrayElements(InitializerExpressionSyntax initializer)
-    {
-        return initializer.Expressions.Count;
     }
 
     private class UsageAnalysis

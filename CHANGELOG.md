@@ -1,3 +1,10 @@
+## 0.3.2
+- Added alternative CodeFix for `CI0008` (ArrayContainsToHashSet) allowing replacement of arrays with `FrozenSet<T>` (`System.Collections.Frozen`) when supported by the target .NET version (.NET 8+).
+- Added support for C# 12+ Collection Expressions (`[item1, item2, ...]`) across analyzers and code fixes:
+  - `CI0008` (ArrayContainsToHashSet): Support array declarations initialized with collection expressions when detecting `Contains()` calls, and preserving collection expression syntax in code fixes.
+  - `CI0006` (ListInitializer): Updated collection element counting and initializer handling.
+  - `ExpressionExtensions`: Added `FindCollectionInitializer` and `GetCollectionElementCount` to support modern syntax.
+
 ## 0.3.1
 - Fixed `ArgumentException` (An item with the same key has already been added) in `AnalyzerConfigHelper` due to race condition when accessing configuration cache from multiple threads.
 

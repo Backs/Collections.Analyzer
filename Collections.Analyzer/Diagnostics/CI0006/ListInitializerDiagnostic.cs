@@ -18,8 +18,7 @@ public sealed class ListInitializerDiagnostic : DiagnosticAnalyzer
         true
     );
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(InitializeListWithCapacityRule);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [InitializeListWithCapacityRule];
 
     public override void Initialize(AnalysisContext context)
     {
@@ -35,7 +34,8 @@ public sealed class ListInitializerDiagnostic : DiagnosticAnalyzer
     {
         var objectCreation = (BaseObjectCreationExpressionSyntax)context.Node;
 
-        if (objectCreation.Initializer == null || objectCreation.Initializer.Expressions.Count == 0)
+        var count = ExpressionExtensions.GetCollectionElementCount(objectCreation.Initializer);
+        if (count == 0)
         {
             return;
         }
@@ -82,6 +82,6 @@ public sealed class ListInitializerDiagnostic : DiagnosticAnalyzer
             return false;
         }
 
-        return capacity < objectCreation.Initializer!.Expressions.Count;
+        return capacity < ExpressionExtensions.GetCollectionElementCount(objectCreation.Initializer);
     }
 }

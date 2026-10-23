@@ -114,10 +114,25 @@ public class ArrayContainsToHashSetTests : CSharpCodeFixTest<
     }
 
     [Test]
+    public Task LocalVariableCollectionExpression_ShouldWarn()
+    {
+        var code = ResourceReader.ReadFromFile("ArrayContains8.cs");
+
+        return ArrayContainsVerifier
+            .VerifyAnalyzerAsync(code, DiagnosticResult.CompilerWarning("CI0008").WithSpan(7, 15, 7, 22));
+    }
+
+    [Test]
     [TestCase("ArrayContainsBefore1.cs", "ArrayContainsAfter1.cs")]
     [TestCase("ArrayContainsBefore2.cs", "ArrayContainsAfter2.cs")]
-    [TestCase("ArrayContainsBefore3.cs", "ArrayContainsAfter3.cs", Ignore = "Different syntax tree in result")]
+    [TestCase("ArrayContainsBefore3.cs", "ArrayContainsAfter3.cs")]
     [TestCase("ArrayContainsBefore4.cs", "ArrayContainsAfter4.cs")]
+    [TestCase("ArrayContainsBefore5.cs", "ArrayContainsAfter5.cs")]
+    [TestCase("ArrayContainsBefore6.cs", "ArrayContainsAfter6.cs")]
+    [TestCase("ArrayContainsBefore7.cs", "ArrayContainsAfter7.cs")]
+    [TestCase("ArrayContainsBefore8.cs", "ArrayContainsAfter8.cs")]
+    [TestCase("ArrayContainsBefore9.cs", "ArrayContainsAfter9.cs")]
+    [TestCase("ArrayContainsBefore11.cs", "ArrayContainsAfter11.cs")]
     public Task CodeFixesTest(string before, string after)
     {
         var code = ResourceReader.ReadFromFile(before);
